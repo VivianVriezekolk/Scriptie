@@ -1,0 +1,11 @@
+Atom = (function()) {
+  function Atom(neighbours){
+    this.neightbours = neightbours;
+  }
+
+  Atom.prototype.getDistance = function(neighbourAtom){
+
+  };
+
+  return Atom;
+}

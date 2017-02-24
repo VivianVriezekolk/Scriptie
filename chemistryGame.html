@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Test dragging</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
+var cAtom, cAtomTwo;
+
+function preload() {
+    game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
+		game.load.image('C', 'C atoom.png');
+}
+
+function create() {
+		game.stage.backgroundColor = "#FFFFFF";
+    cAtom = game.add.sprite(5, 100, 'C');
+		cAtomTwo = game.add.sprite(5, 5, 'C');
+		var scaleX = 0.02;
+  	var scaleY = 0.02;
+
+    //  Input Enable the sprites
+    cAtom.inputEnabled = true;
+    cAtomTwo.inputEnabled = true;
+
+    //  Allow dragging
+    //  enableDrag parameters = (lockCenter, bringToTop, pixelPerfect, alphaThreshold, boundsRect, boundsSprite)
+    cAtom.input.enableDrag();
+    cAtomTwo.input.enableDrag();
+
+    //  Enable snapping. For the atari1 sprite it will snap as its dragged around and on release.
+    //  The snap is set to every 32x32 pixels.
+  	cAtom.scale.set(scaleX , scaleY);
+		cAtomTwo.scale.set(scaleX, scaleY);
+
+		//cAtom.setTo(2,2);
+    //  Input Enable the sprites
+		cAtom.inputEnabled = true;
+		cAtomTwo.inputEnabled = true;
+
+    //  Allow dragging - the 'true' parameter will make the sprite snap to the center
+		cAtom.input.enableDrag(true);
+		cAtomTwo.input.enableDrag(true);
+
+		cAtom.input.enableSnap(16, 16, true, true);
+		//  For the atari2 sprite it will snap only when released, not on drag.
+		cAtomTwo.input.enableSnap(16, 16, true, true);
+		// game.physics.archade.distanceToXY(cAtom, 0, 0)
+}
+
+function update() {
+	var distance = game.physics.arcade.distanceBetween(cAtom, cAtomTwo);
+	if(distance < 40){
+		cAtom.body.immovable = false;
+		cAtomTwo.body.immovable = false;
+		console.log("ik zit in de if");
+
+	}
+}
+
+</script>
+</body>
+</html>
