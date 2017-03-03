@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,7 +23,12 @@ function preload() {
 		game.load.image('C', 'C atoom.png');
 }
 
+
+
 function create() {
+
+		var atom2 = new Atom('C');
+		console.log(a.getValue);
 		game.stage.backgroundColor = "#FFFFFF";
     cAtom = game.add.sprite(5, 100, 'C');
 		cAtomTwo = game.add.sprite(5, 5, 'C');
@@ -64,9 +70,10 @@ function update() {
 		cAtom.body.immovable = false;
 		cAtomTwo.body.immovable = false;
 		console.log("ik zit in de if");
-
 	}
 }
+
+
 
 </script>
 </body>
