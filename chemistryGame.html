@@ -16,60 +16,70 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
-var cAtom, cAtomTwo;
-
+var molecule;
 function preload() {
     game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
 		game.load.image('C', 'C atoom.png');
 }
 
-
-
 function create() {
-
-		var atom2 = new Atom('C');
-		console.log(a.getValue);
-		game.stage.backgroundColor = "#FFFFFF";
-    cAtom = game.add.sprite(5, 100, 'C');
-		cAtomTwo = game.add.sprite(5, 5, 'C');
+		game.stage.backgroundColor = "#ADD8E6";
+		//bmpText = game.add.bitmapText(300, 100, 'desyrel', 'Phaser & Pixi\nrocking!', 64);	
+		molecule = makeMolecule();
 		var scaleX = 0.02;
   	var scaleY = 0.02;
 
-    //  Input Enable the sprites
-    cAtom.inputEnabled = true;
-    cAtomTwo.inputEnabled = true;
-
-    //  Allow dragging
-    //  enableDrag parameters = (lockCenter, bringToTop, pixelPerfect, alphaThreshold, boundsRect, boundsSprite)
-    cAtom.input.enableDrag();
-    cAtomTwo.input.enableDrag();
-
-    //  Enable snapping. For the atari1 sprite it will snap as its dragged around and on release.
-    //  The snap is set to every 32x32 pixels.
-  	cAtom.scale.set(scaleX , scaleY);
-		cAtomTwo.scale.set(scaleX, scaleY);
-
-		//cAtom.setTo(2,2);
-    //  Input Enable the sprites
-		cAtom.inputEnabled = true;
-		cAtomTwo.inputEnabled = true;
-
-    //  Allow dragging - the 'true' parameter will make the sprite snap to the center
-		cAtom.input.enableDrag(true);
-		cAtomTwo.input.enableDrag(true);
-
-		cAtom.input.enableSnap(16, 16, true, true);
-		//  For the atari2 sprite it will snap only when released, not on drag.
-		cAtomTwo.input.enableSnap(16, 16, true, true);
+		for(var i=0; i<molecule.length; i++){
+			var image = molecule[i].image;
+	  	image.inputEnabled = true;
+	    image.input.enableDrag();
+	  	image.scale.set(scaleX , scaleY);
+			image.input.enableDrag(true);
+			image.input.enableSnap(32, 32, false, true);
+	}
 		// game.physics.archade.distanceToXY(cAtom, 0, 0)
 }
 
+function makeMolecule(){
+//	cAtom = game.add.sprite(5, 100, 'C');
+	//cAtomTwo = game.add.sprite(5, 5, 'C');
+	var molecule = [];
+	var c1 = new atom('C');
+	var c2 = new atom('C');
+	molecule.push(c1);
+	molecule.push(c2);
+	return molecule;
+}
+// object of an atam with a certain value.
+function atom(value) {
+    this.value = value
+		this.image = game.add.sprite(5, 100, value);
+}
+// object of a molecule with different sorts of atoms
+function molecule(atoms){
+		this.atoms = atoms;
+}
+// object of a question with a particular molecule that has to be made and the mission text
+function question(molecule, text){
+	this.molecule = molecule;
+	this.text = text;
+}
+
+// This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	var distance = game.physics.arcade.distanceBetween(cAtom, cAtomTwo);
-	if(distance < 40){
-		cAtom.body.immovable = false;
-		cAtomTwo.body.immovable = false;
+	var distance = game.physics.arcade.distanceBetween(molecule[0].image, molecule[1].image);
+	if(distance < 64){
+		//molecule[0].image.input.draggable = false;
+		//molecule[1].image.input.draggable = false;
+		for(var i=0; i<molecule.length; i++){
+			molecule[i].image.input.enableSnap(32, 32, true, true);
+		}
 		console.log("ik zit in de if");
+	}
+	else {
+		for(var i=0; i<molecule.length; i++){
+			molecule[i].image.input.enableSnap(32, 32, false, true);
+		}
 	}
 }
 
