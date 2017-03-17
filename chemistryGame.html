@@ -22,7 +22,7 @@ var currentMolecule = [];
 // make nicer buttons.
 function preload() {
 	 // game.load.spritesheet('C', 'C atoom.png', 193, 71);
-    game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
+    //game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
 		game.load.image('C', 'C atoom.png');
 		game.load.image('H', 'HAtoom.jpg');
 		game.load.image('O', 'OAtoom.jpg');
@@ -59,14 +59,15 @@ function showQuestion(question){
 	text.anchor.set(0.5);
 }
 
-function countNumberOfAtoms(molecules, valueOfSpecificAtom){
+// counts number of atoms with a specific value in a molecule
+function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	var count = 0;
-	for(var i=0; i< molecules.length; i++){
-		if(molecules[i].value == valueOfSpecificAtom){
+	for(var i=0; i< SpecMolecule.length; i++){
+		if(SpecMolecule[i].value == valueOfSpecificAtom){
 			count = count + 1;
 		}
 	}
-	console.log(molecules);
+	console.log(SpecMolecule);
 	return count;
 }
 
@@ -100,15 +101,14 @@ function actionOnClick(){
 	}
 }
 
+// The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClickA(){
-	//console.log(valueOfAtom);
-	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
-
+	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
+		var scaleX = 0.08;
+		var scaleY = 0.08	;
 		var atomNew = new atom('H', true);
 		atomNew.image.inputEnabled = true;
 		atomNew.image.input.enableDrag();
-		var scaleX = 0.08;
-		var scaleY = 0.08	;
 		atomNew.image.scale.set(scaleX , scaleY);
 		atomNew.image.input.enableDrag(true);
 		atomNew.image.input.enableSnap(32, 32, false, true);
@@ -128,14 +128,13 @@ function snapToAtom(currentMolecule){
 						nearAny = true;
 			}
 		}
-		// Better solution to an if statement
+		// Better solution than an if statement
 		currentMolecule[j].image.input.enableSnap(32, 32, nearAny, true);
 	}
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	//console.log(currentMolecule.length);
 	if(currentMolecule != null){
 		snapToAtom(currentMolecule);
 	}
