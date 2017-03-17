@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" />
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
+	<script type="text/javascript" src= "atom.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -16,10 +17,11 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
-var molecule;
-
+var molecule = [];
+var currentMolecule = [];
+// make nicer buttons.
 function preload() {
-	  game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+	 // game.load.spritesheet('C', 'C atoom.png', 193, 71);
     game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
 		game.load.image('C', 'C atoom.png');
 		game.load.image('H', 'HAtoom.jpg');
@@ -28,41 +30,54 @@ function preload() {
 
 function create() {
 		game.stage.backgroundColor = "#ADD8E6";
-		button = game.add.button(0, 200, 'button', actionOnClick, this, 'C','C', 'C');
+		// search for how to give a parameter to actionOnCLick, such that you do not have to have a whole new function for every button.
+		buttonC = game.add.button(0, 200, 'C', actionOnClick, this, 'C','C', 'C');
+		buttonH = game.add.button(10, 175, 'H', actionOnClickA, this);
+		buttonC.scale.setTo(0.02, 0.02);
+		buttonH.scale.setTo(0.08, 0.08);
 
 		// make text for first question.
-		var style = { font: "20px Arial", fill: "#000000", align: "center" };
-    var text = game.add.text(game.world.centerX, 550, "You need to make water now!	", style);
-    text.anchor.set(0.5);
-		// make object of molecule H20:
+		// make object of molecule C3 for question 1:
 		var atoms = [];
-		atoms.push(new atom('C'));
-		atoms.push(new atom('C'));
-		atoms.push(new atom('C'));
-		molecule = new molecule(atoms);
-		var question1 = new question(molecule, 'Je moet nu water maken!');
+		atoms.push(new atom('C', false));
+		atoms.push(new atom('C', false));
+		atoms.push(new atom('C', false));
+
+		for (var i=0; i< atoms.length; i++){
+			molecule.push(atoms[i]);
+		}
+		var question1 = new question(molecule, 'You need to make water now!');
+		showQuestion(question1);
 		var scaleX = 0.02;
   	var scaleY = 0.02;
+}
 
-		for(var i=0; i<molecule.atoms.length; i++){
-			var image = molecule.atoms[i].image;
-	  	image.inputEnabled = true;
-	    image.input.enableDrag();
-	  	image.scale.set(scaleX , scaleY);
-			image.input.enableDrag(true);
-			image.input.enableSnap(32, 32, false, true);
+// show a particular question on screen.
+function showQuestion(question){
+	var style = { font: "20px Arial", fill: "#000000", align: "center" };
+	var text = game.add.text(game.world.centerX, 550,  question.text, style);
+	text.anchor.set(0.5);
+}
+
+function countNumberOfAtoms(molecules, valueOfSpecificAtom){
+	var count = 0;
+	for(var i=0; i< molecules.length; i++){
+		if(molecules[i].value == valueOfSpecificAtom){
+			count = count + 1;
+		}
 	}
+	console.log(molecules);
+	return count;
 }
 
 // object of an atam with a certain value.
-function atom(value) {
+function atom(value, currentAtom) {
     this.value = value
-		this.image = game.add.sprite(5, 100, value);
+		if(currentAtom){
+			this.image = game.add.sprite(5, 100, value);
+	}
 }
-// object of a molecule with different sorts of atoms
-function molecule(atoms){
-		this.atoms = atoms;
-}
+
 // object of a question with a particular molecule that has to be made and the mission text
 function question(molecule, text){
 	this.molecule = molecule;
@@ -71,41 +86,60 @@ function question(molecule, text){
 
 // The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClick(){
-	console.log("hallooooo");
-	var atomNew = new atom('C');
-	atomNew.image.inputEnabled = true;
-	atomNew.image.input.enableDrag();
-	var scaleX = 0.02;
-	var scaleY = 0.02;
-	atomNew.image.scale.set(scaleX , scaleY);
-	atomNew.image.input.enableDrag(true);
-	atomNew.image.input.enableSnap(32, 32, false, true);
-	molecule.atoms.push(atomNew);
+	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
+		console.log(countNumberOfAtoms(molecule, 'C'));
+		var atomNew = new atom('C', true);
+		atomNew.image.inputEnabled = true;
+		atomNew.image.input.enableDrag();
+		var scaleX = 0.02;
+		var scaleY = 0.02;
+		atomNew.image.scale.set(scaleX , scaleY);
+		atomNew.image.input.enableDrag(true);
+		atomNew.image.input.enableSnap(32, 32, false, true);
+		currentMolecule.push(atomNew);
+	}
+}
+
+function actionOnClickA(){
+	//console.log(valueOfAtom);
+	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
+
+		var atomNew = new atom('H', true);
+		atomNew.image.inputEnabled = true;
+		atomNew.image.input.enableDrag();
+		var scaleX = 0.08;
+		var scaleY = 0.08	;
+		atomNew.image.scale.set(scaleX , scaleY);
+		atomNew.image.input.enableDrag(true);
+		atomNew.image.input.enableSnap(32, 32, false, true);
+		currentMolecule.push(atomNew);
+		}
 }
 
 // This function checks whether two molecules are close and snaps them together.
-function snapToAtom(molecule){
-	for(var j = 0; j< molecule.atoms.length; j++){
+function snapToAtom(currentMolecule){
+	for(var j = 0; j< currentMolecule.length; j++){
 		var nearAny = false;
-		for(var k = 0; k < molecule.atoms.length; k++){
+		for(var k = 0; k < currentMolecule.length; k++){
 			if(k != j){
-				var distance = game.physics.arcade.distanceBetween(molecule.atoms[j].image, molecule.atoms[k].image);
+				var distance = game.physics.arcade.distanceBetween(currentMolecule[j].image, currentMolecule[k].image);
 				console.log(distance);
 				if(distance < 64)
 						nearAny = true;
 			}
 		}
 		// Better solution to an if statement
-		molecule.atoms[j].image.input.enableSnap(32, 32, nearAny, true);
+		currentMolecule[j].image.input.enableSnap(32, 32, nearAny, true);
 	}
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	snapToAtom(molecule);
+	//console.log(currentMolecule.length);
+	if(currentMolecule != null){
+		snapToAtom(currentMolecule);
+	}
 }
-
-
 
 </script>
 </body>
