@@ -6,6 +6,7 @@
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src= "atom.js"></script>
+	<script type="text/javascript" src= "button.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -26,21 +27,36 @@ function preload() {
 		game.load.image('C', 'C atoom.png');
 		game.load.image('H', 'HAtoom.jpg');
 		game.load.image('O', 'OAtoom.jpg');
+		game.load.image('done', 'done.png');
 }
 
 function create() {
+		// needs to be uncommented when also the code for the object button is used below, actionOnClick and actionOnClickA need to be commented out.
+		//var atomValues = ['H', 'C', 'O'];
+		//var positionX = [10, 0, 20];
+		//var positionY = [175, 200, 150];
 		game.stage.backgroundColor = "#ADD8E6";
 		// search for how to give a parameter to actionOnCLick, such that you do not have to have a whole new function for every button.
-		buttonC = game.add.button(0, 200, 'C', actionOnClick, this, 'C','C', 'C');
-		buttonH = game.add.button(10, 175, 'H', actionOnClickA, this);
+
+		// This does not work enitrely, therefore it is in comments
+		//for(var i=0; i< atomValues.length; i++){
+		//	var buttonTest = new button(atomValues[i], positionX[i], positionY[i], molecule, currentMolecule);
+		//}
+
+		// needs to be commented when comments abow are uncommented.
+		var buttonC = game.add.button(0, 200, 'C', actionOnClick, this, 'C','C', 'C');
+		var buttonH = game.add.button(10, 175, 'H', actionOnClickA, this);
 		buttonC.scale.setTo(0.02, 0.02);
 		buttonH.scale.setTo(0.08, 0.08);
+
+		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
+		doneButton.scale.setTo(0.2, 0.2);
 
 		// make text for first question.
 		// make object of molecule C3 for question 1:
 		var atoms = [];
 		atoms.push(new atom('C', false));
-		atoms.push(new atom('C', false));
+		atoms.push(new atom('H', false));
 		atoms.push(new atom('C', false));
 
 		for (var i=0; i< atoms.length; i++){
@@ -50,6 +66,17 @@ function create() {
 		showQuestion(question1);
 		var scaleX = 0.02;
   	var scaleY = 0.02;
+}
+
+function nextQuestion(){
+		//console.log(currentMolecule.length);
+		for(var i=0; i<currentMolecule.length; i++){
+			currentMolecule[i].sprite.destroy();
+			// why does these two lines not work? (one sprite is still on the screen)
+			// currentMolecule.pop();
+			// console.log(currentMolecule.length);
+		}
+		currentMolecule = [];
 }
 
 // show a particular question on screen.
@@ -75,7 +102,7 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 function atom(value, currentAtom) {
     this.value = value
 		if(currentAtom){
-			this.image = game.add.sprite(5, 100, value);
+			this.sprite = game.add.sprite(5, 100, value);
 	}
 }
 
@@ -85,33 +112,33 @@ function question(molecule, text){
 	this.text = text;
 }
 
-// The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
+//The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClick(){
 	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
-		console.log(countNumberOfAtoms(molecule, 'C'));
 		var atomNew = new atom('C', true);
-		atomNew.image.inputEnabled = true;
-		atomNew.image.input.enableDrag();
+		atomNew.sprite.inputEnabled = true;
+		atomNew.sprite.input.enableDrag();
 		var scaleX = 0.02;
 		var scaleY = 0.02;
-		atomNew.image.scale.set(scaleX , scaleY);
-		atomNew.image.input.enableDrag(true);
-		atomNew.image.input.enableSnap(32, 32, false, true);
+		atomNew.sprite.scale.set(scaleX , scaleY);
+		atomNew.sprite.input.enableDrag(true);
+		atomNew.sprite.input.enableSnap(32, 32, false, true);
+		console.log("blabla");
 		currentMolecule.push(atomNew);
 	}
 }
 
-// The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
+//The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClickA(){
 	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
 		var scaleX = 0.08;
 		var scaleY = 0.08	;
 		var atomNew = new atom('H', true);
-		atomNew.image.inputEnabled = true;
-		atomNew.image.input.enableDrag();
-		atomNew.image.scale.set(scaleX , scaleY);
-		atomNew.image.input.enableDrag(true);
-		atomNew.image.input.enableSnap(32, 32, false, true);
+		atomNew.sprite.inputEnabled = true;
+		atomNew.sprite.input.enableDrag();
+		atomNew.sprite.scale.set(scaleX , scaleY);
+		atomNew.sprite.input.enableDrag(true);
+		atomNew.sprite.input.enableSnap(32, 32, false, true);
 		currentMolecule.push(atomNew);
 		}
 }
@@ -122,14 +149,13 @@ function snapToAtom(currentMolecule){
 		var nearAny = false;
 		for(var k = 0; k < currentMolecule.length; k++){
 			if(k != j){
-				var distance = game.physics.arcade.distanceBetween(currentMolecule[j].image, currentMolecule[k].image);
-				console.log(distance);
+				var distance = game.physics.arcade.distanceBetween(currentMolecule[j].sprite, currentMolecule[k].sprite);
 				if(distance < 64)
 						nearAny = true;
 			}
 		}
 		// Better solution than an if statement
-		currentMolecule[j].image.input.enableSnap(32, 32, nearAny, true);
+		currentMolecule[j].sprite.input.enableSnap(32, 32, nearAny, true);
 	}
 }
 
