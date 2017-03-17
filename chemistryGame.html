@@ -27,16 +27,11 @@ function preload() {
 
 function create() {
 		game.stage.backgroundColor = "#ADD8E6";
-
 		button = game.add.button(0, 200, 'button', actionOnClick, this, 'C','C', 'C');
-
-
-
 
 		// make text for first question.
 		var style = { font: "20px Arial", fill: "#000000", align: "center" };
     var text = game.add.text(game.world.centerX, 550, "You need to make water now!	", style);
-
     text.anchor.set(0.5);
 		// make object of molecule H20:
 		var atoms = [];
@@ -89,31 +84,24 @@ function actionOnClick(){
 // This function checks whether two molecules are close and snaps them together.
 function snapToAtom(molecule){
 	for(var j = 0; j< molecule.atoms.length; j++){
-		for(var k = 1; k < molecule.atoms.length; k++){
+		var nearAny = false;
+		for(var k = 0; k < molecule.atoms.length; k++){
 			if(k != j){
 				var distance = game.physics.arcade.distanceBetween(molecule.atoms[j].image, molecule.atoms[k].image);
 				console.log(distance);
-				if(distance < 64){
-					//for(var i=0; i<molecule.atoms.length; i++){
-						molecule.atoms[j].image.input.enableSnap(32, 32, true, true);
-						molecule.atoms[k].image.input.enableSnap(32, 32, true, true);
-					}
-					else {
-					//for(var i=0; i<molecule.atoms.length; i++){
-						molecule.atoms[j].image.input.enableSnap(32, 32, false, true);
-						molecule.atoms[k].image.input.enableSnap(32, 32, false, true);
-					//}
-				}
+				if(distance < 64)
+						nearAny = true;
 			}
 		}
+		// Better solution to an if statement
+		molecule.atoms[j].image.input.enableSnap(32, 32, nearAny, true);
 	}
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	if(molecule.atoms.length > 1){
-		snapToAtom(molecule);
-	}
+	snapToAtom(molecule);
+
 	// var distance = game.physics.arcade.distanceBetween(molecule.atoms[0].image, molecule.atoms[1].image);
 	// //console.log(distance);
 	// if(distance < 64){
