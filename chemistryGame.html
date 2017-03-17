@@ -17,6 +17,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
 var molecule;
+
 function preload() {
 	  game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
     game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
@@ -51,17 +52,8 @@ function create() {
 			image.input.enableDrag(true);
 			image.input.enableSnap(32, 32, false, true);
 	}
-		// game.physics.archade.distanceToXY(cAtom, 0, 0)
 }
 
-// function makeMolecule(){
-// 	var molecule = [];
-// 	var c1 = new atom('C');
-// 	var c2 = new atom('C');
-// 	molecule.push(c1);
-// 	molecule.push(c2);
-// 	return molecule;
-// }
 // object of an atam with a certain value.
 function atom(value) {
     this.value = value
@@ -77,8 +69,18 @@ function question(molecule, text){
 	this.text = text;
 }
 
+// The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClick(){
 	console.log("hallooooo");
+	var atomNew = new atom('C');
+	atomNew.image.inputEnabled = true;
+	atomNew.image.input.enableDrag();
+	var scaleX = 0.02;
+	var scaleY = 0.02;
+	atomNew.image.scale.set(scaleX , scaleY);
+	atomNew.image.input.enableDrag(true);
+	atomNew.image.input.enableSnap(32, 32, false, true);
+	molecule.atoms.push(atomNew);
 }
 
 // This function checks whether two molecules are close and snaps them together.
@@ -101,22 +103,6 @@ function snapToAtom(molecule){
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
 	snapToAtom(molecule);
-
-	// var distance = game.physics.arcade.distanceBetween(molecule.atoms[0].image, molecule.atoms[1].image);
-	// //console.log(distance);
-	// if(distance < 64){
-	// 	//molecule[0].image.input.draggable = false;
-	// 	//molecule[1].image.input.draggable = false;
-	// 	for(var i=0; i<molecule.atoms.length; i++){
-	// 		molecule.atoms[i].image.input.enableSnap(32, 32, true, true);
-	// 	}
-	// 	console.log("ik zit in de if");
-	// }
-	// else {
-	// 	for(var i=0; i<molecule.atoms.length; i++){
-	// 		molecule.atoms[i].image.input.enableSnap(32, 32, false, true);
-	// 	}
-	// }
 }
 
 
