@@ -49,13 +49,15 @@ function create() {
 
 		// needs to be commented when comments abow are uncommented.
 
-		var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this, 'C','C', 'C');
+		var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this);
 		var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
 		var buttonO = game.add.button(10, 250, 'OButton', actionOnClickO, this);
+
 		buttonC.scale.setTo(0.4, 0.4);
 		buttonH.scale.setTo(0.4, 0.4);
 		buttonO.scale.setTo(0.4, 0.4);
 
+		// makes a doneButton
 		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
 		doneButton.scale.setTo(0.5, 0.5);
 
@@ -74,16 +76,16 @@ function create() {
 		atoms.push(atomH);
 		atoms.push(atomH2);
 		atoms.push(atomO);
-
+		//printNeighbours(atomH2);
 		for (var i=0; i< atoms.length; i++){
 			molecule.push(atoms[i]);
 		}
 		var question1 = new question(molecule, 'You need to make water now!');
 		showQuestion(question1);
-		// var scaleX = 0.02;
-  	// var scaleY = 0.02;
 }
 
+// This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
+// After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
 function nextQuestion(){
 		if(checkTheAnswer()){
 			console.log('Great job!');
@@ -96,7 +98,6 @@ function nextQuestion(){
 		else{
 			console.log('Next time better.');
 		}
-		//console.log(currentMolecule.length);
 		for(var i=0; i<currentMolecule.length; i++){
 			currentMolecule[i].sprite.destroy();
 			// why does these two lines not work? (one sprite is still on the screen)
@@ -106,6 +107,17 @@ function nextQuestion(){
 		currentMolecule = [];
 }
 
+// this function prints values of the neighbours of three atoms.
+function printNeighbours2(){
+	console.log(currentMolecule[0].value + 'neighbours are: ');
+	printNeighbours(currentMolecule[0]);
+	console.log(currentMolecule[1].value + 'neighbours are: ');
+	printNeighbours(currentMolecule[1]);
+	console.log(currentMolecule[2].value + 'neighbours are: ');
+	printNeighbours(currentMolecule[2]);
+}
+
+// this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
 	var correctNumberOfValues = false;
 	if(currentMolecule.length == molecule.length){
@@ -133,8 +145,8 @@ function checkTheAnswer(){
 	}
 }
 
+// This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
 function checkNeighbours(){
-	console.log('Hallooooo');
 	var rightAmount = false;
 	for(var k=0; k< molecule.length; k++){
 		for(var f=0; f< currentMolecule.length; f++){
@@ -142,30 +154,11 @@ function checkNeighbours(){
 				rightAmount = checkNeighboursOfAtom(molecule[k], molecule[f]);
 			}
 		}
-		// 	for(var s=0; s< molecule[k].neighbour.length; s++){
-		//
-		// 	}
-		//
-		// for(var i=0; i< currentMolecule.length; i++){
-		// 	for(var j=0; j< currentMolecule[i].neighbour.length; j++){
-		// 		if(currentMolecule[i].value == molecule[k].value){
-		// 			console.log(currentMolecule[i].value)
-		// 			for(var p=0; p< molecule.length; p++){
-		// 				if(countNumberOfAtoms(currentMolecule[i].neighbour, molecule[p].value) == countNumberOfAtoms(molecule[k].neighbour, molecule[p].value)){
-		// 					console.log(countNumberOfAtoms(currentMolecule[i].neighbour, molecule[p].value));
-		// 					rightAmount = true;
-		// 				}
-		// 				else{
-		// 					return rightAmount;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
 	}
 	return rightAmount;
 }
 
+// This function checks whether a specific atom has the right neighbours.
 function checkNeighboursOfAtom(a, b){
 	var boolean = false;
 		for(var i=0; i < a.neighbour.length; i++){
@@ -190,7 +183,7 @@ function showQuestion(question){
 	text.anchor.set(0.5);
 }
 
-// counts number of atoms with a specific value in a molecule
+// This function counts the number of atoms with a specific value in a molecule
 function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	var count = 0;
 	for(var i=0; i< SpecMolecule.length; i++){
@@ -198,11 +191,10 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 			count = count + 1;
 		}
 	}
-	//console.log(SpecMolecule);
 	return count;
 }
 
-// object of an atam with a certain value.
+// object of an atom with a certain value and neighbours.
 function atom(value, currentAtom) {
     this.value = value
 		this.neighbour = [];
@@ -210,19 +202,19 @@ function atom(value, currentAtom) {
 			this.sprite = game.add.sprite(5, 100, value);
 		}
 
+		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
 			this.neighbour.push(snappedAtom);
 		}
 
+		// this function removes a connection between atoms.
 		this.removeConnection = function(lostAtom){
 			for(var i=0; i<this.neighbour.length; i++){
 				if(this.neighbour[i].value == lostAtom.value){
 					this.neighbour.splice(i, 1);
 				}
 			}
-			//console.log('I need to remove this atom');
 		}
-
 }
 
 // object of a question with a particular molecule that has to be made and the mission text
@@ -237,43 +229,38 @@ function actionOnClick(){
 		var atomNew = new atom('C', true);
 		atomNew.sprite.inputEnabled = true;
 		atomNew.sprite.input.enableDrag();
+		atomNew.sprite.input.enableDrag(true);
+		atomNew.sprite.input.enableSnap(32, 32, false, true);
+		// To scale the sprite.
 		// var scaleX = 0.02;
 		// var scaleY = 0.02;
 		// atomNew.sprite.scale.set(scaleX , scaleY);
-		atomNew.sprite.input.enableDrag(true);
-		atomNew.sprite.input.enableSnap(32, 32, false, true);
-		//console.log("blabla");
+
 		currentMolecule.push(atomNew);
 	}
 }
 
-//The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
+//The button calls this function and adds more C atoms.
 function actionOnClickA(){
 	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
-		//  var scaleX = 0.08;
-		//  var scaleY = 0.08	;
 		var atomNew = new atom('H', true);
 		atomNew.sprite.inputEnabled = true;
 		atomNew.sprite.input.enableDrag();
-		// atomNew.sprite.scale.set(scaleX , scaleY);
 		atomNew.sprite.input.enableDrag(true);
 		atomNew.sprite.input.enableSnap(32, 32, false, true);
 		currentMolecule.push(atomNew);
 		}
 }
-
+//The button calls this function and adds more O atoms.
 function actionOnClickO(){
- //if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
-		// var scaleX = 0.08;
-		// var scaleY = 0.08	;
+ if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
 		var atomNew = new atom('O', true);
 		atomNew.sprite.inputEnabled = true;
 		atomNew.sprite.input.enableDrag();
-		//atomNew.sprite.scale.set(scaleX , scaleY);
 		atomNew.sprite.input.enableDrag(true);
 		atomNew.sprite.input.enableSnap(32, 32, false, true);
 		currentMolecule.push(atomNew);
-		//}
+		}
 }
 
 // This function checks whether two molecules are close and snaps them together.
@@ -291,41 +278,32 @@ function snapToAtom(currentMolecule){
 		}
 		// Better solution than an if statement
 		currentMolecule[j].sprite.input.enableSnap(32, 32, nearAny, true);
-		if(nearAny){
+		if(nearAny && distance < 35){
 			console.log(currentMolecule[j].value + 'adds ' + currentMolecule[snapTo].value);
 			currentMolecule[j].addConnection(currentMolecule[snapTo]);
 			currentMolecule[snapTo].addConnection(currentMolecule[j]);
 			//makeConnection(currentMolecule[snapTo], currentMolecule[j]);
-			//console.log("add a new connection for" + currentMolecule[j].value);
-			//printNeighbours(currentMolecule[j]);
 		}
 		else{
 			if(currentMolecule.length > 1){
-
 				console.log('-' + currentMolecule[j].value + 'removes ' + currentMolecule[snapTo].value);
 				currentMolecule[j].removeConnection(currentMolecule[snapTo]);
 				currentMolecule[snapTo].removeConnection(currentMolecule[j]);
-				//removeConnection(currentMolecule[snapTo], currentMolecule[j]);
-				//console.log("remove connection of" + currentMolecule[j].value);
-				//printNeighbours(currentMolecule[j]);
 			}
 		}
 	}
 }
 
+// This function prints all values of the neighbours of atom a.
 function printNeighbours(a){
 	for(var i=0; i< a.neighbour.length; i++){
 		console.log(a.neighbour[i].value);
 	}
 }
 
+// This function prints values of two atoms.
 function makeConnection(k,j){
 		console.log('Deze atomen hebben een connectie nu' + k.value + ' ' + j.value);
-}
-
-
-function removeConnection(k,j){
-		console.log('Deze atomen hebben een geen connectie nu' + k.value + ' ' + j.value);
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.
