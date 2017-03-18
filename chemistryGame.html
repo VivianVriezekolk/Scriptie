@@ -24,6 +24,9 @@ var currentMolecule = [];
 function preload() {
 	 // game.load.spritesheet('C', 'C atoom.png', 193, 71);
     //game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
+		game.load.image('CButton', 'CAtoomButton.png');
+		game.load.image('OButton', 'OAtoomButton.png');
+		game.load.image('HButton', 'HAtoom.png');
 		game.load.image('C', 'C atoom.png');
 		game.load.image('H', 'HAtoom.jpg');
 		game.load.image('O', 'OAtoom.jpg');
@@ -44,10 +47,12 @@ function create() {
 		//}
 
 		// needs to be commented when comments abow are uncommented.
-		var buttonC = game.add.button(0, 200, 'C', actionOnClick, this, 'C','C', 'C');
-		var buttonH = game.add.button(10, 175, 'H', actionOnClickA, this);
-		buttonC.scale.setTo(0.02, 0.02);
-		buttonH.scale.setTo(0.08, 0.08);
+		var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this, 'C','C', 'C');
+		var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
+		var buttonO = game.add.button(10, 250, 'OButton', actionOnClickA, this);
+		buttonC.scale.setTo(0.4, 0.4);
+		buttonH.scale.setTo(0.4, 0.4);
+		buttonO.scale.setTo(0.4, 0.4);
 
 		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
 		doneButton.scale.setTo(0.2, 0.2);
