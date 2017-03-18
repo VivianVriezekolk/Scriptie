@@ -27,9 +27,9 @@ function preload() {
 		game.load.image('CButton', 'CAtoomButton.png');
 		game.load.image('OButton', 'OAtoomButton.png');
 		game.load.image('HButton', 'HAtoom.png');
-		game.load.image('C', 'C atoom.png');
-		game.load.image('H', 'HAtoom.jpg');
-		game.load.image('O', 'OAtoom.jpg');
+		game.load.image('C', 'CAtom.png');
+		game.load.image('H', 'HAtom.png');
+		game.load.image('O', 'OAtom.png');
 		game.load.image('done', 'done.png');
 }
 
@@ -49,28 +49,28 @@ function create() {
 		// needs to be commented when comments abow are uncommented.
 		var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this, 'C','C', 'C');
 		var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
-		var buttonO = game.add.button(10, 250, 'OButton', actionOnClickA, this);
+		var buttonO = game.add.button(10, 250, 'OButton', actionOnClickO, this);
 		buttonC.scale.setTo(0.4, 0.4);
 		buttonH.scale.setTo(0.4, 0.4);
 		buttonO.scale.setTo(0.4, 0.4);
 
 		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
-		doneButton.scale.setTo(0.2, 0.2);
+		doneButton.scale.setTo(0.5, 0.5);
 
 		// make text for first question.
 		// make object of molecule C3 for question 1:
 		var atoms = [];
-		atoms.push(new atom('C', false));
 		atoms.push(new atom('H', false));
 		atoms.push(new atom('C', false));
+		atoms.push(new atom('O', false));
 
 		for (var i=0; i< atoms.length; i++){
 			molecule.push(atoms[i]);
 		}
 		var question1 = new question(molecule, 'You need to make water now!');
 		showQuestion(question1);
-		var scaleX = 0.02;
-  	var scaleY = 0.02;
+		// var scaleX = 0.02;
+  	// var scaleY = 0.02;
 }
 
 function nextQuestion(){
@@ -123,9 +123,9 @@ function actionOnClick(){
 		var atomNew = new atom('C', true);
 		atomNew.sprite.inputEnabled = true;
 		atomNew.sprite.input.enableDrag();
-		var scaleX = 0.02;
-		var scaleY = 0.02;
-		atomNew.sprite.scale.set(scaleX , scaleY);
+		// var scaleX = 0.02;
+		// var scaleY = 0.02;
+		// atomNew.sprite.scale.set(scaleX , scaleY);
 		atomNew.sprite.input.enableDrag(true);
 		atomNew.sprite.input.enableSnap(32, 32, false, true);
 		console.log("blabla");
@@ -136,12 +136,26 @@ function actionOnClick(){
 //The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
 function actionOnClickA(){
 	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
-		var scaleX = 0.08;
-		var scaleY = 0.08	;
+		//  var scaleX = 0.08;
+		//  var scaleY = 0.08	;
 		var atomNew = new atom('H', true);
 		atomNew.sprite.inputEnabled = true;
 		atomNew.sprite.input.enableDrag();
-		atomNew.sprite.scale.set(scaleX , scaleY);
+		// atomNew.sprite.scale.set(scaleX , scaleY);
+		atomNew.sprite.input.enableDrag(true);
+		atomNew.sprite.input.enableSnap(32, 32, false, true);
+		currentMolecule.push(atomNew);
+		}
+}
+
+function actionOnClickO(){
+	if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
+		// var scaleX = 0.08;
+		// var scaleY = 0.08	;
+		var atomNew = new atom('O', true);
+		atomNew.sprite.inputEnabled = true;
+		atomNew.sprite.input.enableDrag();
+		//atomNew.sprite.scale.set(scaleX , scaleY);
 		atomNew.sprite.input.enableDrag(true);
 		atomNew.sprite.input.enableSnap(32, 32, false, true);
 		currentMolecule.push(atomNew);
@@ -150,6 +164,7 @@ function actionOnClickA(){
 
 // This function checks whether two molecules are close and snaps them together.
 function snapToAtom(currentMolecule){
+	var snapTo;
 	for(var j = 0; j< currentMolecule.length; j++){
 		var nearAny = false;
 		for(var k = 0; k < currentMolecule.length; k++){
@@ -157,11 +172,28 @@ function snapToAtom(currentMolecule){
 				var distance = game.physics.arcade.distanceBetween(currentMolecule[j].sprite, currentMolecule[k].sprite);
 				if(distance < 64)
 						nearAny = true;
+						snapTo = k;
 			}
 		}
 		// Better solution than an if statement
 		currentMolecule[j].sprite.input.enableSnap(32, 32, nearAny, true);
+		if(nearAny){
+			//console.log(currentMolecule[snapTo].value);
+			makeConnection(currentMolecule[snapTo], currentMolecule[j]);
+		}
+		else{
+			if(currentMolecule.length > 1){
+			removeConnection(currentMolecule[snapTo], currentMolecule[j]);
+		}}
 	}
+}
+
+function makeConnection(k,j){
+		console.log('Deze atomen hebben een connectie nu' + k.value + ' ' + j.value);
+}
+
+function removeConnection(k,j){
+		console.log('Deze atomen hebben een geen connectie nu' + k.value + ' ' + j.value);
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.
