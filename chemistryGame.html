@@ -279,14 +279,14 @@ function snapToAtom(currentMolecule){
 		// Better solution than an if statement
 		currentMolecule[j].sprite.input.enableSnap(32, 32, nearAny, true);
 		if(nearAny && distance < 35){
-			console.log(currentMolecule[j].value + 'adds ' + currentMolecule[snapTo].value);
+			console.log(currentMolecule[j].value + ' adds ' + currentMolecule[snapTo].value);
 			currentMolecule[j].addConnection(currentMolecule[snapTo]);
 			currentMolecule[snapTo].addConnection(currentMolecule[j]);
 			//makeConnection(currentMolecule[snapTo], currentMolecule[j]);
 		}
 		else{
 			if(currentMolecule.length > 1){
-				console.log('-' + currentMolecule[j].value + 'removes ' + currentMolecule[snapTo].value);
+				console.log('-' + currentMolecule[j].value + ' removes ' + currentMolecule[snapTo].value);
 				currentMolecule[j].removeConnection(currentMolecule[snapTo]);
 				currentMolecule[snapTo].removeConnection(currentMolecule[j]);
 			}
