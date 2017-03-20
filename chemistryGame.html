@@ -119,19 +119,12 @@ function printNeighbours2(){
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
-	var correctNumberOfValues = false;
 	if(currentMolecule.length == molecule.length){
 			console.log('You have the right amount of atoms!');
-			for(var i=0; i< currentMolecule.length; i++){
-				for(var j=0; j< molecule.length; j++){
-					if(countNumberOfAtoms(molecule, molecule[j].value) == countNumberOfAtoms(currentMolecule, molecule[j].value)){
-						correctNumberOfValues = true;
-					}
-					else{
-						return correctNumberOfValues;
-					}
-				}
-			}
+			for(var j=0; j< molecule.length; j++)
+				if(countNumberOfAtoms(molecule, molecule[j].value) != countNumberOfAtoms(currentMolecule, molecule[j].value))
+					return false;
+			return true;
 	}
 	else{
 		console.log('You do not have the right amount of atoms!');
