@@ -21,19 +21,16 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: p
 var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
-var tween = null;
 var id = 0;
 // make nicer buttons.
 function preload() {
-	 // game.load.spritesheet('C', 'C atoom.png', 193, 71);
-    //game.load.image('grid', 'assets/tests/debug-grid-1920x1920.png');
-		game.load.image('CButton', 'CAtoomButton.png');
-		game.load.image('OButton', 'OAtoomButton.png');
-		game.load.image('HButton', 'HAtoom.png');
-		game.load.image('C', 'CAtom.png');
-		game.load.image('H', 'HAtom.png');
-		game.load.image('O', 'OAtom.png');
-		game.load.image('done', 'done.png');
+		game.load.image('CButton', 'images/CAtoomButton.png');
+		game.load.image('OButton', 'images/OAtoomButton.png');
+		game.load.image('HButton', 'images/HAtoom.png');
+		game.load.image('C', 'images/CAtom.png');
+		game.load.image('H', 'images/HAtom.png');
+		game.load.image('O', 'images/OAtom.png');
+		game.load.image('done', 'images/done.png');
 }
 
 function create() {
@@ -66,9 +63,9 @@ function create() {
 		// make text for first question.
 		// make object of molecule C3 for question 1:
 		var atoms = [];
-		var atomO = new atom('O', false, 10);
-		var atomH = new atom('H', false, 11);
-		var atomH2 = new atom('H',false, 12);
+		var atomO = new atom('O', false, 0);
+		var atomH = new atom('H', false, 1);
+		var atomH2 = new atom('H',false, 2);
 
 		atomH.addConnection(atomO);
 
@@ -94,12 +91,11 @@ function create() {
 function nextQuestion(){
 		if(checkTheAnswer()){
 			console.log('Great job!');
-			//var textAnswer = 'Great job!';
-			//var style = { font: "20px Arial", fill: "#000000", align: "center" };
-			//var text = game.add.text(game.world.centerX, game.world.centerY,  textAnswer, style);
-			//text.anchor.set(0.5);
-			//tween = game.add.tween(text.scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true);
-		}
+		  // textAnswer = 'Great job!';
+			// var style = { font: "20px Arial", fill: "#000000", align: "center" };
+			// var text = game.add.text(game.world.centerX, game.world.centerY,  textAnswer, style);
+			// text.anchor.set(0.5);
+			}
 		else{
 			console.log('You did not make the correct molecule.');
 			molecule = copyMolecule;
@@ -225,10 +221,6 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	}
 	return count;
 }
-
-// function atomCorrect(value, id){
-// 	return atom(value, false, id);
-// }
 
 // object of an atom with a certain value and neighbours.
 function atom(value, currentAtom, id) {

@@ -9,9 +9,6 @@ var button = function(element, X, Y, molecule, currentMolecule){
   		var atomNew = new atom(element, true);
   		atomNew.sprite.inputEnabled = true;
   		atomNew.sprite.input.enableDrag();
-  		var scaleX = 0.02;
-  		var scaleY = 0.02;
-  		atomNew.sprite.scale.set(scaleX , scaleY);
   		atomNew.sprite.input.enableDrag(true);
   		atomNew.sprite.input.enableSnap(32, 32, false, true);
   		currentMolecule.push(atomNew);
@@ -20,6 +17,4 @@ var button = function(element, X, Y, molecule, currentMolecule){
 
   var button = game.add.button(X, Y, element, this.actionOnClick, this);
   button.scale.setTo(0.02, 0.02);
-
-
 }
