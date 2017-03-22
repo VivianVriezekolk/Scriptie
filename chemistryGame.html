@@ -41,7 +41,7 @@ function preload() {
 		game.load.image('O', 'images/OAtom.png');
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
-		game.load.image('nextQuestion', 'images/nextQuestion.png');
+		game.load.image('nextQuestion', 'images/nextQuestion');
 }
 
 function create() {
@@ -109,14 +109,11 @@ function nextQuestion(){
 			var textAnswer = document.getElementById('textAnswer');
 			textAnswer.innerText = 'Great job!';
 			popup.style.display = 'block';
-
-			console.log('Great job!');
-		  // textAnswer = 'Great job!';
-			// var style = { font: "20px Arial", fill: "#000000", align: "center" };
-			// var text = game.add.text(game.world.centerX, game.world.centerY,  textAnswer, style);
-			// text.anchor.set(0.5);
-			}
+		}
 		else{
+			var textAnswer = document.getElementById('textAnswer');
+			textAnswer.innerText = 'You did not make the correct molecule';
+			popup.style.display = 'block';
 			console.log('You did not make the correct molecule.');
 			molecule = copyMolecule;
 		}
@@ -161,9 +158,7 @@ function checkTheAnswer(){
 // you need to delete the neighbour if it is right otherwise you could find it again while it is checked already
 // This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
 function checkNeighbours(){
-
 	copyMolecule = molecule;
-	//var rightAmount = false;
 	for(var k=0; k< molecule.length; k++){
 		console.log(molecule.length);
 		for(var f=0; f< currentMolecule.length; f++){
@@ -171,9 +166,8 @@ function checkNeighbours(){
 				molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
 				});
-				console.log("Dit is gesorteerd " + molecule[k].neighbour);
 				for(var v=0; v<molecule[k].neighbour.length; v++){
-					console.log("lala " + molecule[k].neighbour[v].value);
+					console.log("neighbour: " + molecule[k].neighbour[v].value);
 				}
 				currentMolecule[f].neighbour.sort(function(a, b){
 					return a.value < b.value;
@@ -183,16 +177,13 @@ function checkNeighbours(){
 					return false;
 				}
 				molecule.splice(k, 1);
-				//console.log(molecule[k].value);
-				//console.log(currentMolecule[f].value);
-				// rightAmount = checkNeighboursOfAtom(molecule[k], currentMolecule[f]);
-				// console.log(rightAmount);
 			}
 		}
 	}
 	return true;
 }
 
+// This function checks whether two lists are the same.
 function equalLists(neighbourMolecule, neighbourCurrentMolecule){
 	if(neighbourMolecule.length != neighbourCurrentMolecule.length){
 		return false;
@@ -381,6 +372,7 @@ function snap(currentMolecule){
 	undoneSnap(currentMolecule);
 }
 
+// This function checks whether some atoms have neighbours that need to be 'unsnapped' and unsnaps them.
 function undoneSnap(currentMolecule){
 	for(var i=0; i< currentMolecule.length; i++){
 		var atom = currentMolecule[i]
