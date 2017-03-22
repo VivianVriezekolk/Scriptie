@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src= "atom.js"></script>
 	<script type="text/javascript" src= "button.js"></script>
+	<link rel="stylesheet" href="layout.css">
     <style type="text/css">
         body {
             margin: 0;
@@ -14,6 +15,13 @@
     </style>
 </head>
 <body>
+	<div id="bla" class = "popup" >
+		<div class = "popup-content">
+	<p id = "textAnswer"></p>
+	<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">
+	<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
+</div	>
+	</div>
 
 <script type="text/javascript">
 
@@ -22,6 +30,7 @@ var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
 var id = 0;
+var popup = document.getElementById('bla');
 // make nicer buttons.
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -31,6 +40,8 @@ function preload() {
 		game.load.image('H', 'images/HAtom.png');
 		game.load.image('O', 'images/OAtom.png');
 		game.load.image('done', 'images/done.png');
+		game.load.image('tryAgain', 'images/tryAgain.png');
+		game.load.image('nextQuestion', 'images/nextQuestion.png');
 }
 
 function create() {
@@ -86,10 +97,19 @@ function create() {
 		showQuestion(question1);
 }
 
+function showNextQuestion(){
+	console.log('blabla');
+	popup.style.display = 'none';
+}
+
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
 // After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
 function nextQuestion(){
 		if(checkTheAnswer()){
+			var textAnswer = document.getElementById('textAnswer');
+			textAnswer.innerText = 'Great job!';
+			popup.style.display = 'block';
+
 			console.log('Great job!');
 		  // textAnswer = 'Great job!';
 			// var style = { font: "20px Arial", fill: "#000000", align: "center" };

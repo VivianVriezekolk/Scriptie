@@ -1,0 +1,22 @@
+.popup{
+  display : none;
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 800 px;
+  height: 600 px;
+  overflow: auto;
+  /*background-color: #FFFFFF;*/
+  background-color: rgba(0,0,0,0,4);
+}
+
+.popup-content{
+  background-color: #FFFFFF;
+  width: 200px;
+  heighth: 100px;
+  border: 1px solid #888;
+  text-align: center;
+  border-radius: 25px;
+
+}
