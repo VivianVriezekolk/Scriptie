@@ -50,19 +50,11 @@ function create() {
 		var positionY = [150, 200, 250];
 		game.stage.backgroundColor = "#ADD8E6";
 
+		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
 			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i]);
 		}
-
-		//var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this);
-		//var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
-		//var buttonO = game.add.button(10, 250, 'OButton', actionOnClickO, this);
-		//buttonC.scale.setTo(0.4, 0.4);
-		//buttonH.scale.setTo(0.4, 0.4);
-		//buttonO.scale.setTo(0.4, 0.4);
-
-		// makes a doneButton
 		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
 		doneButton.scale.setTo(0.5, 0.5);
 
@@ -82,7 +74,6 @@ function create() {
 		atoms.push(atomH);
 		atoms.push(atomO);
 		atoms.push(atomH2);
-		//printNeighbours(atomH2);
 		for (var i=0; i< atoms.length; i++){
 			molecule.push(atoms[i]);
 		}
