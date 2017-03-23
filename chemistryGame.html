@@ -15,10 +15,10 @@
     </style>
 </head>
 <body>
-	<div id="bla" class = "popup" >
+	<div id="wrongAsnwer" class = "popup" >
 		<div class = "popup-content">
 	<p id = "textAnswer"></p>
-	<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">
+	<!--<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">-->
 	<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
 </div	>
 	</div>
@@ -30,8 +30,8 @@ var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
 var id = 0;
-var popup = document.getElementById('bla');
-// make nicer buttons.
+var popup = document.getElementById('wrongAsnwer');
+
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
 		game.load.image('OButton', 'images/OAtoomButton.png');
@@ -45,34 +45,28 @@ function preload() {
 }
 
 function create() {
-		// needs to be uncommented when also the code for the object button is used below, actionOnClick and actionOnClickA need to be commented out.
-		//var atomValues = ['H', 'C', 'O'];
-		//var positionX = [10, 0, 20];
-		//var positionY = [175, 200, 150];
+		var atomValues = ['H', 'C', 'O'];
+		var buttons = ['HButton', 'CButton', 'OButton'];
+		var positionY = [150, 200, 250];
 		game.stage.backgroundColor = "#ADD8E6";
-		// search for how to give a parameter to actionOnCLick, such that you do not have to have a whole new function for every button.
 
-		// This does not work enitrely, therefore it is in comments
-		//for(var i=0; i< atomValues.length; i++){
-		//	var buttonTest = new button(atomValues[i], positionX[i], positionY[i], molecule, currentMolecule);
-		//}
+		for(var i=0; i< atomValues.length; i++){
+			console.log(buttons[i]);
+			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i]);
+		}
 
-		// needs to be commented when comments abow are uncommented.
-
-		var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this);
-		var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
-		var buttonO = game.add.button(10, 250, 'OButton', actionOnClickO, this);
-
-		buttonC.scale.setTo(0.4, 0.4);
-		buttonH.scale.setTo(0.4, 0.4);
-		buttonO.scale.setTo(0.4, 0.4);
+		//var buttonC = game.add.button(10, 200, 'CButton', actionOnClick, this);
+		//var buttonH = game.add.button(10, 150, 'HButton', actionOnClickA, this);
+		//var buttonO = game.add.button(10, 250, 'OButton', actionOnClickO, this);
+		//buttonC.scale.setTo(0.4, 0.4);
+		//buttonH.scale.setTo(0.4, 0.4);
+		//buttonO.scale.setTo(0.4, 0.4);
 
 		// makes a doneButton
 		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
 		doneButton.scale.setTo(0.5, 0.5);
 
-		// make text for first question.
-		// make object of molecule C3 for question 1:
+		// make molecule for first question
 		var atoms = [];
 		var atomO = new atom('O', false, 0);
 		var atomH = new atom('H', false, 1);
@@ -85,7 +79,6 @@ function create() {
 
 		atomH2.addConnection(atomO);
 
-// de volgorde waarin je dit zet maakt blijkbaar uit...
 		atoms.push(atomH);
 		atoms.push(atomO);
 		atoms.push(atomH2);
@@ -98,7 +91,6 @@ function create() {
 }
 
 function showNextQuestion(){
-	console.log('blabla');
 	popup.style.display = 'none';
 }
 
@@ -116,12 +108,10 @@ function nextQuestion(){
 			popup.style.display = 'block';
 			console.log('You did not make the correct molecule.');
 			molecule = copyMolecule;
+			console.log(molecule);
 		}
 		for(var i=0; i<currentMolecule.length; i++){
 			currentMolecule[i].sprite.destroy();
-			// why does these two lines not work? (one sprite is still on the screen)
-			// currentMolecule.pop();
-			// console.log(currentMolecule.length);
 		}
 		currentMolecule = [];
 }
@@ -138,6 +128,7 @@ function printNeighbours2(){
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
+	copyMolecule = molecule;
 	if(currentMolecule.length != molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		return false;
@@ -158,7 +149,6 @@ function checkTheAnswer(){
 // you need to delete the neighbour if it is right otherwise you could find it again while it is checked already
 // This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
 function checkNeighbours(){
-	copyMolecule = molecule;
 	for(var k=0; k< molecule.length; k++){
 		console.log(molecule.length);
 		for(var f=0; f< currentMolecule.length; f++){
@@ -205,7 +195,6 @@ function checkNeighboursOfAtom(a, b){
 						boolean = true;
 					}
 					else{
-
 						console.log("het ging hier fout" + countNumberOfAtoms(a.neighbour, a.neighbour[i].value) + ' ' + countNumberOfAtoms(b.neighbour, a.neighbour[i].value));
 						return boolean = false;
 					}
@@ -214,10 +203,9 @@ function checkNeighboursOfAtom(a, b){
 		return boolean;
 }
 
-
 // show a particular question on screen.
 function showQuestion(question){
-	var style = { font: "20px Arial", fill: "#000000", align: "center" };
+	var style = { font: "15px Arial", fill: "#000000", align: "center" };
 	var text = game.add.text(game.world.centerX, 550,  question.text, style);
 	text.anchor.set(0.5);
 }
@@ -261,6 +249,29 @@ function atom(value, currentAtom, id) {
 		}
 }
 
+// Object button
+function button(buttonName, element, X, Y){
+  this.element = element;
+  this.buttonName = buttonName;
+
+  this.actionOnClick = function(){
+    console.log("You clicked on me!!");
+    if(countNumberOfAtoms(currentMolecule, element) != countNumberOfAtoms(molecule, element)){
+  		console.log(countNumberOfAtoms(molecule, element));
+  		var atomNew = new atom(element, true, id);
+  		atomNew.sprite.inputEnabled = true;
+  		atomNew.sprite.input.enableDrag();
+  		atomNew.sprite.input.enableDrag(true);
+  		atomNew.sprite.input.enableSnap(32, 32, false, true);
+  		currentMolecule.push(atomNew);
+			id = id+1;
+  	}
+  }
+
+  var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
+  button.scale.setTo(0.4, 0.4);
+}
+
 // object of a question with a particular molecule that has to be made and the mission text
 function question(molecule, text){
 	this.molecule = molecule;
@@ -268,47 +279,47 @@ function question(molecule, text){
 }
 
 //The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
-function actionOnClick(){
-	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
-		var atomNew = new atom('C', true, id);
-		atomNew.sprite.inputEnabled = true;
-		atomNew.sprite.input.enableDrag();
-		atomNew.sprite.input.enableDrag(true);
-		atomNew.sprite.input.enableSnap(32, 32, false, true);
-		id = id + 1;
-		// To scale the sprite.
-		// var scaleX = 0.02;
-		// var scaleY = 0.02;
-		// atomNew.sprite.scale.set(scaleX , scaleY);
-
-		currentMolecule.push(atomNew);
-	}
-}
-
-//The button calls this function and adds more C atoms.
-function actionOnClickA(){
-	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
-		var atomNew = new atom('H', true, id);
-		atomNew.sprite.inputEnabled = true;
-		atomNew.sprite.input.enableDrag();
-		atomNew.sprite.input.enableDrag(true);
-		atomNew.sprite.input.enableSnap(32, 32, false, true);
-		id = id + 1;
-		currentMolecule.push(atomNew);
-		}
-}
-//The button calls this function and adds more O atoms.
-function actionOnClickO(){
- if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
-		var atomNew = new atom('O', true, id);
-		atomNew.sprite.inputEnabled = true;
-		atomNew.sprite.input.enableDrag();
-		atomNew.sprite.input.enableDrag(true);
-		atomNew.sprite.input.enableSnap(32, 32, false, true);
-		currentMolecule.push(atomNew);
-		id = id + 1;
-		}
-}
+// function actionOnClick(){
+// 	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
+// 		var atomNew = new atom('C', true, id);
+// 		atomNew.sprite.inputEnabled = true;
+// 		atomNew.sprite.input.enableDrag();
+// 		atomNew.sprite.input.enableDrag(true);
+// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
+// 		id = id + 1;
+// 		// To scale the sprite.
+// 		// var scaleX = 0.02;
+// 		// var scaleY = 0.02;
+// 		// atomNew.sprite.scale.set(scaleX , scaleY);
+//
+// 		currentMolecule.push(atomNew);
+// 	}
+// }
+//
+// //The button calls this function and adds more C atoms.
+// function actionOnClickA(){
+// 	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
+// 		var atomNew = new atom('H', true, id);
+// 		atomNew.sprite.inputEnabled = true;
+// 		atomNew.sprite.input.enableDrag();
+// 		atomNew.sprite.input.enableDrag(true);
+// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
+// 		id = id + 1;
+// 		currentMolecule.push(atomNew);
+// 		}
+// }
+// //The button calls this function and adds more O atoms.
+// function actionOnClickO(){
+//  if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
+// 		var atomNew = new atom('O', true, id);
+// 		atomNew.sprite.inputEnabled = true;
+// 		atomNew.sprite.input.enableDrag();
+// 		atomNew.sprite.input.enableDrag(true);
+// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
+// 		currentMolecule.push(atomNew);
+// 		id = id + 1;
+// 		}
+// }
 
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
@@ -355,7 +366,6 @@ function atomsAreSnapped(atomA, atomB){
 // }
 
 
-
 // this functions adds atoms that are close together
 function snap(currentMolecule){
 	for(var i=0; i< currentMolecule.length; i++){
@@ -393,11 +403,6 @@ function printNeighbours(a){
 	for(var i=0; i< a.neighbour.length; i++){
 		console.log(a.neighbour[i].value);
 	}
-}
-
-// This function prints values of two atoms.
-function makeConnection(k,j){
-		console.log('Deze atomen hebben een connectie nu' + k.value + ' ' + j.value);
 }
 
 // This update function checks whether two molecules are close to each other and then snaps.

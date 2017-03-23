@@ -1,6 +1,8 @@
-var button = function(element, X, Y, molecule, currentMolecule){
+var button = function(buttonName, element, X, Y){
+  console.log('hallo');
   this.element = element;
-  console.log(molecule);
+  this.buttonName = buttonName;
+  //console.log(molecule);
 
   this.actionOnClick = function(){
     console.log("You clicked on me!!");
@@ -15,6 +17,6 @@ var button = function(element, X, Y, molecule, currentMolecule){
   	}
   };
 
-  var button = game.add.button(X, Y, element, this.actionOnClick, this);
-  button.scale.setTo(0.02, 0.02);
+  var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
+  button.scale.setTo(0.4, 0.4);
 }
