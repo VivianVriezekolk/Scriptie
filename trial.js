@@ -1,7 +1,3 @@
-function trial(questions){
-
-  function showQuestion(){
-
-
-  }
-};
+function trial(game){
+  this.game = game;
+}

@@ -6,7 +6,7 @@
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src= "atom.js"></script>
-	<script type="text/javascript" src= "button.js"></script>
+	<script type="text/javascript" src ="trial.js"></script>
 	<link rel="stylesheet" href="layout.css">
     <style type="text/css">
         body {
@@ -30,6 +30,7 @@ var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
 var id = 0;
+var questions = [];
 var popup = document.getElementById('wrongAsnwer');
 
 function preload() {
@@ -42,9 +43,12 @@ function preload() {
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
+		game.load.text('text', 'questions.txt');
 }
 
 function create() {
+		//var trial = new trial(game);
+		readQuestion();
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
 		var positionY = [150, 200, 250];
@@ -53,9 +57,9 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i]);
+			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, molecule);
 		}
-		var doneButton = game.add.button(600, 525, 'done', nextQuestion, this);
+		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		doneButton.scale.setTo(0.5, 0.5);
 
 		// make molecule for first question
@@ -64,6 +68,7 @@ function create() {
 		var atomH = new atom('H', false, 1);
 		var atomH2 = new atom('H',false, 2);
 
+		// a trial will take care of a loop of new questions
 		atomH.addConnection(atomO);
 
 		atomO.addConnection(atomH);
@@ -81,30 +86,42 @@ function create() {
 		showQuestion(question1);
 }
 
+function readQuestion(){
+  var textQuestion = game.cache.getText('text');
+  textsQuestion = textQuestion.split('\n');
+	for(var i=0; i< textsQuestion.length; i++){
+		if(textsQuestion[i] == ""){
+			console.log('blabla');
+		}
+		var question = textsQuestion[i];
+		console.log(question);
+	}
+}
+
 function showNextQuestion(){
 	popup.style.display = 'none';
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
 // After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
-function nextQuestion(){
-		if(checkTheAnswer()){
-			var textAnswer = document.getElementById('textAnswer');
-			textAnswer.innerText = 'Great job!';
-			popup.style.display = 'block';
-		}
-		else{
-			var textAnswer = document.getElementById('textAnswer');
-			textAnswer.innerText = 'You did not make the correct molecule';
-			popup.style.display = 'block';
-			console.log('You did not make the correct molecule.');
-			molecule = copyMolecule;
-			console.log(molecule);
-		}
-		for(var i=0; i<currentMolecule.length; i++){
-			currentMolecule[i].sprite.destroy();
-		}
-		currentMolecule = [];
+function evaluateAnswer(){
+	if(checkTheAnswer()){
+		var textAnswer = document.getElementById('textAnswer');
+		textAnswer.innerText = 'Great job!';
+		popup.style.display = 'block';
+	}
+	else{
+		var textAnswer = document.getElementById('textAnswer');
+		textAnswer.innerText = 'You did not make the correct molecule';
+		popup.style.display = 'block';
+		console.log('You did not make the correct molecule.');
+		molecule = copyMolecule;
+		console.log(molecule);
+	}
+	for(var i=0; i<currentMolecule.length; i++){
+		currentMolecule[i].sprite.destroy();
+	}
+	currentMolecule = [];
 }
 
 // this function prints values of the neighbours of three atoms.
@@ -240,7 +257,7 @@ function atom(value, currentAtom, id) {
 		}
 }
 
-// Object button
+//Object button
 function button(buttonName, element, X, Y){
   this.element = element;
   this.buttonName = buttonName;
@@ -258,7 +275,6 @@ function button(buttonName, element, X, Y){
 			id = id+1;
   	}
   }
-
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
   button.scale.setTo(0.4, 0.4);
 }
@@ -267,6 +283,11 @@ function button(buttonName, element, X, Y){
 function question(molecule, text){
 	this.molecule = molecule;
 	this.text = text;
+}
+
+function trial(){
+
+
 }
 
 //The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
@@ -315,7 +336,7 @@ function question(molecule, text){
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
-			console.log(atomB.id);
+			//console.log(atomB.id);
 			return true;
 		}
 	}
