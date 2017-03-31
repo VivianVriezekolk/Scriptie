@@ -1,13 +1,8 @@
-﻿Vraag
-
-HOH
-
+﻿Vraag You need to make water.
+Molecule:HOH
 010
 101
 010
 
 Vraag
-
-001
-001
-000
+CHHH

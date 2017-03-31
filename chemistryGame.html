@@ -89,12 +89,24 @@ function create() {
 function readQuestion(){
   var textQuestion = game.cache.getText('text');
   textsQuestion = textQuestion.split('\n');
+	//console.log(textsQuestion.length);
+
 	for(var i=0; i< textsQuestion.length; i++){
-		if(textsQuestion[i] == ""){
-			console.log('blabla');
+		if(textsQuestion[i].indexOf('Vraag') >= 0){
+			var textsVraag = textsQuestion[i];
+			var blabla = textsVraag.split(" ");
+			console.log(blabla.length);
+			for(var k=0; k< textsVraag.length; k++){
+				console.log(textsVraag[k]);
+			}
 		}
-		var question = textsQuestion[i];
-		console.log(question);
+		if(textsQuestion[i].indexOf('Mole') >=0){
+			console.log('blabla');
+			textsQuestion[i].split(':');
+			for(var j=0; j<textsQuestion[i].length; j++){
+				console.log(textsQuestion[i].length);
+			}
+		}
 	}
 }
 
@@ -384,7 +396,7 @@ function snap(currentMolecule){
 		for(var j=0; j< currentMolecule.length; j++){
 			if(i != j){
 				var distance = game.physics.arcade.distanceBetween(currentMolecule[i].sprite, currentMolecule[j].sprite);
-				if(distance < 64){
+				if(distance < 63){
 					currentMolecule[i].addConnection(currentMolecule[j]);
 					currentMolecule[i].sprite.input.enableSnap(32, 32, true, true);
 				}
