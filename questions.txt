@@ -1,8 +1,5 @@
-﻿Vraag You need to make water.
+﻿VrYou need to make water.
 Molecule:HOH
 010
 101
 010
-
-Vraag
-CHHH

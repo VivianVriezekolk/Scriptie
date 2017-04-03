@@ -43,7 +43,7 @@ function preload() {
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
-		game.load.text('text', 'questions.txt');
+		game.load.text('textQ1', 'questions.txt');
 }
 
 function create() {
@@ -87,27 +87,25 @@ function create() {
 }
 
 function readQuestion(){
-  var textQuestion = game.cache.getText('text');
+  var textQuestion = game.cache.getText('textQ1');
   textsQuestion = textQuestion.split('\n');
-	//console.log(textsQuestion.length);
-
-	for(var i=0; i< textsQuestion.length; i++){
-		if(textsQuestion[i].indexOf('Vraag') >= 0){
-			var textsVraag = textsQuestion[i];
-			var blabla = textsVraag.split(" ");
-			console.log(blabla.length);
-			for(var k=0; k< textsVraag.length; k++){
-				console.log(textsVraag[k]);
-			}
-		}
-		if(textsQuestion[i].indexOf('Mole') >=0){
-			console.log('blabla');
-			textsQuestion[i].split(':');
-			for(var j=0; j<textsQuestion[i].length; j++){
-				console.log(textsQuestion[i].length);
-			}
-		}
-	}
+	//var bla = textsQuestion[0].split(/~/);
+	console.log(textsQuestion[0]);
+	// for(var i=0; i< textsQuestion.length; i++){
+	// 	console.log("next line is " + textsQuestion[i]);
+	// 	if(textsQuestion[i].indexOf('Vraag') > -1){
+	// 		console.log("Gevonden " + textsQuestion[i]);
+	// 		var newQuestion = textsQuestion[i].split(/~/);
+	// 		console.log(newQuestion + " " + newQuestion.length);
+	// 	}
+	// 	if(textsQuestion[i].indexOf('Mole') > -1){
+	// 		console.log("Molecule " + textsQuestion[i]);
+	// 	}
+	// 	else{
+	// 		console.log("Dit zijn de verbindingen");
+	//
+	// 	}
+	// }
 }
 
 function showNextQuestion(){
@@ -412,7 +410,7 @@ function undoneSnap(currentMolecule){
 		var atom = currentMolecule[i]
 		for(var j=0; j<currentMolecule[i].neighbour.length; j++){
 				var distance = game.physics.arcade.distanceBetween(currentMolecule[i].sprite, currentMolecule[i].neighbour[j].sprite);
-				if(distance > 64){
+				if(distance > 63){
 					currentMolecule[i].removeConnection(currentMolecule[i].neighbour[j]);
 				}
 		}
