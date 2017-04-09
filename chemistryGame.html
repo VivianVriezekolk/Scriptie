@@ -5,8 +5,8 @@
 	<meta charset="UTF-8" />
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
-	<script type="text/javascript" src= "atom.js"></script>
-	<script type="text/javascript" src ="trial.js"></script>
+	<!--<script type="text/javascript" src= "atom.js"></script>-->
+	<script type="text/javascript" src="trial.js"></script>
 	<link rel="stylesheet" href="layout.css">
     <style type="text/css">
         body {
@@ -30,7 +30,7 @@ var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
 var id = 0;
-var questions = [];
+var listOfQuestions = [];
 var popup = document.getElementById('wrongAsnwer');
 
 function preload() {
@@ -43,11 +43,16 @@ function preload() {
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
-		game.load.text('textQ1', 'questions.txt');
+		game.load.text('questions', 'questions.txt');
+		game.load.text('testt', 'test.txt');
 }
 
 function create() {
-		//var trial = new trial(game);
+// This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
+		var trial = new Trial(game);
+		//trial.readInQuestions();
+
+
 		readQuestion();
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -86,26 +91,63 @@ function create() {
 		showQuestion(question1);
 }
 
+function makeTrial(trial, index, textsQuestion){
+	for(var i= index; i< textsQuestion.length; i++){
+		if(textsQuestion[i] == ""){
+			return;
+		}
+		console.log("next line is " + textsQuestion[i]);
+		if(textsQuestion[i].indexOf('Question') > -1){
+			console.log("Gevonden " + textsQuestion[i]);
+			var newQuestion = textsQuestion[i].split(/~/);
+			trial.currentQuestionText = newQuestion[1];
+			}
+
+		else if(textsQuestion[i].indexOf('Mole') > -1){
+			var newQuestion = textsQuestion[i].split(/~/);
+			var atomsOfMolecule = newQuestion[1];
+			for(var j=0; j < atomsOfMolecule.length; j++){
+				console.log("Dit is waarde " + atomsOfMolecule[j]);
+				var newAtom = new atom(atomsOfMolecule[j], false, id+j);
+				console.log(newAtom);
+				trial.molecule.push(newAtom);
+			}
+		}
+			else if(textsQuestion[i].indexOf("Binding") > -1){
+				console.log("Nu ga ik de bindings doen");
+				for(var m=i+1; m < textsQuestion[i+1].length+i+1; m++){
+					for(var k=0; k< textsQuestion[i+1].length; k++){
+						var value = textsQuestion[m];
+						if(value[k] == 1){
+							console.log("Waarde van het ene atoom " + trial.molecule[k].value);
+							console.log("Waarde van het andere atoom " + trial.molecule[m-(i+1)].value);
+							trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
+						}
+					}
+			}
+			console.log(trial.molecule);
+			this.listOfQuestions.push(trial);
+			return;
+		}
+	}
+	return;
+}
+
+
 function readQuestion(){
-  var textQuestion = game.cache.getText('textQ1');
+	var textOfQuestion1;
+  var textQuestion = game.cache.getText('questions');
   textsQuestion = textQuestion.split('\n');
 	//var bla = textsQuestion[0].split(/~/);
-	console.log(textsQuestion[0]);
-	// for(var i=0; i< textsQuestion.length; i++){
-	// 	console.log("next line is " + textsQuestion[i]);
-	// 	if(textsQuestion[i].indexOf('Vraag') > -1){
-	// 		console.log("Gevonden " + textsQuestion[i]);
-	// 		var newQuestion = textsQuestion[i].split(/~/);
-	// 		console.log(newQuestion + " " + newQuestion.length);
-	// 	}
-	// 	if(textsQuestion[i].indexOf('Mole') > -1){
-	// 		console.log("Molecule " + textsQuestion[i]);
-	// 	}
-	// 	else{
-	// 		console.log("Dit zijn de verbindingen");
-	//
-	// 	}
-	// }
+	for(var i=0; i< textsQuestion.length; i++){
+		if(textsQuestion[i] == ""){
+			console.log("You are going to make a new question now!");
+			makeTrial(new Trial(game), i+1, textsQuestion);
+			}
+	}
+	console.log(listOfQuestions[0]);
+	console.log(listOfQuestions[1]);
+
 }
 
 function showNextQuestion(){
@@ -251,7 +293,7 @@ function atom(value, currentAtom, id) {
 		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
 				if(!atomsAreSnapped(this, snappedAtom)){
-					console.log(this.value + " is connected to " + snappedAtom.value);
+				//	console.log(this.value + " is connected to " + snappedAtom.value);
 					this.neighbour.push(snappedAtom);
 				}
 			}
@@ -352,41 +394,6 @@ function atomsAreSnapped(atomA, atomB){
 	}
 	return false;
 }
-
-// This function checks whether two molecules are close and snaps them together.
-// function snapToAtom(currentMolecule){
-// 	var snapTo;
-// 	for(var j = 0; j< currentMolecule.length; j++){
-// 		var nearAny = false;
-// 		for(var k = 0; k < currentMolecule.length; k++){
-// 			if(k != j){
-// 				var distance = game.physics.arcade.distanceBetween(currentMolecule[j].sprite, currentMolecule[k].sprite);
-// 				if(distance < 64) {
-// 						nearAny = true;
-// 						snapTo = k;
-// 				}
-// 			}
-// 		}
-// 		// Better solution than an if statement
-// 		if(!atomsAreSnapped(currentMolecule[j], currentMolecule[snapTo])){
-// 			if(nearAny){
-// 				currentMolecule[j].sprite.input.enableSnap(32, 32, nearAny, true);
-// 				console.log(currentMolecule[j].value + ' adds ' + currentMolecule[snapTo].value);
-// 				currentMolecule[j].addConnection(currentMolecule[snapTo]);
-// 				currentMolecule[snapTo].addConnection(currentMolecule[j]);
-// 				//makeConnection(currentMolecule[snapTo], currentMolecule[j]);
-// 			}
-// 		}
-// 		else{
-// 			if(currentMolecule.length > 1 && !nearAny){
-// 				console.log('-' + currentMolecule[j].value + ' removes ' + currentMolecule[snapTo].value);
-// 				currentMolecule[j].removeConnection(currentMolecule[snapTo]);
-// 				currentMolecule[snapTo].removeConnection(currentMolecule[j]);
-// 			}
-// 		}
-// 	}
-// }
-
 
 // this functions adds atoms that are close together
 function snap(currentMolecule){

@@ -1,5 +1,15 @@
-﻿VrYou need to make water.
-Molecule:HOH
+
+Question~You need to make water.
+Molecule~HOH
+Bindings
 010
 101
 010
+
+Question~You need to make methane.
+Molecule~CHHH
+Bindings
+0111
+1000
+1000
+1000
