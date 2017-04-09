@@ -325,49 +325,6 @@ function trial(){
 
 }
 
-//The button calls this function and adds more C atoms. There should be a limit and the button needs to be nicer.
-// function actionOnClick(){
-// 	if(countNumberOfAtoms(currentMolecule,'C') != countNumberOfAtoms(molecule, 'C')){
-// 		var atomNew = new atom('C', true, id);
-// 		atomNew.sprite.inputEnabled = true;
-// 		atomNew.sprite.input.enableDrag();
-// 		atomNew.sprite.input.enableDrag(true);
-// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
-// 		id = id + 1;
-// 		// To scale the sprite.
-// 		// var scaleX = 0.02;
-// 		// var scaleY = 0.02;
-// 		// atomNew.sprite.scale.set(scaleX , scaleY);
-//
-// 		currentMolecule.push(atomNew);
-// 	}
-// }
-//
-// //The button calls this function and adds more C atoms.
-// function actionOnClickA(){
-// 	if(countNumberOfAtoms(currentMolecule,'H') != countNumberOfAtoms(molecule, 'H')){
-// 		var atomNew = new atom('H', true, id);
-// 		atomNew.sprite.inputEnabled = true;
-// 		atomNew.sprite.input.enableDrag();
-// 		atomNew.sprite.input.enableDrag(true);
-// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
-// 		id = id + 1;
-// 		currentMolecule.push(atomNew);
-// 		}
-// }
-// //The button calls this function and adds more O atoms.
-// function actionOnClickO(){
-//  if(countNumberOfAtoms(currentMolecule,'O') != countNumberOfAtoms(molecule, 'O')){
-// 		var atomNew = new atom('O', true, id);
-// 		atomNew.sprite.inputEnabled = true;
-// 		atomNew.sprite.input.enableDrag();
-// 		atomNew.sprite.input.enableDrag(true);
-// 		atomNew.sprite.input.enableSnap(32, 32, false, true);
-// 		currentMolecule.push(atomNew);
-// 		id = id + 1;
-// 		}
-// }
-
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
