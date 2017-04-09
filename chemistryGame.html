@@ -93,39 +93,26 @@ function create() {
 
 function makeTrial(trial, index, textsQuestion){
 	for(var i= index; i< textsQuestion.length; i++){
-		if(textsQuestion[i] == ""){
-			return;
-		}
-		console.log("next line is " + textsQuestion[i]);
 		if(textsQuestion[i].indexOf('Question') > -1){
-			console.log("Gevonden " + textsQuestion[i]);
 			var newQuestion = textsQuestion[i].split(/~/);
 			trial.currentQuestionText = newQuestion[1];
 			}
-
 		else if(textsQuestion[i].indexOf('Mole') > -1){
 			var newQuestion = textsQuestion[i].split(/~/);
 			var atomsOfMolecule = newQuestion[1];
 			for(var j=0; j < atomsOfMolecule.length; j++){
-				console.log("Dit is waarde " + atomsOfMolecule[j]);
-				var newAtom = new atom(atomsOfMolecule[j], false, id+j);
-				console.log(newAtom);
-				trial.molecule.push(newAtom);
+				trial.molecule.push(new atom(atomsOfMolecule[j], false, id+j));
 			}
 		}
-			else if(textsQuestion[i].indexOf("Binding") > -1){
-				console.log("Nu ga ik de bindings doen");
-				for(var m=i+1; m < textsQuestion[i+1].length+i+1; m++){
-					for(var k=0; k< textsQuestion[i+1].length; k++){
-						var value = textsQuestion[m];
-						if(value[k] == 1){
-							console.log("Waarde van het ene atoom " + trial.molecule[k].value);
-							console.log("Waarde van het andere atoom " + trial.molecule[m-(i+1)].value);
-							trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
-						}
+		else if(textsQuestion[i].indexOf("Binding") > -1){
+			for(var m=i+1; m < textsQuestion[i+1].length+i+1; m++){
+				for(var k=0; k< textsQuestion[i+1].length; k++){
+					var value = textsQuestion[m];
+					if(value[k] == 1){
+						trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
 					}
+				}
 			}
-			console.log(trial.molecule);
 			this.listOfQuestions.push(trial);
 			return;
 		}
@@ -133,21 +120,17 @@ function makeTrial(trial, index, textsQuestion){
 	return;
 }
 
-
 function readQuestion(){
-	var textOfQuestion1;
   var textQuestion = game.cache.getText('questions');
   textsQuestion = textQuestion.split('\n');
-	//var bla = textsQuestion[0].split(/~/);
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
 			console.log("You are going to make a new question now!");
 			makeTrial(new Trial(game), i+1, textsQuestion);
-			}
+		}
 	}
 	console.log(listOfQuestions[0]);
 	console.log(listOfQuestions[1]);
-
 }
 
 function showNextQuestion(){
