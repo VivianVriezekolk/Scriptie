@@ -291,12 +291,6 @@ function button(buttonName, element, X, Y){
   button.scale.setTo(0.4, 0.4);
 }
 
-// object of a question with a particular molecule that has to be made and the mission text
-function question(molecule, text){
-	this.molecule = molecule;
-	this.text = text;
-}
-
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
