@@ -3,7 +3,6 @@ function Trial(game){
   this.currentQuestionText = [];
   this.currentMolecule = [];
   this.molecule = [];
-  this.questions = [];
 
 
   this.readInQuestions = function(){

@@ -49,11 +49,10 @@ function preload() {
 
 function create() {
 // This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
-		var trial = new Trial(game);
-		//trial.readInQuestions();
-
-
 		readQuestion();
+		showQuestion(listOfQuestions[1]);
+		molecule = listOfQuestions[1].molecule;
+
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
 		var positionY = [150, 200, 250];
@@ -62,33 +61,10 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, molecule);
+			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, listOfQuestions[1].molecule);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		doneButton.scale.setTo(0.5, 0.5);
-
-		// make molecule for first question
-		var atoms = [];
-		var atomO = new atom('O', false, 0);
-		var atomH = new atom('H', false, 1);
-		var atomH2 = new atom('H',false, 2);
-
-		// a trial will take care of a loop of new questions
-		atomH.addConnection(atomO);
-
-		atomO.addConnection(atomH);
-		atomO.addConnection(atomH2);
-
-		atomH2.addConnection(atomO);
-
-		atoms.push(atomH);
-		atoms.push(atomO);
-		atoms.push(atomH2);
-		for (var i=0; i< atoms.length; i++){
-			molecule.push(atoms[i]);
-		}
-		var question1 = new question(molecule, 'You need to make water now!');
-		showQuestion(question1);
 }
 
 function makeTrial(trial, index, textsQuestion){
@@ -195,6 +171,7 @@ function checkNeighbours(){
 	for(var k=0; k< molecule.length; k++){
 		console.log(molecule.length);
 		for(var f=0; f< currentMolecule.length; f++){
+			console.log(molecule);
 			if(molecule[k].value == currentMolecule[f].value){
 				molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
@@ -249,7 +226,7 @@ function checkNeighboursOfAtom(a, b){
 // show a particular question on screen.
 function showQuestion(question){
 	var style = { font: "15px Arial", fill: "#000000", align: "center" };
-	var text = game.add.text(game.world.centerX, 550,  question.text, style);
+	var text = game.add.text(game.world.centerX, 550,  question.currentQuestionText, style);
 	text.anchor.set(0.5);
 }
 
@@ -320,11 +297,6 @@ function question(molecule, text){
 	this.text = text;
 }
 
-function trial(){
-
-
-}
-
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
@@ -341,7 +313,7 @@ function snap(currentMolecule){
 		for(var j=0; j< currentMolecule.length; j++){
 			if(i != j){
 				var distance = game.physics.arcade.distanceBetween(currentMolecule[i].sprite, currentMolecule[j].sprite);
-				if(distance < 63){
+				if(distance < 40){
 					currentMolecule[i].addConnection(currentMolecule[j]);
 					currentMolecule[i].sprite.input.enableSnap(32, 32, true, true);
 				}
