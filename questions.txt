@@ -13,3 +13,10 @@ Bindings
 1000
 1000
 1000
+
+Question~You need to make carbon dioxide.
+Molecule~COO
+Bindings
+011
+100
+100

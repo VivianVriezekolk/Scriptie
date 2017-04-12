@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<!--<script type="text/javascript" src= "atom.js"></script>-->
 	<script type="text/javascript" src="trial.js"></script>
+	<script src="questions.txt"></script>
 	<link rel="stylesheet" href="layout.css">
     <style type="text/css">
         body {
@@ -29,6 +30,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: p
 var molecule = [];
 var copyMolecule = [];
 var currentMolecule = [];
+var currentQuestion = [];
 var id = 0;
 var listOfQuestions = [];
 var popup = document.getElementById('wrongAsnwer');
@@ -50,8 +52,9 @@ function preload() {
 function create() {
 // This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
 		readQuestion();
-		showQuestion(listOfQuestions[0]);
-		molecule = listOfQuestions[0].molecule;
+		currentQuestion = decideQuestion(listOfQuestions);
+		showQuestion(currentQuestion);
+		molecule = currentQuestion.molecule;
 
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -61,7 +64,7 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, listOfQuestions[1].molecule);
+			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, currentQuestion.molecule);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		doneButton.scale.setTo(0.5, 0.5);
@@ -89,6 +92,13 @@ function create() {
 		var question1 = new question(molecule, 'You need to make water now!');
 		//listOfQuestions[0].showQuestion();
 		// showQuestion(question1);
+}
+
+function decideQuestion(questions){
+	console.log(questions.length);
+	var x = Math.floor(Math.random() * (questions.length - 0));
+	console.log(x);
+	return questions[x];
 }
 
 function makeTrial(trial, index, textsQuestion){
@@ -122,6 +132,7 @@ function makeTrial(trial, index, textsQuestion){
 
 function readQuestion(){
   var textQuestion = game.cache.getText('questions');
+	console.log(textQuestion);
   textsQuestion = textQuestion.split('\n');
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
@@ -135,6 +146,7 @@ function readQuestion(){
 
 function showNextQuestion(){
 	popup.style.display = 'none';
+	this.currentQuestion = decideQuestion(listOfQuestions);
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.

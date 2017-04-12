@@ -6,7 +6,6 @@ function Trial(game){
 
   this.makeButtons = function(){
 
-    
   }
 
   this.readInQuestions = function(){
