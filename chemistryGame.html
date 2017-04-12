@@ -27,9 +27,7 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
-//var molecule = []
 var copyMolecule = [];
-var currentMolecule = [];
 var currentQuestion = new Trial(game);
 var id = 0;
 var listOfQuestions = [];
@@ -54,8 +52,7 @@ function create() {
 // This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
 		readQuestion();
 		currentQuestion = decideQuestion(listOfQuestions);
-		showQuestion(currentQuestion);
-		//molecule = currentQuestion.molecule;
+		currentQuestion.showQuestion();
 
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -65,34 +62,10 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentMolecule, currentQuestion.molecule);
+			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentQuestion.currentMolecule, currentQuestion.molecule);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		doneButton.scale.setTo(0.5, 0.5);
-
-		// make molecule for first question
-		//var atoms = [];
-		//var atomO = new atom('O', false, 0);
-		//var atomH = new atom('H', false, 1);
-		//var atomH2 = new atom('H',false, 2);
-
-		//	a trial will take care of a loop of new questions
-		//atomH.addConnection(atomO);
-
-		//atomO.addConnection(atomH);
-		//atomO.addConnection(atomH2);
-
-		//atomH2.addConnection(atomO);
-
-		//atoms.push(atomH);
-		//atoms.push(atomO);
-		//atoms.push(atomH2);
-		//for (var i=0; i< atoms.length; i++){
-		//	molecule.push(atoms[i]);
-		//}
-		var question1 = new question(currentQuestion.molecule, 'You need to make water now!');
-		//listOfQuestions[0].showQuestion();
-		// showQuestion(question1);
 }
 
 function decideQuestion(questions){
@@ -148,8 +121,7 @@ function readQuestion(){
 function showNextQuestion(){
 	popup.style.display = 'none';
 	currentQuestion = decideQuestion(listOfQuestions);
-
-	showQuestion(currentQuestion);
+	currentQuestion.showQuestion();
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
@@ -168,32 +140,22 @@ function evaluateAnswer(){
 		currentQuestion.molecule = copyMolecule;
 		console.log(currentQuestion.molecule);
 	}
-	for(var i=0; i<currentMolecule.length; i++){
-		currentMolecule[i].sprite.destroy();
+	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
+		currentQuestion.currentMolecule[i].sprite.destroy();
 	}
-	currentMolecule = [];
-}
-
-// this function prints values of the neighbours of three atoms.
-function printNeighbours2(){
-	console.log(currentMolecule[0].value + 'neighbours are: ');
-	printNeighbours(currentMolecule[0]);
-	console.log(currentMolecule[1].value + 'neighbours are: ');
-	printNeighbours(currentMolecule[1]);
-	console.log(currentMolecule[2].value + 'neighbours are: ');
-	printNeighbours(currentMolecule[2]);
+	currentQuestion.currentMolecule = [];
 }
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
 	copyMolecule = currentQuestion.molecule;
-	if(currentMolecule.length != currentQuestion.molecule.length){
+	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		return false;
 	}
 	console.log('You have the right amount of atoms!');
 	for(var j=0; j< currentQuestion.molecule.length; j++)
-		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentMolecule, currentQuestion.molecule[j].value)){
+		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms');
 				return false;
 		}
@@ -209,22 +171,22 @@ function checkTheAnswer(){
 function checkNeighbours(){
 	for(var k=0; k< currentQuestion.molecule.length; k++){
 		console.log(currentQuestion.molecule.length);
-		for(var f=0; f< currentMolecule.length; f++){
-			console.log(currentMolecule);
+		for(var f=0; f< currentQuestion.currentMolecule.length; f++){
+			console.log(currentQuestion.currentMolecule);
 			console.log("nu gaan we k " + k);
-			console.log(currentMolecule[f].value + " currentMoleculevalue");
+			console.log(currentQuestion.currentMolecule[f].value + " currentQuestion.currentMolecule");
 			console.log(currentQuestion.molecule[k] + " moleculevalue");
-			if(currentQuestion.molecule[k].value == currentMolecule[f].value){
+			if(currentQuestion.molecule[k].value == currentQuestion.currentMolecule[f].value){
 				currentQuestion.molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
 				});
 				for(var v=0; v<currentQuestion.molecule[k].neighbour.length; v++){
 					console.log("neighbour: " + currentQuestion.molecule[k].neighbour[v].value);
 				}
-				currentMolecule[f].neighbour.sort(function(a, b){
+				currentQuestion.currentMolecule[f].neighbour.sort(function(a, b){
 					return a.value < b.value;
 				});
-				if(!equalLists(currentQuestion.molecule[k].neighbour, currentMolecule[f].neighbour)){
+				if(!equalLists(currentQuestion.molecule[k].neighbour, currentQuestion.currentMolecule[f].neighbour)){
 					console.log('Je hebt niet de goede verbindingen');
 					return false;
 				}
@@ -265,16 +227,6 @@ function checkNeighboursOfAtom(a, b){
 				}
 		}
 		return boolean;
-}
-
-// show a particular question on screen.
-function showQuestion(question){
-	if(text != []){
-		game.world.remove(text);
-	}
-	var style = { font: "15px Arial", fill: "#000000", align: "center" };
-	text = game.add.text(game.world.centerX, 550,  question.currentQuestionText, style);
-	text.anchor.set(0.5);
 }
 
 // This function counts the number of atoms with a specific value in a molecule
@@ -324,25 +276,19 @@ function button(buttonName, element, X, Y){
 
   this.actionOnClick = function(){
     console.log("You clicked on me!!");
-    if(countNumberOfAtoms(currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
+    if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
   		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
   		var atomNew = new atom(element, true, id);
   		atomNew.sprite.inputEnabled = true;
   		atomNew.sprite.input.enableDrag();
   		atomNew.sprite.input.enableDrag(true);
   		atomNew.sprite.input.enableSnap(32, 32, false, true);
-  		currentMolecule.push(atomNew);
+  		currentQuestion.currentMolecule.push(atomNew);
 			id = id+1;
   	}
   }
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
   button.scale.setTo(0.4, 0.4);
-}
-
-// object of a question with a particular molecule that has to be made and the mission text
-function question(molecule, text){
-	this.molecule = molecule;
-	this.text = text;
 }
 
 function atomsAreSnapped(atomA, atomB){
@@ -396,8 +342,8 @@ function printNeighbours(a){
 
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	if(currentMolecule != null){
-		snap(currentMolecule);
+	if(currentQuestion.currentMolecule != null){
+		snap(currentQuestion.currentMolecule);
 	}
 }
 
