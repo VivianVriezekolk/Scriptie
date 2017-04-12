@@ -27,12 +27,13 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
-var molecule = [];
+//var molecule = []
 var copyMolecule = [];
 var currentMolecule = [];
-var currentQuestion = [];
+var currentQuestion = new Trial(game);
 var id = 0;
 var listOfQuestions = [];
+var text = [];
 var popup = document.getElementById('wrongAsnwer');
 
 function preload() {
@@ -54,7 +55,7 @@ function create() {
 		readQuestion();
 		currentQuestion = decideQuestion(listOfQuestions);
 		showQuestion(currentQuestion);
-		molecule = currentQuestion.molecule;
+		//molecule = currentQuestion.molecule;
 
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -89,7 +90,7 @@ function create() {
 		//for (var i=0; i< atoms.length; i++){
 		//	molecule.push(atoms[i]);
 		//}
-		var question1 = new question(molecule, 'You need to make water now!');
+		var question1 = new question(currentQuestion.molecule, 'You need to make water now!');
 		//listOfQuestions[0].showQuestion();
 		// showQuestion(question1);
 }
@@ -97,7 +98,7 @@ function create() {
 function decideQuestion(questions){
 	console.log(questions.length);
 	var x = Math.floor(Math.random() * (questions.length - 0));
-	console.log(x);
+	console.log("Dit is nu de nieuwe vraag " + x);
 	return questions[x];
 }
 
@@ -146,7 +147,9 @@ function readQuestion(){
 
 function showNextQuestion(){
 	popup.style.display = 'none';
-	this.currentQuestion = decideQuestion(listOfQuestions);
+	currentQuestion = decideQuestion(listOfQuestions);
+
+	showQuestion(currentQuestion);
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
@@ -162,8 +165,8 @@ function evaluateAnswer(){
 		textAnswer.innerText = 'You did not make the correct molecule';
 		popup.style.display = 'block';
 		console.log('You did not make the correct molecule.');
-		molecule = copyMolecule;
-		console.log(molecule);
+		currentQuestion.molecule = copyMolecule;
+		console.log(currentQuestion.molecule);
 	}
 	for(var i=0; i<currentMolecule.length; i++){
 		currentMolecule[i].sprite.destroy();
@@ -183,14 +186,14 @@ function printNeighbours2(){
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
-	copyMolecule = molecule;
-	if(currentMolecule.length != molecule.length){
+	copyMolecule = currentQuestion.molecule;
+	if(currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		return false;
 	}
 	console.log('You have the right amount of atoms!');
-	for(var j=0; j< molecule.length; j++)
-		if(countNumberOfAtoms(molecule, molecule[j].value) != countNumberOfAtoms(currentMolecule, molecule[j].value)){
+	for(var j=0; j< currentQuestion.molecule.length; j++)
+		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms');
 				return false;
 		}
@@ -204,24 +207,24 @@ function checkTheAnswer(){
 // you need to delete the neighbour if it is right otherwise you could find it again while it is checked already
 // This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
 function checkNeighbours(){
-	for(var k=0; k< molecule.length; k++){
-		console.log(molecule.length);
+	for(var k=0; k< currentQuestion.molecule.length; k++){
+		console.log(currentQuestion.molecule.length);
 		for(var f=0; f< currentMolecule.length; f++){
 			console.log(currentMolecule);
 			console.log("nu gaan we k " + k);
 			console.log(currentMolecule[f].value + " currentMoleculevalue");
-			console.log(molecule[k] + " moleculevalue");
-			if(molecule[k].value == currentMolecule[f].value){
-				molecule[k].neighbour.sort(function(a, b){
+			console.log(currentQuestion.molecule[k] + " moleculevalue");
+			if(currentQuestion.molecule[k].value == currentMolecule[f].value){
+				currentQuestion.molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
 				});
-				for(var v=0; v<molecule[k].neighbour.length; v++){
-					console.log("neighbour: " + molecule[k].neighbour[v].value);
+				for(var v=0; v<currentQuestion.molecule[k].neighbour.length; v++){
+					console.log("neighbour: " + currentQuestion.molecule[k].neighbour[v].value);
 				}
 				currentMolecule[f].neighbour.sort(function(a, b){
 					return a.value < b.value;
 				});
-				if(!equalLists(molecule[k].neighbour, currentMolecule[f].neighbour)){
+				if(!equalLists(currentQuestion.molecule[k].neighbour, currentMolecule[f].neighbour)){
 					console.log('Je hebt niet de goede verbindingen');
 					return false;
 				}
@@ -266,8 +269,11 @@ function checkNeighboursOfAtom(a, b){
 
 // show a particular question on screen.
 function showQuestion(question){
+	if(text != []){
+		game.world.remove(text);
+	}
 	var style = { font: "15px Arial", fill: "#000000", align: "center" };
-	var text = game.add.text(game.world.centerX, 550,  question.currentQuestionText, style);
+	text = game.add.text(game.world.centerX, 550,  question.currentQuestionText, style);
 	text.anchor.set(0.5);
 }
 
@@ -318,8 +324,8 @@ function button(buttonName, element, X, Y){
 
   this.actionOnClick = function(){
     console.log("You clicked on me!!");
-    if(countNumberOfAtoms(currentMolecule, element) != countNumberOfAtoms(molecule, element)){
-  		console.log(countNumberOfAtoms(molecule, element));
+    if(countNumberOfAtoms(currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
+  		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
   		var atomNew = new atom(element, true, id);
   		atomNew.sprite.inputEnabled = true;
   		atomNew.sprite.input.enableDrag();
