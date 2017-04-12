@@ -50,8 +50,8 @@ function preload() {
 function create() {
 // This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
 		readQuestion();
-		showQuestion(listOfQuestions[1]);
-		molecule = listOfQuestions[1].molecule;
+		showQuestion(listOfQuestions[0]);
+		molecule = listOfQuestions[0].molecule;
 
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -65,6 +65,30 @@ function create() {
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		doneButton.scale.setTo(0.5, 0.5);
+
+		// make molecule for first question
+		//var atoms = [];
+		//var atomO = new atom('O', false, 0);
+		//var atomH = new atom('H', false, 1);
+		//var atomH2 = new atom('H',false, 2);
+
+		//	a trial will take care of a loop of new questions
+		//atomH.addConnection(atomO);
+
+		//atomO.addConnection(atomH);
+		//atomO.addConnection(atomH2);
+
+		//atomH2.addConnection(atomO);
+
+		//atoms.push(atomH);
+		//atoms.push(atomO);
+		//atoms.push(atomH2);
+		//for (var i=0; i< atoms.length; i++){
+		//	molecule.push(atoms[i]);
+		//}
+		var question1 = new question(molecule, 'You need to make water now!');
+		//listOfQuestions[0].showQuestion();
+		// showQuestion(question1);
 }
 
 function makeTrial(trial, index, textsQuestion){
@@ -171,7 +195,10 @@ function checkNeighbours(){
 	for(var k=0; k< molecule.length; k++){
 		console.log(molecule.length);
 		for(var f=0; f< currentMolecule.length; f++){
-			console.log(molecule);
+			console.log(currentMolecule);
+			console.log("nu gaan we k " + k);
+			console.log(currentMolecule[f].value + " currentMoleculevalue");
+			console.log(molecule[k] + " moleculevalue");
 			if(molecule[k].value == currentMolecule[f].value){
 				molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
@@ -186,7 +213,9 @@ function checkNeighbours(){
 					console.log('Je hebt niet de goede verbindingen');
 					return false;
 				}
-				molecule.splice(k, 1);
+				console.log(k);
+				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
+			//	molecule.splice(k, 1);
 			}
 		}
 	}
@@ -263,6 +292,7 @@ function atom(value, currentAtom, id) {
 			for(var i=0; i<this.neighbour.length; i++){
 				if(this.neighbour[i].value == lostAtom.value){
 					console.log(lostAtom.value + " is removed from " + this.value);
+					console.log(lostAtom.id + " is removed from " + this.id);
 					this.neighbour.splice(i, 1);
 				}
 			}
@@ -289,6 +319,12 @@ function button(buttonName, element, X, Y){
   }
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
   button.scale.setTo(0.4, 0.4);
+}
+
+// object of a question with a particular molecule that has to be made and the mission text
+function question(molecule, text){
+	this.molecule = molecule;
+	this.text = text;
 }
 
 function atomsAreSnapped(atomA, atomB){
@@ -323,7 +359,7 @@ function undoneSnap(currentMolecule){
 		var atom = currentMolecule[i]
 		for(var j=0; j<currentMolecule[i].neighbour.length; j++){
 				var distance = game.physics.arcade.distanceBetween(currentMolecule[i].sprite, currentMolecule[i].neighbour[j].sprite);
-				if(distance > 63){
+				if(distance > 40){
 					currentMolecule[i].removeConnection(currentMolecule[i].neighbour[j]);
 				}
 		}

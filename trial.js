@@ -4,6 +4,10 @@ function Trial(game){
   this.currentMolecule = [];
   this.molecule = [];
 
+  this.makeButtons = function(){
+
+    
+  }
 
   this.readInQuestions = function(){
 
