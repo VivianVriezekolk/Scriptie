@@ -5,7 +5,7 @@
 	<meta charset="UTF-8" />
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
-	<!--<script type="text/javascript" src= "atom.js"></script>-->
+	<script type="text/javascript" src= "atom.js"></script>
 	<script type="text/javascript" src="trial.js"></script>
 	<script src="questions.txt"></script>
 	<link rel="stylesheet" href="layout.css">
@@ -85,7 +85,7 @@ function makeTrial(trial, index, textsQuestion){
 			var newQuestion = textsQuestion[i].split(/~/);
 			var atomsOfMolecule = newQuestion[1];
 			for(var j=0; j < atomsOfMolecule.length; j++){
-				trial.molecule.push(new atom(atomsOfMolecule[j], false, id+j));
+				trial.molecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
 			}
 		}
 		else if(textsQuestion[i].indexOf("Binding") > -1){
@@ -239,36 +239,6 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	}
 	return count;
 }
-
-// object of an atom with a certain value and neighbours.
-function atom(value, currentAtom, id) {
-    this.value = value
-		this.neighbour = [];
-		this.id = id;
-		if(currentAtom){
-			this.sprite = game.add.sprite(5, 100, value);
-		}
-
-		// this function adds a connection between atoms.
-		this.addConnection = function(snappedAtom){
-				if(!atomsAreSnapped(this, snappedAtom)){
-				//	console.log(this.value + " is connected to " + snappedAtom.value);
-					this.neighbour.push(snappedAtom);
-				}
-			}
-
-		// this function removes a connection between atoms.
-		this.removeConnection = function(lostAtom){
-			for(var i=0; i<this.neighbour.length; i++){
-				if(this.neighbour[i].value == lostAtom.value){
-					console.log(lostAtom.value + " is removed from " + this.value);
-					console.log(lostAtom.id + " is removed from " + this.id);
-					this.neighbour.splice(i, 1);
-				}
-			}
-		}
-}
-
 //Object button
 function button(buttonName, element, X, Y){
   this.element = element;
@@ -278,7 +248,7 @@ function button(buttonName, element, X, Y){
     console.log("You clicked on me!!");
     if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
   		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
-  		var atomNew = new atom(element, true, id);
+  		var atomNew = new Atom(element, true, id, game);
   		atomNew.sprite.inputEnabled = true;
   		atomNew.sprite.input.enableDrag();
   		atomNew.sprite.input.enableDrag(true);

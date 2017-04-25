@@ -1,4 +1,4 @@
-function atom(value, currentAtom, id) {
+function Atom(value, currentAtom, id, game) {
     this.value = value
 		this.neighbour = [];
 		this.id = id;
@@ -9,7 +9,7 @@ function atom(value, currentAtom, id) {
 		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
 				if(!atomsAreSnapped(this, snappedAtom)){
-					console.log(this.value + " is connected to " + snappedAtom.value);
+				//	console.log(this.value + " is connected to " + snappedAtom.value);
 					this.neighbour.push(snappedAtom);
 				}
 			}
@@ -19,6 +19,7 @@ function atom(value, currentAtom, id) {
 			for(var i=0; i<this.neighbour.length; i++){
 				if(this.neighbour[i].value == lostAtom.value){
 					console.log(lostAtom.value + " is removed from " + this.value);
+					console.log(lostAtom.id + " is removed from " + this.id);
 					this.neighbour.splice(i, 1);
 				}
 			}
