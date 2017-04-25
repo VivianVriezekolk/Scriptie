@@ -66,13 +66,12 @@ function create() {
 			var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i], game, currentQuestion.currentMolecule, currentQuestion.molecule);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
-		var deleteButton = game.add.button(10, 400, 'delete', deleteAtom, this);
+		var deleteButton = game.add.image(10, 400, 'delete');
 		deleteButton.scale.setTo(0.75, 0.75);
 		doneButton.scale.setTo(0.5, 0.5);
 }
 
 function deleteAtom(){
-
 	console.log("halloo");
 	console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 350 && this.sprite.y < 430){
