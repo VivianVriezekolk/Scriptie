@@ -5,18 +5,12 @@ function Atom(value, currentAtom, id, game) {
     this.game = game;
 		if(currentAtom){
 			this.sprite = game.add.sprite(5, 100, value);
-      this.sprite.inputEnabled = true;
-  		this.sprite.input.enableDrag();
-  		this.sprite.input.enableDrag(true);
-  		this.sprite.input.enableSnap(32, 32, false, true);
-      this.sprite.events.onDragStop.add(deleteAtom, this);
-
 		}
 
 		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
 				if(!atomsAreSnapped(this, snappedAtom)){
-					  this.neighbour.push(snappedAtom);
+					this.neighbour.push(snappedAtom);
 				}
 			}
 

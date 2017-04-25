@@ -9,7 +9,6 @@ function Trial(game){
 
   }
 
-
 // this does not work but I do not understand why not.
   this.evaluateAnswer = function(){
   	if(checkTheAnswer()){

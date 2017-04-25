@@ -38,6 +38,7 @@ function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
 		game.load.image('OButton', 'images/OAtoomButton.png');
 		game.load.image('HButton', 'images/HAtoom.png');
+		game.load.image('delete', 'images/delete.png');
 		game.load.image('C', 'images/CAtom.png');
 		game.load.image('H', 'images/HAtom.png');
 		game.load.image('O', 'images/OAtom.png');
@@ -62,10 +63,35 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 10, positionY[i], game, currentQuestion.currentMolecule, currentQuestion.molecule);
+			var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i], game, currentQuestion.currentMolecule, currentQuestion.molecule);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
+		var deleteButton = game.add.button(10, 400, 'delete', deleteAtom, this);
+		deleteButton.scale.setTo(0.75, 0.75);
 		doneButton.scale.setTo(0.5, 0.5);
+}
+
+function deleteAtom(){
+
+	console.log("halloo");
+	console.log(this.sprite.x + " " + this.sprite.y);
+	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 350 && this.sprite.y < 430){
+		console.log(this.sprite.x + " " + this.sprite.y);
+		// je moet ook het atom verwijderen uit currentMolecule
+		this.sprite.destroy();
+		removeAtom(this);
+
+		}
+}
+
+function removeAtom(atom){
+	for(var i=0; i < currentQuestion.currentMolecule.length; i++){
+		if(currentQuestion.currentMolecule[i].id == atom.id){
+			console.log("Dit atoom is verwijderd " + atom.value);
+			currentQuestion.currentMolecule.splice(i, 1);
+		}
+	}
+
 }
 
 function decideQuestion(questions){
@@ -246,16 +272,12 @@ function button(buttonName, element, X, Y){
 
   this.actionOnClick = function(){
     console.log("You clicked on me!!");
-    if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
+  //  if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
   		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
   		var atomNew = new Atom(element, true, id, game);
-  		atomNew.sprite.inputEnabled = true;
-  		atomNew.sprite.input.enableDrag();
-  		atomNew.sprite.input.enableDrag(true);
-  		atomNew.sprite.input.enableSnap(32, 32, false, true);
   		currentQuestion.currentMolecule.push(atomNew);
 			id = id+1;
-  	}
+  	//}
   }
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
   button.scale.setTo(0.4, 0.4);
