@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" />
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
+	<script type="text/javascript" src="button.js"></script>
 	<script type="text/javascript" src= "atom.js"></script>
 	<script type="text/javascript" src="trial.js"></script>
 	<script src="questions.txt"></script>
@@ -18,11 +19,11 @@
 <body>
 	<div id="wrongAsnwer" class = "popup" >
 		<div class = "popup-content">
-	<p id = "textAnswer"></p>
-	<!--<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">-->
-	<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
-</div	>
-	</div>
+			<p id = "textAnswer"></p>
+			<!--<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">-->
+			<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
+		</div	>
+</div>
 
 <script type="text/javascript">
 
@@ -50,8 +51,8 @@ function preload() {
 }
 
 function create() {
-// This gives an exception but I do not understand why. It says trial is not a constructor, but I made a file with the class trial.
 		readQuestion();
+		console.log(game.world.centerX);
 		currentQuestion = decideQuestion(listOfQuestions);
 		currentQuestion.showQuestion();
 
@@ -63,7 +64,7 @@ function create() {
 		// Make buttons
 		for(var i=0; i< atomValues.length; i++){
 			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i], game, currentQuestion.currentMolecule, currentQuestion.molecule);
+			var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		var deleteButton = game.add.image(10, 400, 'delete');
@@ -79,7 +80,6 @@ function deleteAtom(){
 		// je moet ook het atom verwijderen uit currentMolecule
 		this.sprite.destroy();
 		removeAtom(this);
-
 		}
 }
 
@@ -90,13 +90,15 @@ function removeAtom(atom){
 			currentQuestion.currentMolecule.splice(i, 1);
 		}
 	}
-
 }
 
 function decideQuestion(questions){
 	console.log(questions.length);
 	var x = Math.floor(Math.random() * (questions.length - 0));
-	console.log("Dit is nu de nieuwe vraag " + x);
+	while(questions[x].isAsked == true){
+		x = Math.floor(Math.random() * (questions.length - 0));
+	}
+	questions[x].isAsked = true;
 	return questions[x];
 }
 
