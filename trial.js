@@ -52,7 +52,7 @@ function Trial(game){
       game.world.remove(text);
     }
     var style = { font: "15px Arial", fill: "#000000", align: "center" };
-    text = game.add.text(game.world.centerX, 550, "Mission " + this.currentQuestionText, style);
+    text = game.add.text(game.world.centerX, 550, "Mission: " + this.currentQuestionText, style);
     text.anchor.set(0.5);
   };
 }

@@ -23,7 +23,11 @@
 			<!--<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">-->
 			<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
 		</div	>
-</div>
+	</div>
+	<div id= "gamedone" class = "popup">
+		<p id = "finishText"></p>
+		<input type= "image" src = "images/finish" id= "Okbutton" onclick ="newGame()">
+	</div>
 
 <script type="text/javascript">
 
@@ -34,6 +38,7 @@ var id = 0;
 var listOfQuestions = [];
 var text = [];
 var popup = document.getElementById('wrongAsnwer');
+var finish = document.getElementById('gamedone');
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -46,6 +51,7 @@ function preload() {
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
+		game.load.image('finish', 'images/finish.jpg');
 		game.load.text('questions', 'questions.txt');
 		game.load.text('testt', 'test.txt');
 }
@@ -54,7 +60,13 @@ function create() {
 		readQuestion();
 		console.log(game.world.centerX);
 		currentQuestion = decideQuestion(listOfQuestions);
-		currentQuestion.showQuestion();
+
+		if(currentQuestion != null){
+			currentQuestion.showQuestion();
+		}
+		else{
+			console.log("Klaar");
+		}
 
 		var atomValues = ['H', 'C', 'O'];
 		var buttons = ['HButton', 'CButton', 'OButton'];
@@ -93,13 +105,27 @@ function removeAtom(atom){
 }
 
 function decideQuestion(questions){
-	console.log(questions.length);
-	var x = Math.floor(Math.random() * (questions.length - 0));
-	while(questions[x].isAsked == true){
-		x = Math.floor(Math.random() * (questions.length - 0));
+	if(!allQuestionsAreAsked(questions)){
+		var x = Math.floor(Math.random() * (questions.length - 0));
+		while(questions[x].isAsked == true){
+			x = Math.floor(Math.random() * (questions.length - 0));
+		}
+		questions[x].isAsked = true;
+		return questions[x];
 	}
-	questions[x].isAsked = true;
-	return questions[x];
+	else{
+		console.log("Jeeejh je bent klaar!");
+	}
+	return null;
+}
+
+function allQuestionsAreAsked(questions){
+	for(var i=0; i<questions.length; i++){
+		if(questions[i].isAsked == false){
+			return false;
+		}
+	}
+	return true;
 }
 
 function makeTrial(trial, index, textsQuestion){
@@ -145,10 +171,19 @@ function readQuestion(){
 	console.log(listOfQuestions[1]);
 }
 
+function newGame(){
+
+}
+
 function showNextQuestion(){
 	popup.style.display = 'none';
 	currentQuestion = decideQuestion(listOfQuestions);
+	if(currentQuestion != null){
 	currentQuestion.showQuestion();
+	}
+	else{
+		return;
+	}
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
@@ -335,8 +370,10 @@ function printNeighbours(a){
 
 // This update function checks whether two molecules are close to each other and then snaps.
 function update() {
-	if(currentQuestion.currentMolecule != null){
-		snap(currentQuestion.currentMolecule);
+	if(currentQuestion != null){
+		if(currentQuestion.currentMolecule != null){
+			snap(currentQuestion.currentMolecule);
+		}
 	}
 }
 
