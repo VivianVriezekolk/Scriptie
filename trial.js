@@ -52,10 +52,15 @@ function Trial(game){
     if(text != undefined){
       game.world.remove(text);
     }
-    var style = { font: "15px Georgia", fill: "#000000", align: "center" };
+    var style = { font: "15px Arial", fill: "#000000", align: "center" };
+    console.log(this.currentQuestionText);
     var content = ["Mission: " + this.currentQuestionText];
+    console.log(content);
     text = game.add.text(game.world.centerX, 550, ' ', style); //550
     text.anchor.set(0.5);
+
+    delayText.wordIndex = 0;
+    delayText.lineIndex = 0;
     delayText.content = content;
     delayText.nextLine();
   };

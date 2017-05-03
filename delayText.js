@@ -9,12 +9,9 @@ function DelayText(game){
 
   this.nextLine = function() {
 
-    if (this.lineIndex === this.content.length)
-    {
-        //  We're finished
-        return;
+    if (this.lineIndex === this.content.length){
+      return;
     }
-
     //  Split the current line on spaces, so one word per array element
     this.line = this.content[this.lineIndex].split(' ');
     console.log(this.line);
@@ -28,14 +25,10 @@ function DelayText(game){
 }
 
 this.nextWord = function() {
-
     //  Add the next word onto the text string, followed by a space
     text.text = text.text.concat(this.line[this.wordIndex] + ' ');
-    console.log(this.line[this.wordIndex]);
-
     //  Advance the word index to the next word in the line
     this.wordIndex++;
-
     //  Last word?
     if (this.wordIndex === this.line.length)
     {
@@ -45,8 +38,6 @@ this.nextWord = function() {
         //  Get the next line after the lineDelay amount of ms has elapsed
         game.time.events.add(this.lineDelay, this.nextLine, this);
     }
-
 }
-
 
 }
