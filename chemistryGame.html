@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="button.js"></script>
 	<script type="text/javascript" src= "atom.js"></script>
 	<script type="text/javascript" src="trial.js"></script>
+	<script type="text/javascript" src="delayText.js"></script>
 	<script src="questions.txt"></script>
 	<link rel="stylesheet" href="layout.css">
     <style type="text/css">
@@ -25,8 +26,11 @@
 		</div	>
 	</div>
 	<div id= "gamedone" class = "popup">
-		<p id = "finishText"></p>
-		<input type= "image" src = "images/finish" id= "Okbutton" onclick ="newGame()">
+		<div class = "popup-content">
+			<p id = "finishText"></p>
+			<input type= "image" src = "images/finish.png" id= "Okbutton" onclick ="finishGame()">
+			<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()">
+		</div>
 	</div>
 
 <script type="text/javascript">
@@ -44,7 +48,7 @@ function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
 		game.load.image('OButton', 'images/OAtoomButton.png');
 		game.load.image('HButton', 'images/HAtoom.png');
-		game.load.image('delete', 'images/delete.png');
+		game.load.image('delete', 'images/deleteP.png');
 		game.load.image('C', 'images/CAtom.png');
 		game.load.image('H', 'images/HAtom.png');
 		game.load.image('O', 'images/OAtom.png');
@@ -59,13 +63,14 @@ function preload() {
 function create() {
 		readQuestion();
 		console.log(game.world.centerX);
-		currentQuestion = decideQuestion(listOfQuestions);
+		currentQuestion = decideQuestion();
 
 		if(currentQuestion != null){
 			currentQuestion.showQuestion();
 		}
 		else{
 			console.log("Klaar");
+
 		}
 
 		var atomValues = ['H', 'C', 'O'];
@@ -80,12 +85,11 @@ function create() {
 		}
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		var deleteButton = game.add.image(10, 400, 'delete');
-		deleteButton.scale.setTo(0.75, 0.75);
+		deleteButton.scale.setTo(0.2, 0.2);
 		doneButton.scale.setTo(0.5, 0.5);
 }
 
 function deleteAtom(){
-	console.log("halloo");
 	console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 350 && this.sprite.y < 430){
 		console.log(this.sprite.x + " " + this.sprite.y);
@@ -104,24 +108,31 @@ function removeAtom(atom){
 	}
 }
 
-function decideQuestion(questions){
-	if(!allQuestionsAreAsked(questions)){
-		var x = Math.floor(Math.random() * (questions.length - 0));
-		while(questions[x].isAsked == true){
-			x = Math.floor(Math.random() * (questions.length - 0));
+function decideQuestion(){
+		var x = Math.floor(Math.random() * (listOfQuestions.length - 0));
+		while(listOfQuestions[x].isAsked == true){
+			x = Math.floor(Math.random() * (listOfQuestions.length - 0));
 		}
-		questions[x].isAsked = true;
-		return questions[x];
+		listOfQuestions[x].isAsked = true;
+		return listOfQuestions[x];
 	}
-	else{
-		console.log("Jeeejh je bent klaar!");
+
+function restartGame(){
+	finish.style.display = 'none';
+	for(var i=0; i < listOfQuestions.length; i++){
+		listOfQuestions[i].isAsked = false;
 	}
-	return null;
+	showNextQuestion();
 }
 
-function allQuestionsAreAsked(questions){
-	for(var i=0; i<questions.length; i++){
-		if(questions[i].isAsked == false){
+function finishGame(){
+	finish.style.display = 'none';
+	console.log("klaar!");
+}
+
+function allQuestionsAreAsked(){
+	for(var i=0; i<listOfQuestions.length; i++){
+		if(listOfQuestions[i].isAsked == false){
 			return false;
 		}
 	}
@@ -171,36 +182,46 @@ function readQuestion(){
 	console.log(listOfQuestions[1]);
 }
 
-function newGame(){
-
-}
-
 function showNextQuestion(){
 	popup.style.display = 'none';
 	currentQuestion = decideQuestion(listOfQuestions);
 	if(currentQuestion != null){
-	currentQuestion.showQuestion();
+		currentQuestion.showQuestion();
 	}
 	else{
 		return;
 	}
 }
 
+function showLastPopup(text){
+	var gameDone = document.getElementById('finishText');
+	gameDone.innerText = text;
+	finish.style.display = 'block';
+}
+
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
 // After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
 function evaluateAnswer(){
 	if(checkTheAnswer()){
-		var textAnswer = document.getElementById('textAnswer');
-		textAnswer.innerText = 'Great job!';
-		popup.style.display = 'block';
+		if(!allQuestionsAreAsked()){
+			var textAnswer = document.getElementById('textAnswer');
+			textAnswer.innerText = 'Great job!';
+			popup.style.display = 'block';
+		}
+		else{
+			showLastPopup('Great Job!');
+		}
 	}
 	else{
-		var textAnswer = document.getElementById('textAnswer');
-		textAnswer.innerText = 'You did not make the correct molecule';
-		popup.style.display = 'block';
-		console.log('You did not make the correct molecule.');
-		currentQuestion.molecule = copyMolecule;
-		console.log(currentQuestion.molecule);
+		if(!allQuestionsAreAsked()){
+			var textAnswer = document.getElementById('textAnswer');
+			textAnswer.innerText = 'Your answer is incorrect.';
+			popup.style.display = 'block';
+			currentQuestion.molecule = copyMolecule;
+		}
+		else{
+			showLastPopup('Your answer is incorrect.');
+		}
 	}
 	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
 		currentQuestion.currentMolecule[i].sprite.destroy();
@@ -215,7 +236,6 @@ function checkTheAnswer(){
 		console.log('You do not have the right amount of atoms!');
 		return false;
 	}
-	console.log('You have the right amount of atoms!');
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms');
@@ -232,12 +252,7 @@ function checkTheAnswer(){
 // This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
 function checkNeighbours(){
 	for(var k=0; k< currentQuestion.molecule.length; k++){
-		console.log(currentQuestion.molecule.length);
 		for(var f=0; f< currentQuestion.currentMolecule.length; f++){
-			console.log(currentQuestion.currentMolecule);
-			console.log("nu gaan we k " + k);
-			console.log(currentQuestion.currentMolecule[f].value + " currentQuestion.currentMolecule");
-			console.log(currentQuestion.molecule[k] + " moleculevalue");
 			if(currentQuestion.molecule[k].value == currentQuestion.currentMolecule[f].value){
 				currentQuestion.molecule[k].neighbour.sort(function(a, b){
 						return a.value < b.value;
