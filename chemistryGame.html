@@ -144,7 +144,7 @@ function makeTrial(trial, index, textsQuestion){
 		if(textsQuestion[i].indexOf('Question') > -1){
 			var newQuestion = textsQuestion[i].split(/~/);
 			trial.currentQuestionText = newQuestion[1];
-			}
+		}
 		else if(textsQuestion[i].indexOf('Mole') > -1){
 			var newQuestion = textsQuestion[i].split(/~/);
 			var atomsOfMolecule = newQuestion[1];

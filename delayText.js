@@ -30,12 +30,8 @@ this.nextWord = function() {
     //  Advance the word index to the next word in the line
     this.wordIndex++;
     //  Last word?
-    if (this.wordIndex === this.line.length)
-    {
-        //  Add a carriage return
-        text.text = text.text.concat("\n");
-
-        //  Get the next line after the lineDelay amount of ms has elapsed
+    if (this.wordIndex === this.line.length){
+    //  Get the next line after the lineDelay amount of ms has elapsed
         game.time.events.add(this.lineDelay, this.nextLine, this);
     }
 }
