@@ -27,6 +27,7 @@
 	<div id= "gamedone" class = "popup">
 		<div class = "popup-content">
 			<p id = "finishText"></p>
+			<p id = "score"></p>
 			<input type= "image" src = "images/finish.png" id= "Okbutton" onclick ="finishGame()">
 			<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()">
 		</div>
@@ -121,6 +122,7 @@ function restartGame(){
 	finish.style.display = 'none';
 	for(var i=0; i < listOfQuestions.length; i++){
 		listOfQuestions[i].isAsked = false;
+		listOfQuestions[i].score = 0;
 	}
 	showNextQuestion();
 }
@@ -133,17 +135,15 @@ function finishGame(){
 		currentQuestion.finishGame();
 	}
 	gameIsFinished = true;
-	showScore();
 	console.log("klaar!");
 }
 
-function showScore(){
+function getScore(){
 	var sum = 0;
 	for(var i=0; i < listOfQuestions.length; i++){
 			sum += listOfQuestions[i].score;
 	}
-
-	console.log(sum);
+	return sum/listOfQuestions.length * 10;
 }
 
 function allQuestionsAreAsked(){
@@ -209,7 +209,9 @@ function showNextQuestion(){
 
 function showLastPopup(text){
 	var gameDone = document.getElementById('finishText');
+	var score = document.getElementById('score');
 	gameDone.innerText = text;
+	score.innerText = "Your score is " + getScore().toFixed(2);
 	finish.style.display = 'block';
 }
 
