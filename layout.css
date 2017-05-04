@@ -2,8 +2,8 @@
   display : none;
   position: fixed;
   z-index: 1;
-  top: 20px;
-  left: 200px;
+  top: 200px;
+  left: 250px;
   overflow: auto;
   width: 800px;
   heighth: 600px;
@@ -12,11 +12,12 @@
 
 .popup-content{
   background-color: #FFFFFF;
-  width: 400px;
+  width: 300px;
   heighth: 300px;
   border: 1px solid #888;
+  border-color: #FFFFFF;
   text-align: center;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 .mission{

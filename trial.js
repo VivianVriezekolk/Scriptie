@@ -6,8 +6,10 @@ function Trial(game){
   this.molecule = [];
   this.text = [];
   this.isAsked = false;
+  this.score = 0;
+  this.difficulty = 0;
 
-// this does not work but I do not understand why not.
+  // this does not work but I do not understand why not.
   function checkTheAnswer(){
     game.copyMolecule = this.molecule;
     console.log(this.currentMolecule);
@@ -48,11 +50,18 @@ function Trial(game){
   	currentMolecule = [];
   };
 
+  this.finishGame = function(){
+    this.currentQuestionText = [];
+    this.currentMolecule = [];
+    this.molecule = [];
+    this.text = [];
+  }
+
   this.showQuestion = function(){
     if(text != undefined){
       game.world.remove(text);
     }
-    var style = { font: "15px Arial", fill: "#000000", align: "center" };
+    var style = { font: 'bold 15px Times New Roman', fill: "#000000", align: "center" };
     console.log(this.currentQuestionText);
     var content = ["Mission: " + this.currentQuestionText];
     console.log(content);

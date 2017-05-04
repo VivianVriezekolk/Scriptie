@@ -8,7 +8,6 @@ function DelayText(game){
   this.lineDelay = 400;
 
   this.nextLine = function() {
-
     if (this.lineIndex === this.content.length){
       return;
     }
@@ -30,10 +29,8 @@ this.nextWord = function() {
     //  Advance the word index to the next word in the line
     this.wordIndex++;
     //  Last word?
-    if (this.wordIndex === this.line.length){
-    //  Get the next line after the lineDelay amount of ms has elapsed
+    if (this.wordIndex === this.line.length){  //  Get the next line after the lineDelay amount of ms has elapsed
         game.time.events.add(this.lineDelay, this.nextLine, this);
     }
 }
-
 }
