@@ -1,6 +1,7 @@
 
 Question~You need to make water.
 Molecule~HOH
+Difficulty~0
 Bindings
 010
 101
@@ -8,6 +9,7 @@ Bindings
 
 Question~You need to make methane.
 Molecule~CHHH
+Difficulty~2
 Bindings
 0111
 1000
@@ -16,6 +18,7 @@ Bindings
 
 Question~You need to make carbon dioxide.
 Molecule~COO
+Difficulty~1
 Bindings
 011
 100
