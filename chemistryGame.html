@@ -99,29 +99,34 @@ function create() {
 		doneButton.scale.setTo(0.5, 0.5);
 }
 
-function move(amount, width) {
+function move(amount) {
+		this.amount = amount;
     var elem = document.getElementById("myBar");
-		var currentWidth = width;
-    var id = setInterval(frame, 10);
+		this.currentWidth = this.width;
+    var id = setInterval(frame, 20);
 
     function frame() {
-			console.log(amount);
-			if(amount < 0){
-				if (this.width >= currentWidth + amount) {
+			this.amount = Math.floor(this.amount);
+			console.log(this.currentWidth + this.amount);
+			if(this.amount < 0){
+				if (this.width >= this.currentWidth + this.amount) {
+					if(this.width >= 1){
 						this.width--;
 						console.log(this.width + '%');
 						elem.style.width = this.width + '%';
-      	}
+      		}
+				}
 			}
 			else{
-				if (this.width <= currentWidth + amount){
+				if (this.width <= this.currentWidth + this.amount){
         	this.width++;
 					console.log(this.width + '%');
 					elem.style.width = this.width + '%';
       	}
     	}
 		}
-		return width;
+		console.log(this.width);
+		return this.width;
 }
 
 function deleteAtom(){
@@ -206,7 +211,7 @@ function restartGame(){
 	if(!randomStrategy){
 		currentQuestion.finishGame();
 	}
-	width = 0;
+	this.width = 1;
 	showNextQuestion();
 }
 
@@ -314,12 +319,14 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				width = move((1/listOfQuestions.length)*100, width);
+				console.log((1/listOfQuestions.length)*100);
+				this.width = move((1/listOfQuestions.length)*100);
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				width = move((1/listOfQuestions.length)*100, width);
+				console.log((1/listOfQuestions.length)*100);
+				this.width = move((1/listOfQuestions.length)*100);
 			}
 		}
 		else{
@@ -347,20 +354,23 @@ function checkTheAnswer(){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
 		console.log((-1/listOfQuestions.length)*100);
-		width = move((-1/listOfQuestions.length)*100, width);
+		this.width = move((-1/listOfQuestions.length)*100);
 		return false;
 	}
 	currentQuestion.score = 0.50;
-	width = move((0.5/listOfQuestions.length)*100, width);
+	this.width = move((0.5/listOfQuestions.length)*100, width);
+	console.log((0.5/listOfQuestions.length)*100);
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
+				console.log((-1/listOfQuestions.length)*100);
 				feedbackText = 'You do not have the right types of atoms';
-				width = move((-1/listOfQuestions.length)*100, width);
+				this.width = move((-1/listOfQuestions.length)*100);
 				return false;
 		}
 	currentQuestion.score = 0.75;
-	width = move((0.75/listOfQuestions.length)*100, width);
+	this.width = move((0.75/listOfQuestions.length)*100);
+	console.log((0.75/listOfQuestions.length)*100);
 	return checkNeighbours();
 }
 
