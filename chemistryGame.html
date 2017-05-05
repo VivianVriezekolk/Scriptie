@@ -33,6 +33,11 @@
 			<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()">
 		</div>
 	</div>
+	<div class = "progress">
+	<div id="myProgress">
+  	<div id="myBar"></div>
+	</div>
+</div>
 
 <script type="text/javascript">
 
@@ -46,7 +51,8 @@ var feedbackText = [];
 var popup = document.getElementById('wrongAsnwer');
 var finish = document.getElementById('gamedone');
 var gameIsFinished = false;
-var randomStrategy = false;
+var randomStrategy = true;
+var width = 1;
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -87,15 +93,40 @@ function create() {
 		}
 
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
-		var deleteButton = game.add.image(10, 400, 'delete');
+		var deleteButton = game.add.image(10, 500, 'delete');
 
 		deleteButton.scale.setTo(0.2, 0.2);
 		doneButton.scale.setTo(0.5, 0.5);
 }
 
+function move(amount, width) {
+    var elem = document.getElementById("myBar");
+		var currentWidth = width;
+    var id = setInterval(frame, 10);
+
+    function frame() {
+			console.log(amount);
+			if(amount < 0){
+				if (this.width >= currentWidth + amount) {
+						this.width--;
+						console.log(this.width + '%');
+						elem.style.width = this.width + '%';
+      	}
+			}
+			else{
+				if (this.width <= currentWidth + amount){
+        	this.width++;
+					console.log(this.width + '%');
+					elem.style.width = this.width + '%';
+      	}
+    	}
+		}
+		return width;
+}
+
 function deleteAtom(){
 	console.log(this.sprite.x + " " + this.sprite.y);
-	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 350 && this.sprite.y < 430){
+	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 450 && this.sprite.y < 530){
 		console.log(this.sprite.x + " " + this.sprite.y);
 		// je moet ook het atom verwijderen uit currentMolecule
 		this.sprite.destroy();
@@ -172,7 +203,10 @@ function restartGame(){
 		listOfQuestions[i].isAsked = false;
 		listOfQuestions[i].score = 0;
 	}
-	currentQuestion.finishGame();
+	if(!randomStrategy){
+		currentQuestion.finishGame();
+	}
+	width = 0;
 	showNextQuestion();
 }
 
@@ -280,10 +314,12 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
+				width = move((1/listOfQuestions.length)*100, width);
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
+				width = move((1/listOfQuestions.length)*100, width);
 			}
 		}
 		else{
@@ -310,16 +346,21 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
+		console.log((-1/listOfQuestions.length)*100);
+		width = move((-1/listOfQuestions.length)*100, width);
 		return false;
 	}
 	currentQuestion.score = 0.50;
+	width = move((0.5/listOfQuestions.length)*100, width);
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
 				feedbackText = 'You do not have the right types of atoms';
+				width = move((-1/listOfQuestions.length)*100, width);
 				return false;
 		}
 	currentQuestion.score = 0.75;
+	width = move((0.75/listOfQuestions.length)*100, width);
 	return checkNeighbours();
 }
 

@@ -2,6 +2,8 @@ function Trial(game){
   var delayText = new DelayText(game);
   this.game = game;
   this.currentQuestionText = [];
+  this.rightAnswerText = [];
+  this.wrongAnswerText = [];
   this.currentMolecule = [];
   this.molecule = [];
   this.text = [];
@@ -61,12 +63,11 @@ function Trial(game){
     if(text != undefined){
       game.world.remove(text);
     }
-    var style = { font: 'bold 15px Times New Roman', fill: "#000000", align: "center" };
+    var style = { font: '14px Arial', fill: "#000000", align: "center" };
     console.log(this.currentQuestionText);
     var content = ["Mission: " + this.currentQuestionText];
     console.log(content);
-    text = game.add.text(game.world.centerX, 550, ' ', style); //550
-    text.anchor.set(0.5);
+    text = game.add.text(game.world.centerX-160, 550, ' ', style); //550
 
     delayText.wordIndex = 0;
     delayText.lineIndex = 0;
