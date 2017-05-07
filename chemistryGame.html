@@ -52,7 +52,7 @@ var popup = document.getElementById('wrongAsnwer');
 var finish = document.getElementById('gamedone');
 var gameIsFinished = false;
 var randomStrategy = true;
-var width = 1;
+var height = 1;
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -102,31 +102,31 @@ function create() {
 function move(amount) {
 		this.amount = amount;
     var elem = document.getElementById("myBar");
-		this.currentWidth = this.width;
+		this.currentHeigth = this.height;
     var id = setInterval(frame, 20);
 
     function frame() {
 			this.amount = Math.floor(this.amount);
-			console.log(this.currentWidth + this.amount);
+			console.log(this.currentHeigth + this.amount);
 			if(this.amount < 0){
-				if (this.width >= this.currentWidth + this.amount) {
-					if(this.width >= 1){
-						this.width--;
-						console.log(this.width + '%');
-						elem.style.width = this.width + '%';
+				if (this.height >= this.currentHeigth + this.amount) {
+					if(this.height >= 1){
+						this.height--;
+						console.log(this.height + '%');
+						elem.style.height = this.height + '%';
       		}
 				}
 			}
 			else{
-				if (this.width <= this.currentWidth + this.amount){
-        	this.width++;
-					console.log(this.width + '%');
-					elem.style.width = this.width + '%';
+				if (this.height <= this.currentHeigth + this.amount){
+        	this.height++;
+					console.log(this.height + '%');
+					elem.style.height = this.height + '%';
       	}
     	}
 		}
-		console.log(this.width);
-		return this.width;
+		console.log(this.height);
+		return this.height;
 }
 
 function deleteAtom(){
@@ -211,7 +211,8 @@ function restartGame(){
 	if(!randomStrategy){
 		currentQuestion.finishGame();
 	}
-	this.width = 1;
+	move(-this.height);
+	
 	showNextQuestion();
 }
 
@@ -320,13 +321,13 @@ function evaluateAnswer(){
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
 				console.log((1/listOfQuestions.length)*100);
-				this.width = move((1/listOfQuestions.length)*100);
+				this.height = move((1/listOfQuestions.length)*100);
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
 				console.log((1/listOfQuestions.length)*100);
-				this.width = move((1/listOfQuestions.length)*100);
+				this.height = move((1/listOfQuestions.length)*100);
 			}
 		}
 		else{
@@ -354,22 +355,22 @@ function checkTheAnswer(){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
 		console.log((-1/listOfQuestions.length)*100);
-		this.width = move((-1/listOfQuestions.length)*100);
+		this.height = move((-1/listOfQuestions.length)*100);
 		return false;
 	}
 	currentQuestion.score = 0.50;
-	this.width = move((0.5/listOfQuestions.length)*100, width);
+	this.height = move((0.5/listOfQuestions.length)*100);
 	console.log((0.5/listOfQuestions.length)*100);
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
 				console.log((-1/listOfQuestions.length)*100);
 				feedbackText = 'You do not have the right types of atoms';
-				this.width = move((-1/listOfQuestions.length)*100);
+				this.height = move((-1/listOfQuestions.length)*100);
 				return false;
 		}
 	currentQuestion.score = 0.75;
-	this.width = move((0.75/listOfQuestions.length)*100);
+	this.height = move((0.75/listOfQuestions.length)*100);
 	console.log((0.75/listOfQuestions.length)*100);
 	return checkNeighbours();
 }

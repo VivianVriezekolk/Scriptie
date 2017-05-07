@@ -35,16 +35,19 @@
 }
 
 .progress{
-  width: 800px;
-  heighth: 600px;
+  height: 1px;
 }
 
 #myProgress {
-    width: 100%;
+    top: 80px;
+    left: 750px;
+    position: fixed;
+    height: 60%;
+    width: 30px;
     background-color: grey;
 }
 #myBar {
-    width: 1%;
-    height: 30px;
+    height: 1%;
+    width: 30px;
     background-color: green;
 }
