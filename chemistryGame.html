@@ -140,6 +140,7 @@ function moveTo(amount){
 	console.log(amount);
 	this.amount = amount;
 	elem.style.height = amount + '%';
+	this.height = amount;
 }
 
 function deleteAtom(){
@@ -225,8 +226,8 @@ function restartGame(){
 		currentQuestion.finishGame();
 	}
 	console.log("Zo hoog is hij nu " + this.height);
+	this.height = move(-this.height);
 	this.height = move(50);
-	console.log("Zo hoog ben ik nu " + this.height);
 	showNextQuestion();
 }
 
