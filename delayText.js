@@ -25,7 +25,7 @@ function DelayText(game){
 
 this.nextWord = function() {
     //  Add the next word onto the text string, followed by a space
-    text.text = text.text.concat(this.line[this.wordIndex] + ' ');
+    missionText.innerText = missionText.innerText.concat(' ' + this.line[this.wordIndex]);
     //  Advance the word index to the next word in the line
     this.wordIndex++;
     //  Last word?

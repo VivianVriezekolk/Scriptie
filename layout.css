@@ -10,10 +10,32 @@
   background-color: rgba(0,0,0,0,4);
 }
 
+.missionPopup{
+  display : 'block';
+  position: fixed;
+  z-index: 1;
+  top: 525px;
+  left: 225px;
+  overflow: auto;
+  heighth: 600px;
+  background-color: rgba(0,0,0,0,4);
+}
+
 .popup-content{
   background-color: #FFFFFF;
-  width: 300px;
+  width: 350px;
   heighth: 300px;
+  border: 1px solid #888;
+  border-color: #FFFFFF;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.mission-content{
+  display: 'block';
+  background-color: #FFFFFF;
+  width: 300px;
+  height: 50px;
   border: 1px solid #888;
   border-color: #FFFFFF;
   text-align: center;
@@ -40,7 +62,7 @@
 
 #myProgress {
     top: 80px;
-    left: 750px;
+    left:650px;
     position: fixed;
     height: 60%;
     width: 30px;
@@ -49,5 +71,5 @@
 #myBar {
     height: 100%;
     width: 30px;
-    background-color: grey;
+    background-color: black;
 }

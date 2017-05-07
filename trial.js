@@ -60,14 +60,17 @@ function Trial(game){
   }
 
   this.showQuestion = function(){
-    if(text != undefined){
-      game.world.remove(text);
-    }
+    //if(text != undefined){
+    //  game.world.remove(text);
+    //}
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     console.log(this.currentQuestionText);
     var content = ["Mission: " + this.currentQuestionText];
     console.log(content);
-    text = game.add.text(game.world.centerX-160, 550, ' ', style); //550
+  //  text = content;
+  //  text = game.add.text(game.world.centerX-160, 550, ' ', style); //550
+    currentQuestion.score = 1;
+    missionpopup.style.display = 'block';
 
     delayText.wordIndex = 0;
     delayText.lineIndex = 0;
