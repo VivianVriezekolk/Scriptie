@@ -44,10 +44,10 @@
     position: fixed;
     height: 60%;
     width: 30px;
-    background-color: grey;
+    background-color: green;
 }
 #myBar {
-    height: 1%;
+    height: 100%;
     width: 30px;
-    background-color: green;
+    background-color: grey;
 }
