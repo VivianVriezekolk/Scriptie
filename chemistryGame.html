@@ -124,7 +124,7 @@ function move(amount) {
 				}
 			}
 			else{
-				if (this.height <= this.currentHeigth + this.amount){
+				if (this.height <= this.currentHeigth + this.amount && this.height <= 100){
         	this.height++;
 					console.log(this.height + '%');
 					elem.style.height = this.height + '%';
