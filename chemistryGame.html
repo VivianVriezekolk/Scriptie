@@ -212,7 +212,7 @@ function restartGame(){
 		currentQuestion.finishGame();
 	}
 	move(-this.height);
-	
+
 	showNextQuestion();
 }
 
@@ -354,7 +354,6 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		console.log((-1/listOfQuestions.length)*100);
 		this.height = move((-1/listOfQuestions.length)*100);
 		return false;
 	}
@@ -364,12 +363,13 @@ function checkTheAnswer(){
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
-				console.log((-1/listOfQuestions.length)*100);
+				//console.log((-1/listOfQuestions.length)*100);
 				feedbackText = 'You do not have the right types of atoms';
-				this.height = move((-1/listOfQuestions.length)*100);
+				//this.height = move((-1/listOfQuestions.length)*100);
 				return false;
 		}
 	currentQuestion.score = 0.75;
+	console.log("ik ga nu 0.75 dit doen");
 	this.height = move((0.75/listOfQuestions.length)*100);
 	console.log((0.75/listOfQuestions.length)*100);
 	return checkNeighbours();
