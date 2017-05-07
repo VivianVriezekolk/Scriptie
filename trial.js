@@ -75,6 +75,7 @@ function Trial(game){
     delayText.wordIndex = 0;
     delayText.lineIndex = 0;
     delayText.content = content;
+    missionText.innerText = "";
     delayText.nextLine();
   };
 
