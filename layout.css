@@ -17,8 +17,6 @@
   top: 525px;
   left: 190px;
   overflow: auto;
-  font: "15px Arial";
-  heighth: 600px;
   background-color: rgba(0,0,0,0,4);
 }
 
@@ -43,9 +41,12 @@
   border-radius: 5px;
 }
 
+#missionText {
+  font: "15px Arial";
+}
+
 .mission{
   display : none;
-  font: "15px Arial";
   fill: "#000000";
   align: "center";
   position: fixed;
@@ -70,7 +71,7 @@
     background-color: green;
 }
 #myBar {
-    height: 100%;
+    height: 50%;
     width: 30px;
     background-color: black;
 }

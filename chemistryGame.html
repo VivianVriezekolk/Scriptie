@@ -58,7 +58,7 @@ var finish = document.getElementById('gamedone');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
 var randomStrategy = true;
-var height = 100;
+var height = 50;
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -133,6 +133,13 @@ function move(amount) {
 		}
 		console.log(this.height);
 		return this.height;
+}
+
+function moveTo(amount){
+	var elem = document.getElementById("myBar");
+	console.log(amount);
+	this.amount = amount;
+	elem.style.height = amount + '%';
 }
 
 function deleteAtom(){
@@ -217,8 +224,9 @@ function restartGame(){
 	if(!randomStrategy){
 		currentQuestion.finishGame();
 	}
-	move(100 - this.height);
-
+	console.log("Zo hoog is hij nu " + this.height);
+	this.height = move(50);
+	console.log("Zo hoog ben ik nu " + this.height);
 	showNextQuestion();
 }
 
@@ -326,14 +334,14 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log((-1/listOfQuestions.length)*100);
-				this.height = move((-1/listOfQuestions.length)*100);
+				console.log((-1/listOfQuestions.length)*50);
+				this.height = move((-1/listOfQuestions.length)*50);
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log((-1/listOfQuestions.length)*100);
-				this.height = move((-1/listOfQuestions.length)*100);
+				console.log((-1/listOfQuestions.length)*50);
+				this.height = move((-1/listOfQuestions.length)*50);
 			}
 		}
 		else{
@@ -360,12 +368,12 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		this.height = move((1/listOfQuestions.length)*100);
+		this.height = move((1/listOfQuestions.length)*50);
 		return false;
 	}
 	currentQuestion.score = 0.50;
-	this.height = move((-0.5/listOfQuestions.length)*100);
-	console.log((0.5/listOfQuestions.length)*100);
+	this.height = move((-0.5/listOfQuestions.length)*50);
+	console.log((0.5/listOfQuestions.length)*50);
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
@@ -376,8 +384,8 @@ function checkTheAnswer(){
 		}
 	currentQuestion.score = 0.75;
 	console.log("ik ga nu 0.75 dit doen");
-	this.height = move((-0.75/listOfQuestions.length)*100);
-	console.log((0.75/listOfQuestions.length)*100);
+	this.height = move((-0.75/listOfQuestions.length)*50);
+	console.log((0.75/listOfQuestions.length)*50);
 	return checkNeighbours();
 }
 
