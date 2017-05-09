@@ -68,9 +68,13 @@
 
 .progress{
   height: 1px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 #myProgress {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     top: 80px;
     left:650px;
     position: fixed;
@@ -79,6 +83,9 @@
     background-color: green;
 }
 #myBar {
+    border-top-left-radius: 5px;
+    z-index: -1;
+    border-top-right-radius: 5px;
     height: 50%;
     width: 30px;
     background-color: black;

@@ -222,8 +222,8 @@ function restartGame(){
 		currentQuestion.finishGame();
 	}
 	console.log("Zo hoog is hij nu " + this.height);
-	this.height = move(-this.height);
-	this.height = move(50);
+	//this.height = move(-this.height);
+	this.height = moveTo(50);
 	showNextQuestion();
 }
 
