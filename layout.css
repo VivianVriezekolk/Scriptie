@@ -56,6 +56,16 @@
   heighth: 600px;
 }
 
+.Panel{
+  display: 'block';
+  background-color: #f8eef6;
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  width: 100px;
+  height: 400px;
+}
+
 .progress{
   height: 1px;
 }

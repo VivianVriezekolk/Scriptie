@@ -4,8 +4,8 @@ function Atom(value, currentAtom, id, game) {
 		this.id = id;
     this.game = game;
 		if(currentAtom){
-      console.log(game.world.centerY);
-			this.sprite = game.add.sprite(game.world.centerX - 20, game.world.centerY - 20, value);
+      console.log(game.world.centerX + ", " + game.world.centerY);
+			this.sprite = game.add.sprite(game.world.centerX - 48, game.world.centerY - 44, value);
       this.sprite.inputEnabled = true;
   		this.sprite.input.enableDrag();
   		this.sprite.input.enableDrag(true);
