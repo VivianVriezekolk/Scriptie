@@ -6,7 +6,7 @@
 	<title>Test dragging</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src="button.js"></script>
-	<script type="text/javascript" src= "atom.js"></script>
+	<script type="text/javascript" src="atom.js"></script>
 	<script type="text/javascript" src="trial.js"></script>
 	<script type="text/javascript" src="delayText.js"></script>
 	<script src="questions.txt"></script>
@@ -49,13 +49,14 @@ var copyMolecule = [];
 var currentQuestion = new Trial(game);
 var id = 0;
 var listOfQuestions = [];
+var priorityQueueQuestions = [];
 var text = [];
 var feedbackText = [];
 var popup = document.getElementById('wrongAsnwer');
 var finish = document.getElementById('gamedone');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
-var randomStrategy = true;
+var randomStrategy = false;
 var height = 50;
 
 function preload() {
@@ -74,7 +75,7 @@ function preload() {
 
 function create() {
 		readQuestion();
-		console.log(game.world.centerX);
+		makePriorityQue();
 		currentQuestion = decideQuestion();
 
 		if(currentQuestion != null){
@@ -164,59 +165,73 @@ function decideQuestion(){
 	}
 	else{
 		if(currentQuestion.molecule.length == 0){
-			for(var i=0; i< listOfQuestions.length; i++){
-				if(listOfQuestions[i].difficulty == 0){
-					listOfQuestions[i].isAsked = true;
-					return listOfQuestions[i];
-				}
-			}
+			priorityQueueQuestions[0].isAsked = true;
+			return priorityQueueQuestions[0];
 		}
 		return pickAdaptively();
 	}
 }
 
-function pickRandomQuestion(){
-	var x = Math.floor(Math.random() * (listOfQuestions.length - 0));
-	while(listOfQuestions[x].isAsked == true){
-		x = Math.floor(Math.random() * (listOfQuestions.length - 0));
+function makePriorityQue(){
+	var priority = [];
+	for(var i=0; i<listOfQuestions.length; i++){
+		priority.push(listOfQuestions[i].difficulty);
 	}
-	listOfQuestions[x].isAsked = true;
-	return listOfQuestions[x];
+	priority.sort();
+
+	for(var i=0; i<priority.length; i++){
+		for(var j=0; j<listOfQuestions.length; j++){
+			if(priority[i] == listOfQuestions[j].difficulty && !priorityQueueQuestions.includes(listOfQuestions[j])){
+				this.priorityQueueQuestions.push(listOfQuestions[j]);
+				console.log(listOfQuestions[j].currentQuestionText + " ");
+			}
+		}
+	}
+}
+
+function pickRandomQuestion(){
+	var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+	while(priorityQueueQuestions[x].isAsked == true){
+		x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+	}
+	priorityQueueQuestions[x].isAsked = true;
+	return priorityQueueQuestions[x];
 }
 
 function pickAdaptively(){
 	console.log(currentQuestion.score);
 	if(currentQuestion.score == 1){
-		for(var i=0; i<listOfQuestions.length; i++){
-			if(listOfQuestions[i].difficulty - currentQuestion.difficulty== 1 && listOfQuestions[i].isAsked == false){
-				listOfQuestions[i].isAsked = true;
-				return listOfQuestions[i];
+		for(var i=0; i<priorityQueueQuestions.length; i++){
+			if(priorityQueueQuestions[i].difficulty - currentQuestion.difficulty>= 1 && priorityQueueQuestions[i].isAsked == false){
+				priorityQueueQuestions[i].isAsked = true;
+				return priorityQueueQuestions[i];
 			}
 		}
 	}
 	else if(currentQuestion.score == 0.75){
-		for(var i=0; i < listOfQuestions.length; i++){
-			if(currentQuestion.difficulty - listOfQuestions[i].difficulty <= 1 && listOfQuestions[i].isAsked == false){
-				listOfQuestions[i].isAsked = true;
-				return listOfQuestions[i];
+		for(var i=0; i < priorityQueueQuestions.length; i++){
+			if(currentQuestion.difficulty - priorityQueueQuestions[i].difficulty <= 1 && priorityQueueQuestions[i].isAsked == false){
+				priorityQueueQuestions[i].isAsked = true;
+				return priorityQueueQuestions[i];
 			}
 		}
 	}
 	else{
-		for(var i=0; i < listOfQuestions.length; i++){
-			if(currentQuestion.difficulty - listOfQuestions[i].difficulty == 1 && listOfQuestions[i].isAsked == false){
-				listOfQuestions[i].isAsked = true;
-				return listOfQuestions[i];
+		for(var i=0; i < priorityQueueQuestions.length; i++){
+			if(currentQuestion.difficulty - priorityQueueQuestions[i].difficulty == 1 && priorityQueueQuestions[i].isAsked == false){
+				priorityQueueQuestions[i].isAsked = true;
+				return priorityQueueQuestions[i];
 			}
 		}
 	}
 }
 
+
 function restartGame(){
 	finish.style.display = 'none';
-	for(var i=0; i < listOfQuestions.length; i++){
-		listOfQuestions[i].isAsked = false;
-		listOfQuestions[i].score = 0;
+	for(var i=0; i < priorityQueueQuestions.length; i++){
+		priorityQueueQuestions[i].isAsked = false;
+		priorityQueueQuestions[i].score = 0;
 	}
 	if(!randomStrategy){
 		currentQuestion.finishGame();
@@ -240,15 +255,15 @@ function finishGame(){
 
 function getScore(){
 	var sum = 0;
-	for(var i=0; i < listOfQuestions.length; i++){
-			sum += listOfQuestions[i].score;
+	for(var i=0; i < priorityQueueQuestions.length; i++){
+			sum += priorityQueueQuestions[i].score;
 	}
-	return sum/listOfQuestions.length * 10;
+	return sum/priorityQueueQuestions.length * 10;
 }
 
 function allQuestionsAreAsked(){
-	for(var i=0; i<listOfQuestions.length; i++){
-		if(listOfQuestions[i].isAsked == false){
+	for(var i=0; i<priorityQueueQuestions.length; i++){
+		if(priorityQueueQuestions[i].isAsked == false){
 			return false;
 		}
 	}
@@ -268,9 +283,9 @@ function makeTrial(trial, index, textsQuestion){
 				trial.molecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
 			}
 		}
-		else if(textsQuestion[i].indexOf('Difficulty') > -1){
-			var difficulty = textsQuestion[i].split(/~/);
-			trial.difficulty = difficulty[1];
+		else if(textsQuestion[i].indexOf('Familiarity') > -1){
+			var familiarity = textsQuestion[i].split(/~/);
+			trial.familiarity = familiarity[1];
 		}
 		else if(textsQuestion[i].indexOf("Binding") > -1){
 			for(var m=i+1; m < textsQuestion[i+1].length+i+1; m++){
@@ -282,6 +297,7 @@ function makeTrial(trial, index, textsQuestion){
 				}
 			}
 			this.listOfQuestions.push(trial);
+			trial.determineDifficulty();
 			return;
 		}
 	}
@@ -302,7 +318,7 @@ function readQuestion(){
 
 function showNextQuestion(){
 	popup.style.display = 'none';
-	currentQuestion = decideQuestion(listOfQuestions);
+	currentQuestion = decideQuestion(priorityQueueQuestions);
 	if(currentQuestion != null){
 		currentQuestion.showQuestion();
 	}
@@ -331,14 +347,14 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log((-1/listOfQuestions.length)*50);
-				this.height = move((-1/listOfQuestions.length)*50);
+				console.log((-1/priorityQueueQuestions.length)*50);
+				this.height = move((-1/priorityQueueQuestions.length)*50);
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log((-1/listOfQuestions.length)*50);
-				this.height = move((-1/listOfQuestions.length)*50);
+				console.log((-1/priorityQueueQuestions.length)*50);
+				this.height = move((-1/priorityQueueQuestions.length)*50);
 			}
 		}
 		else{
@@ -365,12 +381,12 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		this.height = move((1/listOfQuestions.length)*50);
+		this.height = move((1/priorityQueueQuestions.length)*50);
 		return false;
 	}
 	currentQuestion.score = 0.50;
-	this.height = move((-0.5/listOfQuestions.length)*50);
-	console.log((0.5/listOfQuestions.length)*50);
+	this.height = move((-0.5/priorityQueueQuestions.length)*50);
+	console.log((0.5/priorityQueueQuestions.length)*50);
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
@@ -381,8 +397,8 @@ function checkTheAnswer(){
 		}
 	currentQuestion.score = 0.75;
 	console.log("ik ga nu 0.75 dit doen");
-	this.height = move((-0.75/listOfQuestions.length)*50);
-	console.log((0.75/listOfQuestions.length)*50);
+	this.height = move((-0.75/priorityQueueQuestions.length)*50);
+	console.log((0.75/priorityQueueQuestions.length)*50);
 	return checkNeighbours();
 }
 

@@ -1,25 +1,33 @@
 
-Question~You need to make water.
+Question~You need to make one water molecule.
 Molecule~HOH
-Difficulty~0
+Familiarity~2
 Bindings
 010
 101
 010
 
-Question~You need to make methane.
-Molecule~CHHH
-Difficulty~2
+Question~You need to make one methane molecule.
+Molecule~CHHHH
+Familiarity~0
 Bindings
-0111
-1000
-1000
-1000
+01111
+10000
+10000
+10000
+10000
 
-Question~You need to make carbon dioxide.
+Question~You need to make one carbon dioxide molecule.
 Molecule~COO
-Difficulty~1
+Familiarity~1
 Bindings
 011
 100
 100
+
+Question~You need to make one Oxygen molecule.
+Molecule~OO
+Familiarity~2
+Bindings
+01
+10

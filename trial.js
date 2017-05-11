@@ -10,6 +10,7 @@ function Trial(game){
   this.isAsked = false;
   this.score = 0;
   this.difficulty = 0;
+  this.familiarity = 0;
 
   // this does not work but I do not understand why not.
   function checkTheAnswer(){
@@ -63,12 +64,35 @@ function Trial(game){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = ["Mission: " + this.currentQuestionText];
     missionpopup.style.display = 'block';
-
     delayText.wordIndex = 0;
     delayText.lineIndex = 0;
     delayText.content = content;
     missionText.innerText = "";
     delayText.nextLine();
+  };
+
+  this.determineUniqueAtoms = function(){
+    var numberOfUniqueAtoms = 1;
+    var values = [];
+    values.push(this.molecule[0].value);
+    console.log(this.molecule[0].value);
+    for(var i=1; i < this.molecule.length; i++){
+      if(!values.includes(this.molecule[i].value)){
+        numberOfUniqueAtoms = numberOfUniqueAtoms + 1;
+        values.push(this.molecule[i].value);
+      }
+    }
+    return numberOfUniqueAtoms;
+  };
+
+  this.determineDifficulty = function(){
+    var numberOfAtoms = 0;
+    for(var i=0; i< this.molecule.length; i++){
+      numberOfAtoms = numberOfAtoms + 1;
+    }
+    var numberOfUniqueAtoms = this.determineUniqueAtoms();
+    this.difficulty = +numberOfAtoms - +this.familiarity + +numberOfUniqueAtoms;
+    console.log("Difficulty: " + this.difficulty);
   };
 
 }
