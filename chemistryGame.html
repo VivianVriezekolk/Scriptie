@@ -63,6 +63,9 @@ var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
 var randomStrategy = false;
 var height = 50;
+var buttons = ['HButton', 'CButton', 'OButton'];
+var positionY = [150, 200, 250];
+
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -92,15 +95,14 @@ function create() {
 			console.log("Klaar");
 		}
 		var atomValues = ['H', 'C', 'O'];
-		var buttons = ['HButton', 'CButton', 'OButton'];
-		var positionY = [150, 200, 250];
 		game.stage.backgroundColor = "#ADD8E6";
 
 		// Make buttons
-		for(var i=0; i< atomValues.length; i++){
-			console.log(buttons[i]);
-			var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
-		}
+		currentQuestion.makeButtons();
+		// for(var i=0; i< atomValues.length; i++){
+		// 	console.log(buttons[i]);
+		// 	var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
+		// }
 
 		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
 		var deleteButton = game.add.image(10, 500, 'delete');

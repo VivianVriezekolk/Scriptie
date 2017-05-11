@@ -11,9 +11,10 @@ function Trial(game){
   this.score = 0;
   this.difficulty = 0;
   this.familiarity = 0;
+  this.buttonList = [];
 
   // this does not work but I do not understand why not.
-  function checkTheAnswer(){
+  this.checkTheAnswer = function(){
     game.copyMolecule = this.molecule;
     console.log(this.currentMolecule);
     if(currentMolecule.length != molecule.length){
@@ -61,6 +62,7 @@ function Trial(game){
   }
 
   this.showQuestion = function(){
+    this.makeButtons();
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = ["Mission: " + this.currentQuestionText];
     missionpopup.style.display = 'block';
@@ -82,7 +84,8 @@ function Trial(game){
         values.push(this.molecule[i].value);
       }
     }
-    return numberOfUniqueAtoms;
+    console.log(values[0] + " " + values[1]);
+    return values;
   };
 
   this.determineDifficulty = function(){
@@ -90,9 +93,27 @@ function Trial(game){
     for(var i=0; i< this.molecule.length; i++){
       numberOfAtoms = numberOfAtoms + 1;
     }
-    var numberOfUniqueAtoms = this.determineUniqueAtoms();
+    var numberOfUniqueAtoms = this.determineUniqueAtoms().length;
     this.difficulty = +numberOfAtoms - +this.familiarity + +numberOfUniqueAtoms;
     console.log("Difficulty: " + this.difficulty);
+  };
+
+  this.makeButtons = function(){
+    for(var i=0; i < this.buttonList.length; i++){
+      var buttonI = this.buttonList[i];
+      buttonI.destroy();
+      this.buttonList.splice(i,1);
+    }
+    var values = this.determineUniqueAtoms();
+    for(var i=0; i < values.length; i++){
+      for(var j=0; j < buttons.length; j++){
+        if(buttons[j].indexOf(values[i]) > -1){
+          var buttonTest = new button(buttons[j], values[i], 30, positionY[j]);
+          this.buttonList.push(buttonTest);
+        }
+      }
+    }
+
   };
 
 }

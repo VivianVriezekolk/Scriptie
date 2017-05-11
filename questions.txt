@@ -25,7 +25,7 @@ Bindings
 100
 100
 
-Question~You need to make one Oxygen molecule.
+Question~You need to make one oxygen molecule.
 Molecule~OO
 Familiarity~2
 Bindings
