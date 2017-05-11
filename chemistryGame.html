@@ -18,7 +18,11 @@
     </style>
 </head>
 <body>
-	<div id="wrongAsnwer" class = "popup" >
+	<div id="startG" class= "firstpopup">
+		<p id = "startTextofGame"></p>
+		<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
+	</div>
+	<div id="wrongAnswer" class = "popup" >
 		<div class = "popup-content">
 			<p id = "textAnswer"></p>
 			<!--<input type= "image" src = "images/tryAgain.png" id= "Okbutton" onclick ="showNextQuestion()">-->
@@ -52,8 +56,9 @@ var listOfQuestions = [];
 var priorityQueueQuestions = [];
 var text = [];
 var feedbackText = [];
-var popup = document.getElementById('wrongAsnwer');
+var popup = document.getElementById('wrongAnswer');
 var finish = document.getElementById('gamedone');
+var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
 var randomStrategy = false;
@@ -70,10 +75,12 @@ function preload() {
 		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
+		game.load.image('start', 'images/start.png');
 		game.load.text('questions', 'questions.txt');
 }
 
 function create() {
+		makeStartPopup();
 		readQuestion();
 		makePriorityQue();
 		currentQuestion = decideQuestion();
@@ -100,6 +107,16 @@ function create() {
 
 		deleteButton.scale.setTo(0.2, 0.2);
 		doneButton.scale.setTo(0.5, 0.5);
+}
+
+function makeStartPopup(){
+	var startTextofGame = document.getElementById('startTextofGame');
+	startTextofGame.innerText = "You are working in a laboratory. When you click on Start Game you are asked to complete some missions! We need you, do not disappoint us."
+}
+
+function startG(){
+	firstpopup.style.display = 'none';
+	console.log('start');
 }
 
 function move(amount) {
