@@ -1,5 +1,6 @@
-function Trial(game){
+function Trial(game, group){
   var delayText = new DelayText(game);
+  this.group = group;
   this.game = game;
   this.currentQuestionText = [];
   this.rightAnswerText = [];
@@ -84,7 +85,7 @@ function Trial(game){
         values.push(this.molecule[i].value);
       }
     }
-    console.log(values[0] + " " + values[1]);
+    console.log(values[0]);
     return values;
   };
 
@@ -98,18 +99,21 @@ function Trial(game){
     console.log("Difficulty: " + this.difficulty);
   };
 
-  this.makeButtons = function(){
-    for(var i=0; i < this.buttonList.length; i++){
-      var buttonI = this.buttonList[i];
-      buttonI.destroy();
-      this.buttonList.splice(i,1);
+  this.removeButtons = function(){
+    for(var i=0; i < buttonsList.length; i++){
+  	   buttonsList[i].destroy();
     }
+  	// console.log(this.group.length);
+  	// this.group = this.game.add.group();
+  }
+
+  this.makeButtons = function(){
+    this.removeButtons();
     var values = this.determineUniqueAtoms();
     for(var i=0; i < values.length; i++){
       for(var j=0; j < buttons.length; j++){
         if(buttons[j].indexOf(values[i]) > -1){
           var buttonTest = new button(buttons[j], values[i], 30, positionY[j]);
-          this.buttonList.push(buttonTest);
         }
       }
     }

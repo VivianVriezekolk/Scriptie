@@ -50,7 +50,8 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
 var copyMolecule = [];
-var currentQuestion = new Trial(game);
+var group;
+var currentQuestion = new Trial(game, group);
 var id = 0;
 var listOfQuestions = [];
 var priorityQueueQuestions = [];
@@ -65,7 +66,7 @@ var randomStrategy = false;
 var height = 50;
 var buttons = ['HButton', 'CButton', 'OButton'];
 var positionY = [150, 200, 250];
-
+var buttonsList = [];
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -83,6 +84,7 @@ function preload() {
 }
 
 function create() {
+		group = game.add.group();
 		makeStartPopup();
 		readQuestion();
 		makePriorityQue();
@@ -98,6 +100,7 @@ function create() {
 		game.stage.backgroundColor = "#ADD8E6";
 
 		// Make buttons
+		console.log(currentQuestion.group);
 		currentQuestion.makeButtons();
 		// for(var i=0; i< atomValues.length; i++){
 		// 	console.log(buttons[i]);
@@ -330,7 +333,7 @@ function readQuestion(){
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
 			console.log("You are going to make a new question now!");
-			makeTrial(new Trial(game), i+1, textsQuestion);
+			makeTrial(new Trial(game, group), i+1, textsQuestion);
 		}
 	}
 }
@@ -509,7 +512,9 @@ function button(buttonName, element, X, Y){
   	//}
 		}
   }
+	console.log("hallo");
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
+	buttonsList.push(button);
   button.scale.setTo(0.4, 0.4);
 }
 
