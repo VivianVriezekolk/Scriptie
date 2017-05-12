@@ -12,7 +12,6 @@ function Trial(game, group){
   this.score = 0;
   this.difficulty = 0;
   this.familiarity = 0;
-  this.buttonList = [];
 
   // this does not work but I do not understand why not.
   this.checkTheAnswer = function(){
@@ -103,8 +102,6 @@ function Trial(game, group){
     for(var i=0; i < buttonsList.length; i++){
   	   buttonsList[i].destroy();
     }
-  	// console.log(this.group.length);
-  	// this.group = this.game.add.group();
   }
 
   this.makeButtons = function(){
