@@ -62,7 +62,7 @@ var finish = document.getElementById('gamedone');
 var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
-var randomStrategy = false;
+var randomStrategy = true;
 var height = 50;
 var buttons = ['HButton', 'CButton', 'OButton'];
 var positionY = [150, 200, 250];
@@ -71,12 +71,12 @@ var buttonsList = [];
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
 		game.load.image('OButton', 'images/OAtoomButton.png');
-		game.load.image('HButton', 'images/HAtoom.png');
+		game.load.image('HButton', 'images/HAtoomButton.png');
 		game.load.image('delete', 'images/deleteP.png');
 		game.load.image('C', 'images/CAtom.png');
 		game.load.image('H', 'images/HAtom.png');
-		game.load.image('O', 'images/OAtom.png');
-		game.load.image('done', 'images/done.png');
+		game.load.image('O', 'images/OAtoom.png');
+		game.load.image('done', 'images/doneButton.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
 		game.load.image('start', 'images/start.png');
@@ -107,11 +107,11 @@ function create() {
 		// 	var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
 		// }
 
-		var doneButton = game.add.button(600, 525, 'done', evaluateAnswer, this);
+		var doneButton = game.add.button(600, 515, 'done', evaluateAnswer, this);
 		var deleteButton = game.add.image(10, 500, 'delete');
 
 		deleteButton.scale.setTo(0.2, 0.2);
-		doneButton.scale.setTo(0.5, 0.5);
+		doneButton.scale.setTo(0.7, 0.7);
 }
 
 function makeStartPopup(){
