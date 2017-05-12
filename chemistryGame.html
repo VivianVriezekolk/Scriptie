@@ -48,7 +48,7 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update});
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render});
 var copyMolecule = [];
 var group;
 var currentQuestion = new Trial(game, group);
@@ -63,10 +63,11 @@ var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
 var randomStrategy = true;
-var height = 50;
+var height = 90;
 var buttons = ['HButton', 'CButton', 'OButton'];
 var positionY = [150, 200, 250];
 var buttonsList = [];
+var floor;
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -84,7 +85,10 @@ function preload() {
 }
 
 function create() {
-		group = game.add.group();
+
+		//floor = new Phaser.Rectangle(20, 100, 100, 300);
+		//floor.z = -1;
+		console.log(floor);
 		makeStartPopup();
 		readQuestion();
 		makePriorityQue();
@@ -106,17 +110,27 @@ function create() {
 		// 	console.log(buttons[i]);
 		// 	var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
 		// }
-
 		var doneButton = game.add.button(600, 515, 'done', evaluateAnswer, this);
+
 		var deleteButton = game.add.image(10, 500, 'delete');
 
 		deleteButton.scale.setTo(0.2, 0.2);
 		doneButton.scale.setTo(0.7, 0.7);
 }
 
+function render () {
+
+    game.debug.geom(floor,'#ffffff');
+
+}
+
 function makeStartPopup(){
 	var startTextofGame = document.getElementById('startTextofGame');
-	startTextofGame.innerText = "You are working in a laboratory. When you click on Start Game you are asked to complete some missions! We need you, do not disappoint us."
+	startTextofGame.innerText =
+		"You are working in a laboratory. " +
+		"When you click on Start you are asked to complete some important missions! " +
+		"Try to complete as many mission as you can and become rich!The bar on the right gives you an indication of how much money you are earning. " +
+		"We need you, do not disappoint us."
 }
 
 function startG(){
