@@ -68,6 +68,7 @@ var buttons = ['HButton', 'CButton', 'OButton'];
 var positionY = [150, 200, 250];
 var buttonsList = [];
 var floor;
+var group;
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButton.png');
@@ -85,10 +86,6 @@ function preload() {
 }
 
 function create() {
-
-		//floor = new Phaser.Rectangle(20, 100, 100, 300);
-		//floor.z = -1;
-		console.log(floor);
 		makeStartPopup();
 		readQuestion();
 		makePriorityQue();
@@ -101,8 +98,8 @@ function create() {
 			console.log("Klaar");
 		}
 		var atomValues = ['H', 'C', 'O'];
-		game.stage.backgroundColor = "#ADD8E6";
-
+		game.stage.backgroundColor = "#DBB782";
+//9C5A5A
 		// Make buttons
 		console.log(currentQuestion.group);
 		currentQuestion.makeButtons();
@@ -529,6 +526,7 @@ function button(buttonName, element, X, Y){
   }
 	console.log("hallo");
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
+	game.world.bringToTop(button);
 	buttonsList.push(button);
   button.scale.setTo(0.4, 0.4);
 }
