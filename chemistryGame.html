@@ -37,8 +37,9 @@
 			<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()">
 		</div>
 	</div>
-	<div id="myProgress" class = "progress">
-  	<div id="myBar"></div>
+	<div class = "progress">
+	<div id="myProgress">
+  	<div id="myBar"></div></div>
 	</div>
 <div id= "missionTextPopup" class = "missionPopup">
 	<div class = "mission-content">
@@ -64,20 +65,26 @@ var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
 var randomStrategy = true;
 var height = 90;
-var buttons = ['HButton', 'CButton', 'OButton'];
-var positionY = [150, 200, 250];
+var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton'];
+var positionY = [100, 150, 200, 250, 300, 350];
 var buttonsList = [];
 var floor;
 var group;
 
 function preload() {
-		game.load.image('CButton', 'images/CAtoomButton.png');
-		game.load.image('OButton', 'images/OAtoomButton.png');
-		game.load.image('HButton', 'images/HAtoomButton.png');
-		game.load.image('delete', 'images/deleteP.png');
+		game.load.image('CButton', 'images/CAtoomButtonBrown.png');
+		game.load.image('OButton', 'images/OAtomButtonBrown.png');
+		game.load.image('HButton', 'images/HAtoomButtonBrown.png');
+		game.load.image("FButton", 'images/FAtomButton.png')
+		game.load.image("QButton", 'images/BrAtomButton.png')
+		game.load.image("IButton", 'images/IAtomButton.png')
+		game.load.image('delete', 'images/garbage.png');
 		game.load.image('C', 'images/CAtom.png');
 		game.load.image('H', 'images/HAtom.png');
 		game.load.image('O', 'images/OAtoom.png');
+		game.load.image('I', 'images/IAtom.png');
+		game.load.image('Q', 'images/BrAtom.png');
+		game.load.image('F', 'images/FAtom.png');
 		game.load.image('done', 'images/doneButton.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
@@ -97,28 +104,21 @@ function create() {
 		else{
 			console.log("Klaar");
 		}
-		var atomValues = ['H', 'C', 'O'];
+		var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I'];
 		game.stage.backgroundColor = "#DBB782";
-//9C5A5A
 		// Make buttons
 		console.log(currentQuestion.group);
 		currentQuestion.makeButtons();
-		// for(var i=0; i< atomValues.length; i++){
-		// 	console.log(buttons[i]);
-		// 	var buttonTest = new button(buttons[i],atomValues[i], 30, positionY[i]);
-		// }
 		var doneButton = game.add.button(600, 515, 'done', evaluateAnswer, this);
 
 		var deleteButton = game.add.image(10, 500, 'delete');
 
-		deleteButton.scale.setTo(0.2, 0.2);
+		deleteButton.scale.setTo(0.4, 0.4);
 		doneButton.scale.setTo(0.7, 0.7);
 }
 
 function render () {
-
     game.debug.geom(floor,'#ffffff');
-
 }
 
 function makeStartPopup(){
@@ -528,7 +528,7 @@ function button(buttonName, element, X, Y){
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
 	game.world.bringToTop(button);
 	buttonsList.push(button);
-  button.scale.setTo(0.4, 0.4);
+  button.scale.setTo(0.3, 0.3);
 }
 
 function atomsAreSnapped(atomA, atomB){
