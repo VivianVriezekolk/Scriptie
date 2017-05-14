@@ -98,8 +98,12 @@ function create() {
 	graphics1.beginFill(0xffdd99);
 	graphics2.beginFill(0xffffff);
 
-	graphics1.drawRect(5, 5, 100, 485);
-	graphics1.drawRect(5, 495, 785, 100);
+	graphics1.drawRect(15, 10, 80, 480);
+	graphics1.drawRect(15, 500, 80, 90);
+
+	graphics1.drawRect(110, 500, 565, 90);
+	graphics1.drawRect(690, 500, 100, 90);
+
 	graphics1.drawRect(690, 5, 100, 485);
 
 	graphics2.drawRect(110,5, 575, 485);
@@ -120,12 +124,12 @@ function create() {
 	// Make buttons
 	console.log(currentQuestion.group);
 	currentQuestion.makeButtons();
-	var doneButton = game.add.button(670, 515, 'done', evaluateAnswer, this);
+	var doneButton = game.add.button(695, 520, 'done', evaluateAnswer, this);
 
 	var deleteButton = game.add.image(10, 500, 'delete');
 
 	deleteButton.scale.setTo(0.4, 0.4);
-	doneButton.scale.setTo(0.7, 0.7);
+	doneButton.scale.setTo(0.6, 0.6);
 }
 
 function render () {
