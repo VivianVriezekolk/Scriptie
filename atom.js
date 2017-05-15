@@ -5,7 +5,10 @@ function Atom(value, currentAtom, id, game) {
     this.game = game;
 		if(currentAtom){
       console.log(game.world.centerX + ", " + game.world.centerY);
-			this.sprite = game.add.sprite(game.world.centerX - 48, game.world.centerY - 44, value);
+      var Xrandom = Math.floor((Math.random() * (640-110)) + 110);
+    	var Yrandom = Math.floor((Math.random() * (455-5)) + 5);
+      console.log("X is " + Xrandom + ", Y is " + Yrandom);
+			this.sprite = game.add.sprite(Xrandom, Yrandom, value);
       this.sprite.inputEnabled = true;
   		this.sprite.input.enableDrag();
   		this.sprite.input.enableDrag(true);
