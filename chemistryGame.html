@@ -45,6 +45,11 @@
 		<div id="myProgress">
 	  	<div id="myBar"></div></div>
 		</div>
+		<div class = "amountSalary">
+			<div class = "SalaryContent">
+			<p id="salarytext" style="font: 15px times new roman; color: green;"></p>
+		</div>
+		</div>
 	<div id= "missionTextPopup" class = "missionPopup">
 		<div class = "mission-content">
 			<p id = "missionText"></p>
@@ -101,19 +106,23 @@ function preload() {
 function create() {
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
+	var whiterect = game.add.graphics(0, 0);
 
 	graphics1.beginFill(0xffdd99);
-	graphics2.beginFill(0xffffff);
+	graphics2.beginFill(0xAAAAAA);
+	whiterect.beginFill(0xffffff);
 
-	graphics1.drawRect(15, 10, 80, 480);
-	graphics1.drawRect(15, 500, 80, 90);
+	graphics1.drawRect(10, 10, 80, 480); //3
 
-	graphics1.drawRect(110, 500, 570, 90);
-	graphics1.drawRect(690, 500, 100, 90);
+	graphics1.drawRect(10, 500, 80, 90); //4
 
-	graphics1.drawRect(690, 5, 100, 485);
+	graphics1.drawRect(100, 500, 575, 90); //5
 
-	graphics2.drawRect(110,5, 575, 485);
+	graphics1.drawRect(685, 500, 105, 90); //6
+
+	graphics1.drawRect(685, 10, 105, 480); //7
+
+	whiterect.drawRect(100,10, 575, 480); //2
 
 	makeStartPopup();
 	readQuestion();
@@ -131,12 +140,12 @@ function create() {
 	// Make buttons
 	console.log(currentQuestion.group);
 	currentQuestion.makeButtons();
-	doneButton = game.add.button(695, 520, 'done', evaluateAnswer, this);
+	doneButton = game.add.button(700, 520, 'done', evaluateAnswer, this);
 
-	deleteButton = game.add.image(10, 500, 'delete');
+	deleteButton = game.add.image(12, 500, 'delete');
 
 	deleteButton.scale.setTo(0.4, 0.4);
-	doneButton.scale.setTo(0.55, 0.55);
+	doneButton.scale.setTo(0.50, 0.50);
 	doneButton.visible = false;
 	deleteButton.visible = false;
 
@@ -195,6 +204,8 @@ function move(amount) {
       	}
     	}
 		}
+		var salarytext = document.getElementById('salarytext');
+		salarytext.innerText = "Your salary is " + (100 - this.height);
 		console.log(this.height);
 		return this.height;
 }
