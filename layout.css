@@ -67,11 +67,32 @@
   border-radius: 20px;
 }
 
+.textProgresscontent{
+  display: 'block';
+  background-color: white;
+  color: green;
+  width: 75px;
+  height: 45px;
+  border-radius: 10px;
+  border-color: white;
+  text-align: center;
+}
+
+.progressText{
+  display : 'block';
+  position: fixed;
+  z-index: 1;
+  top: 4px;
+  left: 700px;
+  overflow: auto;
+}
+
 .progress{
   height: 1px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+
 
 .firstpopup{
   display: 'block';
