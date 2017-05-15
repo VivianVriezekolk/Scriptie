@@ -132,7 +132,7 @@
     position: fixed;
     height: 50%;
     width: 30px;
-    background-color: green;
+    background-color: red;
 }
 #myBar {
     border-top-left-radius: 5px;

@@ -205,9 +205,38 @@ function move(amount) {
     	}
 		}
 		var salarytext = document.getElementById('salarytext');
-		salarytext.innerText = "Your salary is " + (100 - this.height);
-		console.log(this.height);
+		var score = Math.floor(100 - (this.height + this.amount));
+		salarytext.innerText = "Your salary is " + score + " euros.";
+		console.log("hallo" + this.height + this.amount);
+		var color = changeColorOfProgressBar();
+		salarytext.style.color = color;
 		return this.height;
+}
+
+function changeColorOfProgressBar(){
+	var elem = document.getElementById("myProgress");
+	var score = 100 - this.height;
+	if(score <= 10){
+		elem.style.backgroundColor = "red";
+		return "red";
+	}
+	else if(score <= 30){
+		elem.style.backgroundColor = "orange";
+		return "orange";
+	}
+	else if(score <= 50){
+		elem.style.backgroundColor = "yellow";
+		return "yellow";
+	}
+	else if(score <= 65){
+		elem.style.backgroundColor = "#ccff66";
+		return "#ccff66";
+	}
+	else{
+		elem.style.backgroundColor = "#669900";
+		return "#669900";
+	}
+
 }
 
 function moveTo(amount){
@@ -307,7 +336,6 @@ function pickAdaptively(){
 
 
 function restartGame(){
-	finish.style.display = 'none';
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		priorityQueueQuestions[i].isAsked = false;
 		priorityQueueQuestions[i].score = 0;
@@ -316,8 +344,11 @@ function restartGame(){
 		currentQuestion.finishGame();
 	}
 	console.log("Zo hoog is hij nu " + this.height);
-	//this.height = move(-this.height);
-	this.height = moveTo(50);
+
+	this.height = moveTo(90);
+	finish.style.display = 'none';
+	var salarytext = document.getElementById('salarytext');
+	salarytext.innerText = "Your salary is " + (100-this.height) + " euros.";
 	showNextQuestion();
 }
 
@@ -428,14 +459,14 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log((-1/priorityQueueQuestions.length)*50);
-				this.height = move((-1/priorityQueueQuestions.length)*50);
+				console.log((-80/priorityQueueQuestions.length));
+				this.height = move((-80/priorityQueueQuestions.length));
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log((-1/priorityQueueQuestions.length)*50);
-				this.height = move((-1/priorityQueueQuestions.length)*50);
+				console.log((-80/priorityQueueQuestions.length));
+				this.height = move((-80/priorityQueueQuestions.length));
 			}
 		}
 		else{
