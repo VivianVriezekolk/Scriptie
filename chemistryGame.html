@@ -86,7 +86,7 @@ function preload() {
 		game.load.image('I', 'images/IAtom.png');
 		game.load.image('Q', 'images/BrAtom.png');
 		game.load.image('F', 'images/FAtom.png');
-		game.load.image('done', 'images/doneButton.png');
+		game.load.image('done', 'images/done.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
 		game.load.image('start', 'images/start.png');
@@ -131,7 +131,7 @@ function create() {
 	deleteButton = game.add.image(10, 500, 'delete');
 
 	deleteButton.scale.setTo(0.4, 0.4);
-	doneButton.scale.setTo(0.6, 0.6);
+	doneButton.scale.setTo(0.55, 0.55);
 	doneButton.visible = false;
 	deleteButton.visible = false;
 
