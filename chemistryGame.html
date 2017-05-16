@@ -110,7 +110,7 @@ function create() {
 
 	graphics1.beginFill(0xffdd99);
 	graphics2.beginFill(0xAAAAAA);
-	whiterect.beginFill(0xffffff);
+	whiterect.beginFill(0xf9ffc4);
 
 	graphics1.drawRect(10, 10, 80, 480); //3
 
@@ -250,7 +250,7 @@ function setSalary(height){
 	else{
 		var score = Math.floor(100 - (+height + +this.amount));
 		salarytext.innerText = "Your salary is " + score + " euros.";
-		console.log("hallo" + +height + +this.amount);
+		console.log(+height + +this.amount);
 		var color = changeColorOfProgressBar(score);
 		//salarytext.style.color = color;
 	}
