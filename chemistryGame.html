@@ -92,11 +92,11 @@ function preload() {
 		game.load.image('delete', 'images/garbage.png');
 		game.load.image('C', 'images/CAtom.png');
 		game.load.image('H', 'images/HAtom.png');
-		game.load.image('O', 'images/OAtoom.png');
+		game.load.image('O', 'images/OAtom.png');
 		game.load.image('I', 'images/IAtom.png');
 		game.load.image('Q', 'images/BrAtom.png');
 		game.load.image('F', 'images/FAtom.png');
-		game.load.image('done', 'images/done.png');
+		game.load.image('done', 'images/doneButton.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
 		game.load.image('start', 'images/start.png');
@@ -181,54 +181,82 @@ function startG(){
 function move(amount) {
 		this.amount = amount;
     var elem = document.getElementById("myBar");
-		this.currentHeigth = this.height;
+		var currentHeigth = this.height;
     var id = setInterval(frame, 20);
 
     function frame() {
 			this.amount = Math.floor(this.amount);
-			console.log(this.currentHeigth + this.amount);
+			console.log(+currentHeigth + +this.amount);
 			if(this.amount < 0){
-				if (this.height >= this.currentHeigth + this.amount) {
-					if(this.height >= 1){
+				if (this.height >= +currentHeigth + +this.amount) {
+					if(+currentHeigth + +this.amount >= 1){
 						this.height--;
 						console.log(this.height + '%');
 						elem.style.height = this.height + '%';
       		}
+					else{
+						setSalary(0);
+						return this.height;
+					}
 				}
 			}
 			else{
-				if (this.height <= this.currentHeigth + this.amount && this.height <= 100){
-        	this.height++;
-					console.log(this.height + '%');
-					elem.style.height = this.height + '%';
-      	}
+				if (this.height <= +currentHeigth + +this.amount){
+					if(+currentHeigth + +this.amount <= 100){
+	        	this.height++;
+						console.log(this.height + '%');
+						elem.style.height = this.height + '%';
+					}
+					else{
+						setSalary(100);
+						return this.height;
+					}
+
+				}
     	}
 		}
-		var salarytext = document.getElementById('salarytext');
-		var score = Math.floor(100 - (this.height + this.amount));
-		salarytext.innerText = "Your salary is " + score + " euros.";
-		console.log("hallo" + this.height + this.amount);
-		var color = changeColorOfProgressBar();
-		salarytext.style.color = color;
+		setSalary(this.height);
 		return this.height;
 }
 
-function changeColorOfProgressBar(){
+function setSalary(height){
+	var salarytext = document.getElementById('salarytext');
+	if(height == 100){
+		salarytext.innerText = "Your salary is " + 0 + " euros.";
+		var color = changeColorOfProgressBar(0);
+		salarytext.style.color = color;
+	}
+	else if(height == 0){
+		salarytext.innerText = "Your salary is " + 100 + " euros.";
+		var color = changeColorOfProgressBar(100);
+		salarytext.style.color = color;
+	}
+	else{
+		var score = Math.floor(100 - (+height + +this.amount));
+		salarytext.innerText = "Your salary is " + score + " euros.";
+		console.log("hallo" + +height + +this.amount);
+		var color = changeColorOfProgressBar(score);
+		salarytext.style.color = color;
+	}
+}
+
+function changeColorOfProgressBar(score){
 	var elem = document.getElementById("myProgress");
-	var score = 100 - this.height;
+	//var score = 100 - this.height;
+	console.log("Score is nu " + score);
 	if(score <= 10){
 		elem.style.backgroundColor = "red";
 		return "red";
 	}
-	else if(score <= 30){
+	else if(score <= 30 && score > 10){
 		elem.style.backgroundColor = "orange";
 		return "orange";
 	}
-	else if(score <= 50){
+	else if(score <= 50 && score > 30){
 		elem.style.backgroundColor = "yellow";
 		return "yellow";
 	}
-	else if(score <= 65){
+	else if(score <= 65 && score > 50){
 		elem.style.backgroundColor = "#ccff66";
 		return "#ccff66";
 	}
@@ -345,7 +373,8 @@ function restartGame(){
 	}
 	console.log("Zo hoog is hij nu " + this.height);
 
-	this.height = moveTo(90);
+	//this.height = moveTo(90);
+	this.height = move(this.height);
 	finish.style.display = 'none';
 	var salarytext = document.getElementById('salarytext');
 	salarytext.innerText = "Your salary is " + (100-this.height) + " euros.";
