@@ -178,6 +178,14 @@ function startG(){
 	console.log('start');
 }
 
+function determineOveralDifficulty(){
+	var sum = 0;
+	for(var i=0; i < listOfQuestions.length; i++){
+		sum = sum + listOfQuestions[i].difficulty
+	}
+	return sum;
+}
+
 function move(amount) {
 		this.amount = amount;
     var elem = document.getElementById("myBar");
@@ -186,7 +194,6 @@ function move(amount) {
 
     function frame() {
 			this.amount = Math.floor(this.amount);
-			console.log(+currentHeigth + +this.amount);
 			if(this.amount < 0){
 				if (this.height >= +currentHeigth + +this.amount) {
 					if(+currentHeigth + +this.amount >= 1){
@@ -195,6 +202,11 @@ function move(amount) {
 						elem.style.height = this.height + '%';
       		}
 					else{
+						while(this.height >= 1){
+							console.log("hallo??");
+							this.height--;
+							elem.style.height = this.height + '%';
+						}
 						setSalary(0);
 						return this.height;
 					}
@@ -208,6 +220,10 @@ function move(amount) {
 						elem.style.height = this.height + '%';
 					}
 					else{
+						while(this.height <= 100){
+							this.height++;
+							elem.style.height = this.height + '%';
+						}
 						setSalary(100);
 						return this.height;
 					}
@@ -224,19 +240,19 @@ function setSalary(height){
 	if(height == 100){
 		salarytext.innerText = "Your salary is " + 0 + " euros.";
 		var color = changeColorOfProgressBar(0);
-		salarytext.style.color = color;
+		//salarytext.style.color = color;
 	}
 	else if(height == 0){
 		salarytext.innerText = "Your salary is " + 100 + " euros.";
 		var color = changeColorOfProgressBar(100);
-		salarytext.style.color = color;
+		//salarytext.style.color = color;
 	}
 	else{
 		var score = Math.floor(100 - (+height + +this.amount));
 		salarytext.innerText = "Your salary is " + score + " euros.";
 		console.log("hallo" + +height + +this.amount);
 		var color = changeColorOfProgressBar(score);
-		salarytext.style.color = color;
+		//salarytext.style.color = color;
 	}
 }
 
@@ -374,10 +390,10 @@ function restartGame(){
 	console.log("Zo hoog is hij nu " + this.height);
 
 	//this.height = moveTo(90);
-	this.height = move(this.height);
+	this.height = move(90 - this.height);
 	finish.style.display = 'none';
 	var salarytext = document.getElementById('salarytext');
-	salarytext.innerText = "Your salary is " + (100-this.height) + " euros.";
+	salarytext.innerText = "Your salary is " + (100 - this.height) + " euros.";
 	showNextQuestion();
 }
 
@@ -488,14 +504,14 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log((-80/priorityQueueQuestions.length));
-				this.height = move((-80/priorityQueueQuestions.length));
+				console.log(determineShiftInBar(-1));
+				this.height = move(determineShiftInBar(-1));
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log((-80/priorityQueueQuestions.length));
-				this.height = move((-80/priorityQueueQuestions.length));
+				console.log(determineShiftInBar(-1));
+				this.height =  move(determineShiftInBar(-1));
 			}
 		}
 		else{
@@ -523,25 +539,34 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		this.height = move((1/priorityQueueQuestions.length)*50);
+		this.height = move(determineShiftInBar(1));
 		return false;
 	}
 	currentQuestion.score = 0.50;
-	this.height = move((-0.5/priorityQueueQuestions.length)*50);
-	console.log((0.5/priorityQueueQuestions.length)*50);
+	this.height = move(determineShiftInBar(-0.5));
+	console.log(determineShiftInBar(-0.5));
 	for(var j=0; j< currentQuestion.molecule.length; j++)
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				console.log('You do not have the right types of atoms.');
-				//console.log((-1/listOfQuestions.length)*100);
 				feedbackText = 'You do not have the right types of atoms';
-				//this.height = move((-1/listOfQuestions.length)*100);
 				return false;
 		}
 	currentQuestion.score = 0.75;
-	console.log("ik ga nu 0.75 dit doen");
-	this.height = move((-0.75/priorityQueueQuestions.length)*50);
-	console.log((0.75/priorityQueueQuestions.length)*50);
+	this.height = move(determineShiftInBar(-0.75));
+	console.log(determineShiftInBar(-0.75));
 	return checkNeighbours();
+}
+
+function determineShiftInBar(answerScore){
+	var score = 85 - determineOveralDifficulty();
+	if(answerScore > 0){
+		console.log("Dit ga ik nu verplaatsen -" + (((answerScore*score)/priorityQueueQuestions.length) + currentQuestion.difficulty));
+		return ((answerScore*score)/priorityQueueQuestions.length) + currentQuestion.difficulty;
+	}
+	else{
+		console.log("Dit ga ik nu verplaatsen +" + (((answerScore*score)/priorityQueueQuestions.length) - currentQuestion.difficulty));
+		return ((answerScore*score)/priorityQueueQuestions.length) - currentQuestion.difficulty;
+	}
 }
 
 // maak kopie van correct antwoord zodat je als je het antwoord fout hebt, nog verder kan gaan om het te verbeteren.
