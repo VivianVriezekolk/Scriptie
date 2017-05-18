@@ -185,146 +185,6 @@ function determineOveralDifficulty(){
 	return sum;
 }
 
-// function move(amount) {
-// 		this.amount = amount;
-//     var elem = document.getElementById("myBar");
-// 		var currentHeigth = this.height;
-//     var id = setInterval(frame, 20);
-//
-//     function frame() {
-// 			this.amount = Math.floor(this.amount);
-// 			if(this.amount < 0){
-// 				if (this.height >= +currentHeigth + +this.amount) {
-// 					if(+currentHeigth + +this.amount >= 1){
-// 						this.height--;
-// 						console.log(this.height + '%');
-// 						elem.style.height = this.height + '%';
-//       		}
-// 					else{
-// 						while(this.height >= 1){
-// 							console.log("hallo??");
-// 							this.height--;
-// 						}
-// 						setSalary(0);
-// 						return this.height;
-// 					}
-// 				}
-// 			}
-// 			else{
-// 				if (this.height <= +currentHeigth + +this.amount){
-// 					if(+currentHeigth + +this.amount <= 100){
-// 	        	this.height++;
-// 						console.log(this.height + '%');
-// 						elem.style.height = this.height + '%';
-// 					}
-// 					else{
-// 						while(this.height <= 100){
-// 							this.height++;
-// 							elem.style.height = this.height + '%';
-// 						}
-// 						setSalary(100);
-// 						return this.height;
-// 					}
-//
-// 				}
-//     	}
-// 		}
-// 		setSalary(this.height);
-// 		return this.height;
-// }
-
-
-// function move(amount) {
-// 		this.amount = amount;
-//     var elem = document.getElementById("myBar");
-// 		var currentHeigth = this.height;
-//     var id = setInterval(frame, 20);
-//
-//     function frame() {
-// 			this.amount = Math.floor(this.amount);
-// 			if(this.amount < 0){
-// 				console.log("Ik ga nu negatief doen");
-// 				if (this.height >= +currentHeigth + +this.amount) {
-// 					if(+currentHeigth + +this.amount >= 1){
-// 						this.height--;
-// 						console.log(this.height + '%');
-// 						elem.style.height = this.height + '%';
-//       		}
-// 					else{
-// 						setSalary(0);
-// 						return this.height;
-// 					}
-// 				}
-// 			}
-//
-// 			else{
-// 				if (this.height <= +currentHeigth + +this.amount){
-// 					console.log("Ik ga nu positief doen");
-// 					if(+currentHeigth + +this.amount <= 100){
-// 	        	this.height++;
-// 						console.log(this.height + '%');
-// 						elem.style.height = this.height + '%';
-// 					}
-// 					else{
-// 						setSalary(100);
-// 						return this.height;
-// 					}
-// 				}
-//     	}
-// 		}
-// 		setSalary(this.height);
-// 		return this.height;
-// }
-//
-//
-// function setSalary(height){
-// 	var salarytext = document.getElementById('salarytext');
-// 	if(height == 100){
-// 		salarytext.innerText = "Your salary is " + 0 + " euros.";
-// 		var color = changeColorOfProgressBar(0);
-// 		//salarytext.style.color = color;
-// 	}
-// 	else if(height == 0){
-// 		salarytext.innerText = "Your salary is " + 100 + " euros.";
-// 		var color = changeColorOfProgressBar(100);
-// 		//salarytext.style.color = color;
-// 	}
-// 	else{
-// 		var score = Math.floor(100 - (+height + +this.amount));
-// 		salarytext.innerText = "Your salary is " + score + " euros.";
-// 		console.log("hallo" + +height + +this.amount);
-// 		var color = changeColorOfProgressBar(score);
-// 		//salarytext.style.color = color;
-// 	}
-// }
-//
-// function changeColorOfProgressBar(score){
-// 	var elem = document.getElementById("myProgress");
-// 	//var score = 100 - this.height;
-// 	console.log("Score is nu " + score);
-// 	if(score <= 10){
-// 		elem.style.backgroundColor = "red";
-// 		return "red";
-// 	}
-// 	else if(score <= 30 && score > 10){
-// 		elem.style.backgroundColor = "orange";
-// 		return "orange";
-// 	}
-// 	else if(score <= 50 && score > 30){
-// 		elem.style.backgroundColor = "yellow";
-// 		return "yellow";
-// 	}
-// 	else if(score <= 65 && score > 50){
-// 		elem.style.backgroundColor = "#ccff66";
-// 		return "#ccff66";
-// 	}
-// 	else{
-// 		elem.style.backgroundColor = "#669900";
-// 		return "#669900";
-// 	}
-//
-// }
-
 function move(amount) {
 		this.amount = amount;
     var elem = document.getElementById("myBar");
@@ -338,33 +198,26 @@ function move(amount) {
 				if (this.height >= (currentHeigth + this.amount)) {
 					if((currentHeigth + this.amount) >= 1){
 						this.height--;
-						console.log(this.height + '%');
 						elem.style.height = this.height + '%';
       		}
 					else{
 						while(this.height >= 1){
-							console.log("hallo??");
 							this.height--;
 							elem.style.height = this.height + '%';
 						}
-						console.log("Neeeee");
 						setSalary(0);
 						return this.height;
 					}
 				}
 			}
-
 			else{
 				if (this.height <= (currentHeigth + this.amount)){
-					console.log(currentHeigth+this.amount);
 					if(currentHeigth + this.amount <= 100){
 	        	this.height++;
-						console.log(this.height + '%');
 						elem.style.height = this.height + '%';
 					}
 					else{
 					 	while(this.height <= 100){
-					 		console.log("HAHA");
 					 		this.height++;
 					 		elem.style.height = this.height + '%';
 					 	}
@@ -427,7 +280,6 @@ function changeColorOfProgressBar(score){
 		return "#669900";
 	}
 }
-
 
 function moveTo(amount){
 	var elem = document.getElementById("myBar");
@@ -523,7 +375,6 @@ function pickAdaptively(){
 		}
 	}
 }
-
 
 function restartGame(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
