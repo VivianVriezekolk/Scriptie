@@ -15,7 +15,7 @@ function Trial(game, group){
 
   // this does not work but I do not understand why not.
   this.checkTheAnswer = function(){
-    game.copyMolecule = this.molecule;
+    this.copyMolecule = this.molecule;
     console.log(this.currentMolecule);
     if(currentMolecule.length != molecule.length){
       console.log('You do not have the right amount of atoms!');
@@ -43,7 +43,7 @@ function Trial(game, group){
   		textAnswer.innerText = 'You did not make the correct molecule';
   		popup.style.display = 'block';
   		console.log('You did not make the correct molecule.');
-  		molecule = game.copyMolecule;
+  		this.molecule = this.copyMolecule;
   		console.log(molecule);
   	}
     console.log(currentMolecule.length);
@@ -56,8 +56,9 @@ function Trial(game, group){
 
   this.finishGame = function(){
     this.currentQuestionText = [];
+    this.repeat = false;
     this.currentMolecule = [];
-    this.molecule = [];
+  //  this.molecule = [];
     this.text = [];
   }
 

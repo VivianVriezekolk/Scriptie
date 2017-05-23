@@ -33,7 +33,7 @@
 				<p id = "finishText"></p>
 				<p id = "score"></p>
 				<input type= "image" src = "images/finish.png" id= "Okbutton" onclick ="finishGame()">
-				<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()">
+			<!--	<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()"> -->
 			</div>
 		</div>
 		<div class = "progressText">
@@ -225,13 +225,10 @@ function move(amount) {
 				}
     	}
 		}
-
 		setSalary(this.height);
 		console.log(this.height);
 		return this.height;
 }
-
-
 
 function setSalary(height){
 	var salarytext = document.getElementById('salarytext');
@@ -318,7 +315,7 @@ function decideQuestion(){
 			return priorityQueueQuestions[0];
 		}
 		console.log("hhallooo");
-		return decideAdaptively();
+		return pickAdaptively();
 	}
 }
 
@@ -380,7 +377,7 @@ function pickAdaptively(){
 function decideAdaptively(){
 	console.log("hallooooo?");
 	for(var i=0; i< priorityQueueQuestions.length; i++){
-		if(priorityQueueQuestions[i].repeat || !priorityQueueQuestions[i].isAsked){
+		if(priorityQueueQuestions[i].repeat || priorityQueueQuestions[i].isAsked == false){
 			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions[i].molecule);
 			priorityQueueQuestions[i].isAsked = true;
 			priorityQueueQuestions[i].repeat = false;
@@ -394,10 +391,11 @@ function decideAdaptively(){
 function restartGame(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		priorityQueueQuestions[i].isAsked = false;
+		priorityQueueQuestions[i].repeat = false;
 		priorityQueueQuestions[i].score = 0;
 	}
 	if(!randomStrategy){
-		currentQuestion.finishGame();
+		//currentQuestion.finishGame();
 	}
 	console.log("Zo hoog is hij nu " + this.height);
 
