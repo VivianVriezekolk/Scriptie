@@ -247,7 +247,6 @@ function setSalary(height){
 		salarytext.innerText = "Your salary is " + score + " euros.";
 		console.log(+height + +this.amount);
 		var color = changeColorOfProgressBar(score);
-		//salarytext.style.color = color;
 	}
 }
 
@@ -315,7 +314,7 @@ function decideQuestion(){
 			return priorityQueueQuestions[0];
 		}
 		console.log("hhallooo");
-		return pickAdaptively();
+		return decideAdaptively();
 	}
 }
 
@@ -375,17 +374,14 @@ function pickAdaptively(){
 }
 
 function decideAdaptively(){
-	console.log("hallooooo?");
 	for(var i=0; i< priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].repeat || priorityQueueQuestions[i].isAsked == false){
 			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions[i].molecule);
 			priorityQueueQuestions[i].isAsked = true;
 			priorityQueueQuestions[i].repeat = false;
-
 			return priorityQueueQuestions[i];
 		}
 	}
-
 }
 
 function restartGame(){
@@ -395,11 +391,9 @@ function restartGame(){
 		priorityQueueQuestions[i].score = 0;
 	}
 	if(!randomStrategy){
-		//currentQuestion.finishGame();
+		currentQuestion.finishGame();
 	}
 	console.log("Zo hoog is hij nu " + this.height);
-
-	//this.height = moveTo(90);
 	this.height = move(this.height);
 	finish.style.display = 'none';
 	var salarytext = document.getElementById('salarytext');
@@ -553,8 +547,8 @@ function printMolecule(){
 		console.log("Dit is Atom nummer " +  i + ", " + currentQuestion.currentMolecule[i].value + ", " + currentQuestion.currentMolecule[i].id);
 		console.log(currentQuestion.currentMolecule[i]);
 	}
-
 }
+
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
@@ -694,7 +688,6 @@ function button(buttonName, element, X, Y){
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
-			//console.log(atomB.id);
 			return true;
 		}
 	}

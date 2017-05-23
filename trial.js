@@ -62,6 +62,33 @@ function Trial(game, group){
     this.text = [];
   }
 
+// checks the amount of atoms
+  this.checkAmountOfAtoms = function(){
+    if(this.currentMolecule.length != this.molecule.length){
+      feedbackText = 'You do not have the right amount of atoms!';
+      currentQuestion.repeat = true;
+      return false;
+    }
+  }
+
+// checks the type of atoms
+  this.checkTypeOfAtoms = function(){
+    for(var j=0; j< currentQuestion.currentMolecule.length; j++){
+			if(game.countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != game.countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
+					feedbackText = 'You do not have the right types of atoms';
+					currentQuestion.repeat = true;
+					return false;
+			}
+		}
+  }
+
+// should check the connections of the atoms (maar hou rekening mee dat de lengte van de moleculen wellicht niet even lang zijn, dus loop over currentMolecule)
+  this.checkConnections = function(){
+
+  }
+
+  // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
+
   this.showQuestion = function(){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = ["Mission: " + this.currentQuestionText];
