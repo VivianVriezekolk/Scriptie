@@ -3,10 +3,9 @@ function Trial(game, group){
   this.group = group;
   this.game = game;
   this.currentQuestionText = [];
-  this.rightAnswerText = [];
-  this.wrongAnswerText = [];
   this.currentMolecule = [];
   this.molecule = [];
+  this.copyMolecule = [];
   this.text = [];
   this.isAsked = false;
   this.score = 0;

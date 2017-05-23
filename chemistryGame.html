@@ -59,7 +59,6 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render});
-var copyMolecule = [];
 var currentQuestion = new Trial(game, group);
 var id = 0;
 var listOfQuestions = [];
@@ -449,6 +448,7 @@ function makeTrial(trial, index, textsQuestion){
 			var atomsOfMolecule = newQuestion[1];
 			for(var j=0; j < atomsOfMolecule.length; j++){
 				trial.molecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
+				trial.copyMolecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
 			}
 		}
 		else if(textsQuestion[i].indexOf('Familiarity') > -1){
@@ -461,6 +461,7 @@ function makeTrial(trial, index, textsQuestion){
 					var value = textsQuestion[m];
 					if(value[k] == 1){
 						trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
+						trial.copyMolecule[k].addConnection(trial.copyMolecule[m-(i+1)]);
 					}
 				}
 			}
@@ -537,7 +538,6 @@ function evaluateAnswer(){
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + feedbackText;
 				popup.style.display = 'block';
-				currentQuestion.molecule = copyMolecule;
 			}
 			else{
 				showLastPopup('Your answer is incorrect.');
@@ -560,7 +560,6 @@ function printMolecule(){
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
-	copyMolecule = currentQuestion.molecule;
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
@@ -624,10 +623,11 @@ function checkNeighbours(){
 				}
 				console.log(k);
 				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-				//currentQuestion.molecule.splice(k, 1);
+				currentQuestion.molecule.splice(k, 1);
 			}
 		}
 	}
+	currentQuestion.molecule = currentQuestion.copyMolecule;
 	return true;
 }
 
