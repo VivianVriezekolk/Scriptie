@@ -75,3 +75,13 @@ Bindings
 00100000010
 01000000101
 10000000010
+
+Question~You need to make methanol.
+Molecule~CHHHOH
+Familiarity~0
+Bindings
+011110
+100000
+100000
+100001
+000010

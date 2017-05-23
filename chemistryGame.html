@@ -173,7 +173,6 @@ function startG(){
 	}
 	deleteButton.visible = true;
 	doneButton.visible = true;
-
 	console.log('start');
 }
 
@@ -190,7 +189,6 @@ function move(amount) {
     var elem = document.getElementById("myBar");
 		var currentHeigth = this.height;
     var id = setInterval(frame, 20);
-
 
     function frame() {
 			this.amount = Math.floor(this.amount);
@@ -255,6 +253,7 @@ function setSalary(height){
 		//salarytext.style.color = color;
 	}
 }
+
 function changeColorOfProgressBar(score){
 	var elem = document.getElementById("myProgress");
 	//var score = 100 - this.height;
@@ -604,7 +603,7 @@ function checkNeighbours(){
 				}
 				console.log(k);
 				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-			//	molecule.splice(k, 1);
+				currentQuestion.molecule.splice(k, 1);
 			}
 		}
 	}
