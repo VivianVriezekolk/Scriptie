@@ -71,7 +71,7 @@ var finish = document.getElementById('gamedone');
 var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var gameIsFinished = false;
-var randomStrategy = true;
+var randomStrategy = false;
 var height = 90;
 var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton'];
 var positionY = [100, 150, 200, 250, 300, 350];
@@ -109,7 +109,7 @@ function create() {
 
 	graphics1.beginFill(0xffdd99);
 	graphics2.beginFill(0xAAAAAA);
-	whiterect.beginFill(0xffffff);
+	whiterect.beginFill(0xe6f2ff);
 
 	graphics1.drawRect(10, 10, 80, 480); //3
 
@@ -180,6 +180,7 @@ function determineOveralDifficulty(){
 	var sum = 0;
 	for(var i=0; i < listOfQuestions.length; i++){
 		sum = sum + listOfQuestions[i].difficulty
+		console.log(listOfQuestions[i].currentQuestionText +  ", " + listOfQuestions[i].difficulty);
 	}
 	return sum;
 }
@@ -317,7 +318,8 @@ function decideQuestion(){
 			priorityQueueQuestions[0].isAsked = true;
 			return priorityQueueQuestions[0];
 		}
-		return pickAdaptively();
+		console.log("hhallooo");
+		return decideAdaptively();
 	}
 }
 
@@ -326,8 +328,9 @@ function makePriorityQue(){
 	for(var i=0; i<listOfQuestions.length; i++){
 		priority.push(listOfQuestions[i].difficulty);
 	}
-	priority.sort();
-
+	priority = priority.sort(function(a,b){
+		return (+a) - (+b);
+	});
 	for(var i=0; i<priority.length; i++){
 		for(var j=0; j<listOfQuestions.length; j++){
 			if(priority[i] == listOfQuestions[j].difficulty && !priorityQueueQuestions.includes(listOfQuestions[j])){
@@ -373,6 +376,20 @@ function pickAdaptively(){
 			}
 		}
 	}
+}
+
+function decideAdaptively(){
+	console.log("hallooooo?");
+	for(var i=0; i< priorityQueueQuestions.length; i++){
+		if(priorityQueueQuestions[i].repeat || !priorityQueueQuestions[i].isAsked){
+			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions[i].molecule);
+			priorityQueueQuestions[i].isAsked = true;
+			priorityQueueQuestions[i].repeat = false;
+
+			return priorityQueueQuestions[i];
+		}
+	}
+
 }
 
 function restartGame(){
@@ -547,23 +564,27 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		this.height = move(determineShiftInBar(1));
+		this.height = move(determineShiftInBar(1.0));
 		console.log(this.height);
+		currentQuestion.repeat = true;
 		return false;
 	}
-	currentQuestion.score = 0.50;
-	this.height = move(determineShiftInBar(-0.5));
-	console.log(determineShiftInBar(-0.5));
-	for(var j=0; j< currentQuestion.molecule.length; j++){
-		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
-				feedbackText = 'You do not have the right types of atoms';
-				return false;
+	else{
+		for(var j=0; j< currentQuestion.molecule.length; j++){
+			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
+					currentQuestion.score = 0.50;
+					this.height = move(determineShiftInBar(-0.5));
+					console.log(determineShiftInBar(-0.5));
+					feedbackText = 'You do not have the right types of atoms';
+					currentQuestion.repeat = true;
+					return false;
+			}
 		}
+		currentQuestion.score = 0.75;
+		this.height = move(determineShiftInBar(-0.75));
+		console.log(determineShiftInBar(-0.75));
+		return checkNeighbours();
 	}
-	currentQuestion.score = 0.75;
-	this.height = move(determineShiftInBar(-0.75));
-	console.log(determineShiftInBar(-0.75));
-	return checkNeighbours();
 }
 
 function determineShiftInBar(answerScore){
@@ -603,7 +624,7 @@ function checkNeighbours(){
 				}
 				console.log(k);
 				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-				currentQuestion.molecule.splice(k, 1);
+				//currentQuestion.molecule.splice(k, 1);
 			}
 		}
 	}

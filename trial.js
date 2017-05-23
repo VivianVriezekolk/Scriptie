@@ -12,6 +12,7 @@ function Trial(game, group){
   this.score = 0;
   this.difficulty = 0;
   this.familiarity = 0;
+  this.repeat = false;
 
   // this does not work but I do not understand why not.
   this.checkTheAnswer = function(){
@@ -62,7 +63,6 @@ function Trial(game, group){
   }
 
   this.showQuestion = function(){
-    this.makeButtons();
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = ["Mission: " + this.currentQuestionText];
     missionpopup.style.display = 'block';
@@ -71,6 +71,7 @@ function Trial(game, group){
     delayText.content = content;
     missionText.innerText = "";
     delayText.nextLine();
+    this.makeButtons();
   };
 
   this.determineUniqueAtoms = function(){

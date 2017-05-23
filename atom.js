@@ -49,8 +49,10 @@ function Atom(value, currentAtom, id, game) {
 					console.log(lostAtom.value + " is removed from " + this.value);
 					console.log(lostAtom.id + " is removed from " + this.id);
 					this.neighbour.splice(i, 1);
-          this.sprite.tint = 0x00ff00;
-				}
+          var colour = '0x' + (Math.random().toString(16) + "000000").substring(2,8);
+          this.sprite.tint = colour;
+          console.log(colour);
+        }
 			}
 		}
 }
