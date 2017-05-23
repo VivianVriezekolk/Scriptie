@@ -3,6 +3,7 @@ function Atom(value, currentAtom, id, game) {
 		this.neighbour = [];
 		this.id = id;
     this.game = game;
+    this.sprite = [];
 		if(currentAtom){
       console.log(game.world.centerX + ", " + game.world.centerY);
       var Xrandom = determineXPositionInGrid();
@@ -14,6 +15,7 @@ function Atom(value, currentAtom, id, game) {
   		this.sprite.input.enableDrag(true);
   		this.sprite.input.enableSnap(32, 32, false, true);
       this.sprite.events.onDragStop.add(deleteAtom, this);
+      this.sprite.tint = 0x00ff00;
 		}
 
     function determineXPositionInGrid(){
@@ -36,6 +38,7 @@ function Atom(value, currentAtom, id, game) {
 		this.addConnection = function(snappedAtom){
 				if(!atomsAreSnapped(this, snappedAtom)){
 					  this.neighbour.push(snappedAtom);
+            this.sprite.tint = 0xFF0000;
 				}
 			}
 
@@ -46,6 +49,7 @@ function Atom(value, currentAtom, id, game) {
 					console.log(lostAtom.value + " is removed from " + this.value);
 					console.log(lostAtom.id + " is removed from " + this.id);
 					this.neighbour.splice(i, 1);
+          this.sprite.tint = 0x00ff00;
 				}
 			}
 		}
