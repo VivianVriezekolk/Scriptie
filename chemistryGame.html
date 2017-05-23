@@ -89,7 +89,7 @@ function preload() {
 		game.load.image("QButton", 'images/BrAtomButton.png')
 		game.load.image("IButton", 'images/IAtomButton.png')
 		game.load.image('delete', 'images/garbage.png');
-		game.load.image('C', 'images/CAtom.png');
+		game.load.image('C', 'images/CAtom1.png');
 		game.load.image('H', 'images/HAtom.png');
 		game.load.image('O', 'images/OAtom.png');
 		game.load.image('I', 'images/IAtom.png');
@@ -292,7 +292,7 @@ function moveTo(amount){
 
 function deleteAtom(){
 	console.log(this.sprite.x + " " + this.sprite.y);
-	if(this.sprite.x < 35 && this.sprite.x > 10 && this.sprite.y > 450 && this.sprite.y < 530){
+	if(this.sprite.x < 35 && this.sprite.x > 5 && this.sprite.y > 440 && this.sprite.y < 530){
 		console.log(this.sprite.x + " " + this.sprite.y);
 		// je moet ook het atom verwijderen uit currentMolecule
 		this.sprite.destroy();
@@ -492,6 +492,8 @@ function showLastPopup(text){
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
 // After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
 function evaluateAnswer(){
+	printMolecule();
+
 	feedbackText = [];
 	if(!gameIsFinished){
 
@@ -532,6 +534,14 @@ function evaluateAnswer(){
 	}
 }
 
+function printMolecule(){
+	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
+		console.log("Dit is Atom nummer " +  i + ", " + currentQuestion.currentMolecule[i].value + ", " + currentQuestion.currentMolecule[i].id);
+		console.log(currentQuestion.currentMolecule[i]);
+	}
+
+}
+
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
 	copyMolecule = currentQuestion.molecule;
@@ -545,11 +555,12 @@ function checkTheAnswer(){
 	currentQuestion.score = 0.50;
 	this.height = move(determineShiftInBar(-0.5));
 	console.log(determineShiftInBar(-0.5));
-	for(var j=0; j< currentQuestion.molecule.length; j++)
+	for(var j=0; j< currentQuestion.molecule.length; j++){
 		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 				feedbackText = 'You do not have the right types of atoms';
 				return false;
 		}
+	}
 	currentQuestion.score = 0.75;
 	this.height = move(determineShiftInBar(-0.75));
 	console.log(determineShiftInBar(-0.75));
