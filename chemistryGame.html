@@ -236,12 +236,10 @@ function setSalary(height){
 	if(height == 100){
 		salarytext.innerText = "Your salary is " + 0 + " euro.";
 		var color = changeColorOfProgressBar(0);
-		//salarytext.style.color = color;
 	}
 	else if(height == 0){
 		salarytext.innerText = "Your salary is " + 100 + " euros.";
 		var color = changeColorOfProgressBar(100);
-		//salarytext.style.color = color;
 	}
 	else{
 		var score = Math.floor(100 - (+height + +this.amount));
@@ -290,7 +288,6 @@ function deleteAtom(){
 	console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 35 && this.sprite.x > 5 && this.sprite.y > 440 && this.sprite.y < 530){
 		console.log(this.sprite.x + " " + this.sprite.y);
-		// je moet ook het atom verwijderen uit currentMolecule
 		this.sprite.destroy();
 		removeAtom(this);
 		}
@@ -315,7 +312,6 @@ function decideQuestion(){
 			console.log(priorityQueueQuestions[0].repeat);
 			return priorityQueueQuestions[0];
 		}
-		console.log("hhallooo");
 		return decideAdaptively();
 	}
 }
@@ -413,13 +409,12 @@ function restartGame(){
 
 function finishGame(){
 	finish.style.display = 'none';
-	// Verwijder de vraag onderaan.
+	// Verwijder de vraag onderaan
 	if(text != undefined){
 		game.world.remove(text);
 		currentQuestion.finishGame();
 	}
 	gameIsFinished = true;
-	console.log("klaar!");
 }
 
 function getScore(){
@@ -642,7 +637,6 @@ function printMolecule(){
 		console.log(currentQuestion.currentMolecule[i]);
 	}
 }
-
 
 // this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
 function checkTheAnswer(){
