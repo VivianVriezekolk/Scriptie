@@ -91,7 +91,6 @@ function Trial(game){
   }
 
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
-
   this.showQuestion = function(){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = ["Mission: " + this.currentQuestionText];

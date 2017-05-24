@@ -79,7 +79,6 @@ var floor;
 var doneButton;
 var deleteButton;
 
-
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonBrown.png');
 		game.load.image('OButton', 'images/OAtomButtonBrown.png');
@@ -339,34 +338,6 @@ function pickRandomQuestion(){
 	}
 	priorityQueueQuestions[x].isAsked = true;
 	return priorityQueueQuestions[x];
-}
-
-function pickAdaptively(){
-	console.log(currentQuestion.score);
-	if(currentQuestion.score == 1){
-		for(var i=0; i<priorityQueueQuestions.length; i++){
-			if(priorityQueueQuestions[i].difficulty - currentQuestion.difficulty>= 1 && priorityQueueQuestions[i].isAsked == false){
-				priorityQueueQuestions[i].isAsked = true;
-				return priorityQueueQuestions[i];
-			}
-		}
-	}
-	else if(currentQuestion.score == 0.75){
-		for(var i=0; i < priorityQueueQuestions.length; i++){
-			if(currentQuestion.difficulty - priorityQueueQuestions[i].difficulty <= 1 && priorityQueueQuestions[i].isAsked == false){
-				priorityQueueQuestions[i].isAsked = true;
-				return priorityQueueQuestions[i];
-			}
-		}
-	}
-	else{
-		for(var i=0; i < priorityQueueQuestions.length; i++){
-			if(currentQuestion.difficulty - priorityQueueQuestions[i].difficulty == 1 && priorityQueueQuestions[i].isAsked == false){
-				priorityQueueQuestions[i].isAsked = true;
-				return priorityQueueQuestions[i];
-			}
-		}
-	}
 }
 
 function decideAdaptively(){
