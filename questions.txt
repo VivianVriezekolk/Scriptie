@@ -24,3 +24,65 @@ Bindings
 011
 100
 100
+
+Question~You need to make one oxygen molecule.
+Molecule~OO
+Familiarity~2
+Bindings
+01
+10
+
+Question~You need to make one fluor molecule.
+Molecule~FF
+Familiarity~1
+Bindings
+01
+10
+
+Question~You need to make one hydrogen molecule.
+Molecule~HH
+Familiarity~2
+Bindings
+01
+10
+
+Question~You need to make one Iodine molecule.
+Molecule~II
+Familiarity~1
+Bindings
+01
+10
+
+Question~You need to make one bromine molecule.
+Molecule~QQ
+Familiarity~1
+Bindings
+01
+10
+
+Question~You need to make propaan.
+Molecule~CCCHHHHHHHH
+Familiarity~1
+Bindings
+01011000001
+10100100010
+01000011100
+10000000000
+10000100000
+01001010000
+00100100000
+00100000000
+00100000010
+01000000101
+10000000010
+
+Question~You need to make methanol.
+Molecule~CHHHOH
+Familiarity~0
+Bindings
+011110
+100000
+100000
+100000
+100001
+000010

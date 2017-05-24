@@ -33,7 +33,7 @@
 				<p id = "finishText"></p>
 				<p id = "score"></p>
 				<input type= "image" src = "images/finish.png" id= "Okbutton" onclick ="finishGame()">
-			<!--	<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()"> -->
+			<!--<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()"> -->
 			</div>
 		</div>
 		<div class = "progressText">
@@ -114,7 +114,7 @@ function preload() {
 		game.load.text('questions', 'questions.txt');
 }
 
-function create() {
+function create(){
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
 	var whiterect = game.add.graphics(0, 0);
@@ -208,15 +208,6 @@ function determineOveralDifficulty(){
 		//console.log(listOfQuestions[i].currentQuestionText +  ", " + listOfQuestions[i].difficulty);
 	}
 	return sum;
-}
-
-function moveTo(amount){
-	var elem = document.getElementById("myBar");
-	console.log(amount);
-	this.amount = amount;
-	elem.style.height = amount + '%';
-	this.height = amount;
-	return this.height;
 }
 
 function updateBar() {
@@ -340,11 +331,9 @@ function restartGame(){
 	if(!randomStrategy){
 		currentQuestion.finishGame();
 	}
-	console.log("Zo hoog is hij nu " + this.height);
-	this.height = move(this.height);
-	finish.style.display = 'none';
-	var salarytext = document.getElementById('salarytext');
-	salarytext.innerText = "Your salary is " + (this.height) + " euros.";
+	totalScore = 10;
+	updateBar();
+	updateSalary();
 	showNextQuestion();
 }
 
@@ -459,8 +448,6 @@ function evaluateAnswer2(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log(determineShiftInBar(-1));
-				this.height = move(determineShiftInBar(-1));
 			}
 			else if(rightAmount && !currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
 				// drie keer herhalen.
@@ -468,14 +455,12 @@ function evaluateAnswer2(){
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
 				popup.style.display = 'block';
-				this.height = move(determineShiftInBar(1));
 			}
 			else if(!currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
 				var textAnswer = document.getElementById('textAnswer');
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
 				popup.style.display = 'block';
-				this.height = move(determineShiftInBar(-0.50));
 				// 2x herhalen
 			}
 			else if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
@@ -484,24 +469,18 @@ function evaluateAnswer2(){
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
 				popup.style.display = 'block';
-				this.height = move(determineShiftInBar(-0.75));
 			}
 			else if(!currentQuestion.checkTypeOfAtoms() && currentQuestion.checkUniqueAtoms() && !currentQuestion.checkConnections() && !currentQuestion.checkTypeOfAtoms()){
 				var textAnswer = document.getElementById('textAnswer');
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
 				popup.style.display = 'block';
-				this.height = move(determineShiftInBar(-0.3));
 			}
 		}
 		else{
 			if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && currentQuestion.checkConnections()){
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log(determineShiftInBar(-1));
-				var score = determineShiftInBar(-1);
-				console.log("score is " + score);
-				this.height =  move(score);
 			}
 			else{
 				showLastPopup('Your answer is incorrect.');
@@ -526,16 +505,10 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				// console.log(determineShiftInBar(-1));
-				// this.height = move(determineShiftInBar(-1));
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				// console.log(determineShiftInBar(-1));
-				// var score = determineShiftInBar(-1);
-				// console.log("score is " + score);
-				// this.height =  move(score);
 			}
 			totalScore += convertScoreChange(1);
 		}
@@ -625,18 +598,6 @@ function checkTheAnswer(){
 function convertScoreChange(answerScore) {
 	var totalDifficulty = determineOveralDifficulty();
 	return answerScore * 90 * currentQuestion.difficulty / totalDifficulty;
-}
-
-function determineShiftInBar(answerScore){
-	var score = 85 - determineOveralDifficulty();
-	if(answerScore > 0){
-		console.log("Dit ga ik nu verplaatsen +" + (((answerScore*score)/priorityQueueQuestions.length) + currentQuestion.difficulty));
-		return ((answerScore*score)/priorityQueueQuestions.length) + currentQuestion.difficulty;
-	}
-	else{
-		console.log("Dit ga ik nu verplaatsen -" + (((answerScore*score)/priorityQueueQuestions.length) - currentQuestion.difficulty));
-		return ((answerScore*score)/priorityQueueQuestions.length) - currentQuestion.difficulty;
-	}
 }
 
 // maak kopie van correct antwoord zodat je als je het antwoord fout hebt, nog verder kan gaan om het te verbeteren.
