@@ -78,7 +78,8 @@ var buttonsList = [];
 var floor;
 var group;
 var doneButton;
-var deleteButton
+var deleteButton;
+
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonBrown.png');
@@ -309,8 +310,9 @@ function decideQuestion(){
 		return pickRandomQuestion();
 	}
 	else{
-		if(currentQuestion.molecule.length == 0){
+		if(currentQuestion.molecule.length == 0 && !currentQuestion.alreadyAdded){
 			priorityQueueQuestions[0].isAsked = true;
+			console.log(priorityQueueQuestions[0].repeat);
 			return priorityQueueQuestions[0];
 		}
 		console.log("hhallooo");
@@ -375,10 +377,18 @@ function pickAdaptively(){
 
 function decideAdaptively(){
 	for(var i=0; i< priorityQueueQuestions.length; i++){
-		if(priorityQueueQuestions[i].repeat || priorityQueueQuestions[i].isAsked == false){
-			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions[i].molecule);
+		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat >= 1){
+			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions.length);
 			priorityQueueQuestions[i].isAsked = true;
-			priorityQueueQuestions[i].repeat = false;
+			if(priorityQueueQuestions[i].repeat > 0){
+				console.log(priorityQueueQuestions[i].repeat);
+				priorityQueueQuestions[i].repeat -= 1;
+				console.log(priorityQueueQuestions[i].repeat);
+			}
+			else{
+				priorityQueueQuestions[i].repeat = 0;
+
+			}
 			return priorityQueueQuestions[i];
 		}
 	}
@@ -387,7 +397,7 @@ function decideAdaptively(){
 function restartGame(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		priorityQueueQuestions[i].isAsked = false;
-		priorityQueueQuestions[i].repeat = false;
+		priorityQueueQuestions[i].repeat = 0;
 		priorityQueueQuestions[i].score = 0;
 	}
 	if(!randomStrategy){
@@ -498,14 +508,82 @@ function showLastPopup(text){
 	finish.style.display = 'block';
 }
 
+function evaluateAnswer2(){
+	printMolecule();
+	feedbackText = [];
+	var rightAmount = currentQuestion.checkAmountOfAtoms();
+	var rightType = currentQuestion.checkTypeOfAtoms();
+	var rightConnections = currentQuestion.checkConnections();
+	console.log(rightAmount);
+
+	if(!gameIsFinished){
+		if(!allQuestionsAreAsked()){
+			if(rightAmount && rightType && rightConnections){
+				var textAnswer = document.getElementById('textAnswer');
+				currentQuestion.score = 1;
+				textAnswer.innerText = 'Great job!';
+				popup.style.display = 'block';
+				console.log(determineShiftInBar(-1));
+				this.height = move(determineShiftInBar(-1));
+			}
+			else if(rightAmount && !currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
+				// drie keer herhalen.
+				var textAnswer = document.getElementById('textAnswer');
+				textAnswer.style.color = "red";
+				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
+				popup.style.display = 'block';
+				this.height = move(determineShiftInBar(1));
+			}
+			else if(!currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
+				var textAnswer = document.getElementById('textAnswer');
+				textAnswer.style.color = "red";
+				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
+				popup.style.display = 'block';
+				this.height = move(determineShiftInBar(-0.50));
+				// 2x herhalen
+			}
+			else if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
+				// 1 keer herhelan
+				var textAnswer = document.getElementById('textAnswer');
+				textAnswer.style.color = "red";
+				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
+				popup.style.display = 'block';
+				this.height = move(determineShiftInBar(-0.75));
+			}
+			else if(!currentQuestion.checkTypeOfAtoms() && currentQuestion.checkUniqueAtoms() && !currentQuestion.checkConnections() && !currentQuestion.checkTypeOfAtoms()){
+				var textAnswer = document.getElementById('textAnswer');
+				textAnswer.style.color = "red";
+				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
+				popup.style.display = 'block';
+				this.height = move(determineShiftInBar(-0.3));
+			}
+		}
+		else{
+			if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && currentQuestion.checkConnections()){
+				currentQuestion.score = 1;
+				showLastPopup('Great Job!');
+				console.log(determineShiftInBar(-1));
+				var score = determineShiftInBar(-1);
+				console.log("score is " + score);
+				this.height =  move(score);
+			}
+			else{
+				showLastPopup('Your answer is incorrect.');
+			}
+		}
+		for(var i=0; i<currentQuestion.currentMolecule.length; i++){
+			currentQuestion.currentMolecule[i].sprite.destroy();
+		}
+		currentQuestion.currentMolecule = [];
+	}
+}
+
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
 // After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
 function evaluateAnswer(){
 	printMolecule();
-
 	feedbackText = [];
 	if(!gameIsFinished){
-
 		if(checkTheAnswer()){
 			if(!allQuestionsAreAsked()){
 				var textAnswer = document.getElementById('textAnswer');
@@ -539,7 +617,23 @@ function evaluateAnswer(){
 			currentQuestion.currentMolecule[i].sprite.destroy();
 		}
 		currentQuestion.currentMolecule = [];
+		addWrongQuestion();
 	}
+}
+
+function addWrongQuestion(){
+	var currentLength = priorityQueueQuestions.length;
+	for(var i=0; i < currentQuestion.repeat; i++){
+		if(!currentQuestion.alreadyAdded){
+			priorityQueueQuestions.push(currentQuestion);
+			console.log(currentQuestion);
+		}
+	}
+	if(currentLength != priorityQueueQuestions.length){
+		currentQuestion.alreadyAdded = true;
+		console.log("deze ga ik niet adden");
+	}
+	console.log(priorityQueueQuestions.length);
 }
 
 function printMolecule(){
@@ -556,8 +650,10 @@ function checkTheAnswer(){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
 		this.height = move(determineShiftInBar(1.0));
+		if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
+			currentQuestion.repeat = 2;
+		}
 		console.log(this.height);
-		currentQuestion.repeat = true;
 		return false;
 	}
 	else{
@@ -567,7 +663,9 @@ function checkTheAnswer(){
 					this.height = move(determineShiftInBar(-0.5));
 					console.log(determineShiftInBar(-0.5));
 					feedbackText = 'You do not have the right types of atoms';
-					currentQuestion.repeat = true;
+					if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
+						currentQuestion.repeat = 3;
+					}
 					return false;
 			}
 		}
@@ -611,6 +709,7 @@ function checkNeighbours(){
 				});
 				if(!equalLists(currentQuestion.molecule[k].neighbour, currentQuestion.currentMolecule[f].neighbour)){
 					feedbackText = 'You do not have the right connections between the atoms.';
+					currentQuestion.repeat = 1;
 					return false;
 				}
 				console.log(k);

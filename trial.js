@@ -11,52 +11,13 @@ function Trial(game, group){
   this.score = 0;
   this.difficulty = 0;
   this.familiarity = 0;
-  this.repeat = false;
-
-  // this does not work but I do not understand why not.
-  this.checkTheAnswer = function(){
-    this.copyMolecule = this.molecule;
-    console.log(this.currentMolecule);
-    if(currentMolecule.length != molecule.length){
-      console.log('You do not have the right amount of atoms!');
-      return false;
-    }
-    console.log('You have the right amount of atoms!');
-    for(var j=0; j< molecule.length; j++)
-      if(game.countNumberOfAtoms(molecule, molecule[j].value) != game.countNumberOfAtoms(currentMolecule, molecule[j].value)){
-          console.log('You do not have the right types of atoms');
-          return false;
-      }
-      console.log(currentMolecule.length);
-    return game.checkNeighbours();
-  };
-
-  // this does not work but I do not understand why not.
-  this.evaluateAnswer = function(){
-  	if(checkTheAnswer()){
-  		var textAnswer = document.getElementById('textAnswer');
-  		textAnswer.innerText = 'Great job!';
-  		popup.style.display = 'block';
-  	}
-  	else{
-  		var textAnswer = document.getElementById('textAnswer');
-  		textAnswer.innerText = 'You did not make the correct molecule';
-  		popup.style.display = 'block';
-  		console.log('You did not make the correct molecule.');
-  		this.molecule = this.copyMolecule;
-  		console.log(molecule);
-  	}
-    console.log(currentMolecule.length);
-  	for(var i=0; i< currentMolecule.length; i++){
-      console.log("hoi");
-  		currentMolecule[i].sprite.destroy();
-  	}
-  	currentMolecule = [];
-  };
+  this.repeat = 0;
+  this.feedbackText = [];
+  this.alreadyAdded = false;
 
   this.finishGame = function(){
     this.currentQuestionText = [];
-    this.repeat = false;
+    this.repeat = 0;
     this.currentMolecule = [];
   //  this.molecule = [];
     this.text = [];
@@ -65,25 +26,68 @@ function Trial(game, group){
 // checks the amount of atoms
   this.checkAmountOfAtoms = function(){
     if(this.currentMolecule.length != this.molecule.length){
-      feedbackText = 'You do not have the right amount of atoms!';
-      currentQuestion.repeat = true;
+      this.feedbackText = 'You do not have the right amount of atoms!';
+      currentQuestion.repeat = 2;
       return false;
     }
+    return true;
+  }
+
+  this.checkUniqueAtoms = function(){
+    var values = this.determineUniqueAtoms();
+    for(var i=0; i< values.length; i++){
+      for(var j=0; j< this.currentMolecule.length; i++){
+        if(values[i] == this.currentMolecule[j].value){
+          values.splice(i,1);
+        }
+      }
+    }
+    if(values.length == 0){
+      this.feedbackText = "You have all the unique atoms in the molecule";
+      console.log("hallo");
+      return true;
+    }
+    return false;
   }
 
 // checks the type of atoms
   this.checkTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.currentMolecule.length; j++){
-			if(game.countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != game.countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
-					feedbackText = 'You do not have the right types of atoms';
-					currentQuestion.repeat = true;
+			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
+					this.feedbackText = 'You do not have the right types of atoms';
+					currentQuestion.repeat = 3;
 					return false;
 			}
 		}
+    return true;
   }
 
 // should check the connections of the atoms (maar hou rekening mee dat de lengte van de moleculen wellicht niet even lang zijn, dus loop over currentMolecule)
   this.checkConnections = function(){
+    for(var k=0; k< this.molecule.length; k++){
+  		for(var f=0; f< this.currentMolecule.length; f++){
+  			if(this.molecule[k].value == this.currentMolecule[f].value){
+  				this.molecule[k].neighbour.sort(function(a, b){
+  						return a.value < b.value;
+  				});
+  				for(var v=0; v<this.molecule[k].neighbour.length; v++){
+  					console.log("neighbour: " + currentQuestion.molecule[k].neighbour[v].value);
+  				}
+  				this.currentMolecule[f].neighbour.sort(function(a, b){
+  					return a.value < b.value;
+  				});
+  				if(!equalLists(this.molecule[k].neighbour, this.currentMolecule[f].neighbour)){
+  					this.feedbackText = 'You do not have the right connections between the atoms.';
+  					return false;
+  				}
+  				console.log(k);
+  				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
+  				this.molecule.splice(k, 1);
+  			}
+  		}
+  	}
+  	this.molecule = this.copyMolecule;
+  	return true;
 
   }
 
