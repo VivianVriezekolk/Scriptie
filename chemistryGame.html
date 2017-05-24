@@ -38,18 +38,22 @@
 		</div>
 		<div class = "progressText">
 			<div class = "textProgresscontent">
-			<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Current Salary</p>
+				<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Current Salary</p>
+			</div>
 		</div>
-		</div>
+
 		<div class = "progress">
-		<div id="myProgress">
-	  	<div id="myBar"></div></div>
+			<div id="myProgress">
+		  	<div id="myBar"></div>
+			</div>
 		</div>
+
 		<div class = "amountSalary">
 			<div class = "SalaryContent">
-			<p id="salarytext" style="font: 15px times new roman; color: green;"></p>
+				<p id="salarytext" style="font: 15px times new roman; color: green;"></p>
+			</div>
 		</div>
-		</div>
+
 	<div id= "missionTextPopup" class = "missionPopup">
 		<div class = "mission-content">
 			<p id = "missionText"></p>
@@ -59,25 +63,35 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render});
-var currentQuestion = new Trial(game);
-var id = 0;
-var listOfQuestions = [];
-var priorityQueueQuestions = [];
-var text = [];
-var feedbackText = [];
+
 var popup = document.getElementById('wrongAnswer');
 var finish = document.getElementById('gamedone');
 var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
-var gameIsFinished = false;
-var randomStrategy = false;
+var bar = document.getElementById("myBar");
+
+bar.style.height = "90%";
+
+var currentQuestion = new Trial(game);
+var id = 0;
 var height = 90;
+
+var listOfQuestions = [];
+var priorityQueueQuestions = [];
+var text = [];
+var feedbackText = [];
+var buttonsList = [];
+
 var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton'];
 var positionY = [100, 150, 200, 250, 300, 350];
-var buttonsList = [];
+var gameIsFinished = false;
+var randomStrategy = false;
+
 var floor;
 var doneButton;
 var deleteButton;
+
+var totalScore = 10; // van 0 tot 100. 0 is niks 100 is alles.
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonBrown.png');
@@ -190,8 +204,8 @@ function startG(){
 function determineOveralDifficulty(){
 	var sum = 0;
 	for(var i=0; i < listOfQuestions.length; i++){
-		sum = sum + listOfQuestions[i].difficulty
-		console.log(listOfQuestions[i].currentQuestionText +  ", " + listOfQuestions[i].difficulty);
+		sum = sum + listOfQuestions[i].difficulty;
+		//console.log(listOfQuestions[i].currentQuestionText +  ", " + listOfQuestions[i].difficulty);
 	}
 	return sum;
 }
@@ -205,93 +219,51 @@ function moveTo(amount){
 	return this.height;
 }
 
-function move(amount) {
-		this.amount = amount;
-    var elem = document.getElementById("myBar");
-		var currentHeigth = this.height;
-    var id = setInterval(frame, 20);
+function updateBar() {
+	var SPEED = 1;
+	var MINIMUM_EPSILON = 1;
 
-    function frame() {
-			this.amount = Math.floor(this.amount);
-			if(this.amount < 0){
-				if (this.height >= (currentHeigth + this.amount)) {
-					if((currentHeigth + this.amount) >= 1){
-						this.height--;
-						elem.style.height = this.height + '%';
-      		}
-					else{
-						while(this.height >= 1){
-							this.height--;
-							elem.style.height = this.height + '%';
-						}
-						setSalary(0);
-						return this.height;
-					}
-				}
-			}
-			else{
-				if (this.height <= (currentHeigth + this.amount)){
-					if(currentHeigth + this.amount <= 100){
-	        	this.height++;
-						elem.style.height = this.height + '%';
-					}
-					else{
-					 	while(this.height <= 100){
-					 		this.height++;
-					 		elem.style.height = this.height + '%';
-					 	}
-					 	setSalary(100);
-					 	return this.height;
-					}
-				}
-    	}
-		}
-		setSalary(this.height);
-		console.log(this.height);
-		return this.height;
-}
+	var elem = document.getElementById("myBar");
+	var goalHeight = 100 - this.totalScore;
+	var id = setInterval(frame, 20);
 
-function setSalary(height){
-	var salarytext = document.getElementById('salarytext');
-	if(height == 100){
-		salarytext.innerText = "Your salary is " + 0 + " euro.";
-		var color = changeColorOfProgressBar(0);
-	}
-	else if(height == 0){
-		salarytext.innerText = "Your salary is " + 100 + " euros.";
-		var color = changeColorOfProgressBar(100);
-	}
-	else{
-		var score = Math.floor(100 - (+height + +this.amount));
-		salarytext.innerText = "Your salary is " + score + " euros.";
-		console.log(+height + +this.amount);
-		var color = changeColorOfProgressBar(score);
+	function frame() {
+		var currentHeight = parseInt(elem.style.height);
+		var epsilon = goalHeight - currentHeight;
+		if (Math.abs(epsilon) < MINIMUM_EPSILON)
+			clearInterval(id);
+		var newHeight = currentHeight + SPEED * Math.sign(epsilon)
+		elem.style.height = newHeight + '%';
 	}
 }
 
-function changeColorOfProgressBar(score){
+function updateBarColor(){
 	var elem = document.getElementById("myProgress");
-	//var score = 100 - this.height;
-	console.log("Score is nu " + score);
-	if(score <= 10){
+	if(totalScore <= 10){
 		elem.style.backgroundColor = "red";
-		return "red";
 	}
-	else if(score <= 30 && score > 10){
+	else if(totalScore <= 30 && totalScore > 10){
 		elem.style.backgroundColor = "orange";
-		return "orange";
 	}
-	else if(score <= 50 && score > 30){
+	else if(totalScore <= 50 && totalScore > 30){
 		elem.style.backgroundColor = "yellow";
-		return "yellow";
 	}
-	else if(score <= 65 && score > 50){
+	else if(totalScore <= 65 && totalScore > 50){
 		elem.style.backgroundColor = "#ccff66";
-		return "#ccff66";
 	}
 	else{
 		elem.style.backgroundColor = "#669900";
-		return "#669900";
+	}
+}
+
+function updateSalary(){
+	var salarytext = document.getElementById('salarytext');
+	var roundScore = Math.round(totalScore);
+	if(roundScore == 1){
+		salarytext.innerText = "Your salary is " + 1 + " euro.";
+	}
+	else{
+		salarytext.innerText = "Your salary is " + roundScore + " euros.";
 	}
 }
 
@@ -554,17 +526,18 @@ function evaluateAnswer(){
 				currentQuestion.score = 1;
 				textAnswer.innerText = 'Great job!';
 				popup.style.display = 'block';
-				console.log(determineShiftInBar(-1));
-				this.height = move(determineShiftInBar(-1));
+				// console.log(determineShiftInBar(-1));
+				// this.height = move(determineShiftInBar(-1));
 			}
 			else{
 				currentQuestion.score = 1;
 				showLastPopup('Great Job!');
-				console.log(determineShiftInBar(-1));
-				var score = determineShiftInBar(-1);
-				console.log("score is " + score);
-				this.height =  move(score);
+				// console.log(determineShiftInBar(-1));
+				// var score = determineShiftInBar(-1);
+				// console.log("score is " + score);
+				// this.height =  move(score);
 			}
+			totalScore += convertScoreChange(1);
 		}
 		else{
 			if(!allQuestionsAreAsked()){
@@ -583,6 +556,10 @@ function evaluateAnswer(){
 		currentQuestion.currentMolecule = [];
 		addWrongQuestion();
 	}
+	totalScore = Math.max(0,totalScore);
+	updateBar();
+	updateBarColor();
+	updateSalary();
 }
 
 function addWrongQuestion(){
@@ -612,19 +589,21 @@ function checkTheAnswer(){
 	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
 		console.log('You do not have the right amount of atoms!');
 		feedbackText = 'You do not have the right amount of atoms!';
-		this.height = move(determineShiftInBar(1.0));
+		//this.height = move(determineShiftInBar(1.0));
+		totalScore += convertScoreChange(-1);
 		if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
 			currentQuestion.repeat = 2;
 		}
-		console.log(this.height);
+		//console.log(this.height);
 		return false;
 	}
 	else{
 		for(var j=0; j< currentQuestion.molecule.length; j++){
 			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 					currentQuestion.score = 0.50;
-					this.height = move(determineShiftInBar(-0.5));
-					console.log(determineShiftInBar(-0.5));
+					// this.height = move(determineShiftInBar(-0.5));
+					// console.log(determineShiftInBar(-0.5));
+					totalScore += convertScoreChange(0.5);
 					feedbackText = 'You do not have the right types of atoms';
 					if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
 						currentQuestion.repeat = 3;
@@ -633,10 +612,19 @@ function checkTheAnswer(){
 			}
 		}
 		currentQuestion.score = 0.75;
-		this.height = move(determineShiftInBar(-0.75));
-		console.log(determineShiftInBar(-0.75));
-		return checkNeighbours();
+		// this.height = move(determineShiftInBar(-0.75));
+		// console.log(determineShiftInBar(-0.75));
+
+	 	var c = checkNeighbours();
+		if (!c)
+			totalScore += convertScoreChange(0.75);
+		return  c;
 	}
+}
+
+function convertScoreChange(answerScore) {
+	var totalDifficulty = determineOveralDifficulty();
+	return answerScore * 90 * currentQuestion.difficulty / totalDifficulty;
 }
 
 function determineShiftInBar(answerScore){
@@ -677,7 +665,7 @@ function checkNeighbours(){
 				}
 				console.log(k);
 				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-				currentQuestion.molecule.splice(k, 1);
+				// currentQuestion.molecule.splice(k, 1);
 			}
 		}
 	}
