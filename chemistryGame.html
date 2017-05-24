@@ -59,7 +59,7 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render});
-var currentQuestion = new Trial(game, group);
+var currentQuestion = new Trial(game);
 var id = 0;
 var listOfQuestions = [];
 var priorityQueueQuestions = [];
@@ -76,7 +76,6 @@ var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton']
 var positionY = [100, 150, 200, 250, 300, 350];
 var buttonsList = [];
 var floor;
-var group;
 var doneButton;
 var deleteButton;
 
@@ -137,7 +136,6 @@ function create() {
 	var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I'];
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
-	console.log(currentQuestion.group);
 	currentQuestion.makeButtons();
 	doneButton = game.add.button(700, 520, 'done', evaluateAnswer, this);
 
@@ -150,6 +148,20 @@ function create() {
 
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = false;
+	}
+}
+
+function decideQuestion(){
+	if(randomStrategy){
+		return pickRandomQuestion();
+	}
+	else{
+		if(currentQuestion.molecule.length == 0 && !currentQuestion.alreadyAdded){
+			priorityQueueQuestions[0].isAsked = true;
+			console.log(priorityQueueQuestions[0].repeat);
+			return priorityQueueQuestions[0];
+		}
+		return decideAdaptively();
 	}
 }
 
@@ -183,6 +195,15 @@ function determineOveralDifficulty(){
 		console.log(listOfQuestions[i].currentQuestionText +  ", " + listOfQuestions[i].difficulty);
 	}
 	return sum;
+}
+
+function moveTo(amount){
+	var elem = document.getElementById("myBar");
+	console.log(amount);
+	this.amount = amount;
+	elem.style.height = amount + '%';
+	this.height = amount;
+	return this.height;
 }
 
 function move(amount) {
@@ -275,15 +296,6 @@ function changeColorOfProgressBar(score){
 	}
 }
 
-function moveTo(amount){
-	var elem = document.getElementById("myBar");
-	console.log(amount);
-	this.amount = amount;
-	elem.style.height = amount + '%';
-	this.height = amount;
-	return this.height;
-}
-
 function deleteAtom(){
 	console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 35 && this.sprite.x > 5 && this.sprite.y > 440 && this.sprite.y < 530){
@@ -299,20 +311,6 @@ function removeAtom(atom){
 			console.log("Dit atoom is verwijderd " + atom.value);
 			currentQuestion.currentMolecule.splice(i, 1);
 		}
-	}
-}
-
-function decideQuestion(){
-	if(randomStrategy){
-		return pickRandomQuestion();
-	}
-	else{
-		if(currentQuestion.molecule.length == 0 && !currentQuestion.alreadyAdded){
-			priorityQueueQuestions[0].isAsked = true;
-			console.log(priorityQueueQuestions[0].repeat);
-			return priorityQueueQuestions[0];
-		}
-		return decideAdaptively();
 	}
 }
 
@@ -477,7 +475,7 @@ function readQuestion(){
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
 			console.log("You are going to make a new question now!");
-			makeTrial(new Trial(game, group), i+1, textsQuestion);
+			makeTrial(new Trial(game), i+1, textsQuestion);
 		}
 	}
 }
@@ -538,7 +536,7 @@ function evaluateAnswer2(){
 				// 2x herhalen
 			}
 			else if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
-				// 1 keer herhelan
+				// 1 keer herhalen
 				var textAnswer = document.getElementById('textAnswer');
 				textAnswer.style.color = "red";
 				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;

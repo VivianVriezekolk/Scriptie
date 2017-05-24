@@ -1,6 +1,5 @@
-function Trial(game, group){
+function Trial(game){
   var delayText = new DelayText(game);
-  this.group = group;
   this.game = game;
   this.currentQuestionText = [];
   this.currentMolecule = [];
@@ -19,7 +18,7 @@ function Trial(game, group){
     this.currentQuestionText = [];
     this.repeat = 0;
     this.currentMolecule = [];
-  //  this.molecule = [];
+    this.molecule = [];
     this.text = [];
   }
 
