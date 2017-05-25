@@ -28,14 +28,20 @@
 				<!--'<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">-->
 			</div	>
 		</div>
+
 		<div id= "gamedone" class = "popup">
 			<div class = "popup-content">
 				<p id = "finishText"></p>
-				<p id = "score"></p>
-				<input type= "image" src = "images/finish.png" id= "Okbutton" onclick ="finishGame()">
-			<!--<input type= "image" src = "images/restart.png" id= "Okbutton" onclick ="restartGame()"> -->
+			 <input type= "image" src = "images/start.png" id= "startButton" onclick ="showTotalScore()">
 			</div>
 		</div>
+
+		<div id= "totalScore" class= "lastpopup">
+			<div class = "popup-content">
+				<p id = "score"><b> </b></p>
+			</div>
+		</div>
+
 		<div class = "progressText">
 			<div class = "textProgresscontent">
 				<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Current Salary</p>
@@ -93,6 +99,8 @@ var floor;
 var doneButton;
 var deleteButton;
 var nextQuestion;
+var finishGame;
+var restart;
 
 var totalScore = 10; // van 0 tot 100. 0 is niks 100 is alles.
 
@@ -116,6 +124,7 @@ function preload() {
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion');
 		game.load.image('start', 'images/start.png');
+		game.load.image('finish', 'images/finish.png');
 		game.load.text('questions', 'questions.txt');
 }
 
@@ -158,12 +167,14 @@ function create(){
 	doneButton = game.add.button(695, 520, 'done', evaluateAnswer3, this);
 	nextQuestion = game.add.button(700, 510, 'nextQuestion', showNextQuestion, this);
 	deleteButton = game.add.image(12, 500, 'delete');
+	finishGame = game.add.button(695, 520, 'finish', finishGame, this);
 
 	deleteButton.scale.setTo(0.4, 0.4);
 	doneButton.scale.setTo(0.50, 0.50);
 	doneButton.visible = false;
 	deleteButton.visible = false;
 	nextQuestion.visible = false;
+	finishGame.visible = false;
 
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = false;
@@ -328,6 +339,21 @@ function decideAdaptively(){
 	}
 }
 
+// hier nog even naar kijken!
+function showTotalScore(){
+	var totalScore = document.getElementById('score');
+	finish.style.display = 'none';
+	//totalScore.display.style = 'block'
+	totalScore.innerText = "Your score is " + totalScore + " euros";
+}
+
+function showLastPopup(text){
+	var gameDone = document.getElementById('finishText');
+	finishGame.visible = true;
+	gameDone.innerText = text;
+	finish.style.display = 'block';
+}
+
 function restartGame(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		priorityQueueQuestions[i].isAsked = false;
@@ -344,8 +370,7 @@ function restartGame(){
 }
 
 function finishGame(){
-	finish.style.display = 'none';
-	// Verwijder de vraag onderaan
+	deleteSprites();
 	if(text != undefined){
 		game.world.remove(text);
 		currentQuestion.finishGame();
@@ -435,14 +460,6 @@ function showNextQuestion(){
 	}
 }
 
-function showLastPopup(text){
-	var gameDone = document.getElementById('finishText');
-	var score = document.getElementById('score');
-	gameDone.innerText = text;
-	score.innerText = "Your score is " + getScore().toFixed(2);
-	finish.style.display = 'block';
-}
-
 function evaluateAnswer3(){
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
 	var rightUnique = currentQuestion.checkUniqueAtoms();
@@ -492,31 +509,37 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 	}
 }
 
-function deleteSprites(){
-	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
-		currentQuestion.currentMolecule[i].sprite.destroy();
-	}
-	currentQuestion.currentMolecule = [];
-}
-
 function setProgress(feedback, score, colour){
-	if(allQuestionsAreAsked()){
-		showLastPopup();
-	}
 	totalScore += convertScoreChange(score);
 	totalScore = Math.max(0,totalScore);
 	updateBar();
 	updateBarColor();
 	updateSalary();
-
-	var textAnswer = document.getElementById('textAnswer');
 	currentQuestion.score = score;
-	textAnswer.style.color = colour;
-	textAnswer.innerText =  feedback;
-	popup.style.display = 'block';
-	missionpopup.style.display = 'none';
-	doneButton.visible = false;
-	nextQuestion.visible = true;
+
+	if(allQuestionsAreAsked()){
+		doneButton.visible = false;
+		nextQuestion.visible = false;
+		popup.style.display = 'none';
+		missionpopup.style.display = 'none';
+		showLastPopup(feedback);
+	}
+	else{
+		var textAnswer = document.getElementById('textAnswer');
+		textAnswer.style.color = colour;
+		textAnswer.innerText =  feedback;
+		doneButton.visible = false;
+		nextQuestion.visible = true;
+		popup.style.display = 'block';
+		missionpopup.style.display = 'none';
+	}
+}
+
+function deleteSprites(){
+	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
+		currentQuestion.currentMolecule[i].sprite.destroy();
+	}
+	currentQuestion.currentMolecule = [];
 }
 
 function addWrongQuestion(){

@@ -29,6 +29,15 @@
   border-radius: 15px;
 }
 
+.lastpopup{
+  display : none;
+  position: fixed;
+  z-index: 1;
+  top: 200px;
+  left: 130px;
+  overflow: auto;
+}
+
 .mission-content{
   display: 'block';
   background-color: #894E4E;
