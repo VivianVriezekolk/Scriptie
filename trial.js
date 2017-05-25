@@ -114,7 +114,14 @@ function Trial(game){
     delayText.content = content;
     missionText.innerText = "";
     delayText.nextLine();
-    this.makeButtons();
+    if(this.repeat != -1 && uniqueButtons){
+      this.makeButtons();
+      uniqueButtons = false;
+    }
+    else{
+      uniqueButtons = false;
+      makeButtons();
+    }
   };
 
   this.determineUniqueAtoms = function(){

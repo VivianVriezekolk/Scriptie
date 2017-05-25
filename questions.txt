@@ -60,6 +60,13 @@ Bindings
 01
 10
 
+Questions~You need to make one chloride molecule.
+Molecule~ZZ
+Familiarity~1
+Bindings
+01
+10
+
 Question~You need to make propaan.
 Molecule~CCCHHHHHHHH
 Familiarity~1
