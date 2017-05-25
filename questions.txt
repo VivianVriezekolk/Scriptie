@@ -86,3 +86,13 @@ Bindings
 100000
 100001
 000010
+
+Questions~You need to make one difluormethane molecule.
+Molecule~CFFHH
+Familiarity~0
+Bindings
+01111
+10000
+10000
+10000
+10000
