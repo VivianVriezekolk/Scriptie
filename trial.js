@@ -10,7 +10,7 @@ function Trial(game){
   this.score = 0;
   this.difficulty = 0;
   this.familiarity = 0;
-  this.repeat = 0;
+  this.repeat = -1;
   this.feedbackText = [];
   this.alreadyAdded = false;
 

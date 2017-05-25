@@ -315,10 +315,6 @@ function decideAdaptively(){
 				priorityQueueQuestions[i].repeat -= 1;
 				console.log(priorityQueueQuestions[i].repeat);
 			}
-			else{
-				priorityQueueQuestions[i].repeat = 0;
-
-			}
 			return priorityQueueQuestions[i];
 		}
 	}
@@ -327,7 +323,7 @@ function decideAdaptively(){
 function restartGame(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		priorityQueueQuestions[i].isAsked = false;
-		priorityQueueQuestions[i].repeat = 0;
+		priorityQueueQuestions[i].repeat = -1;
 		priorityQueueQuestions[i].score = 0;
 	}
 	if(!randomStrategy){
@@ -449,34 +445,41 @@ function evaluateAnswer3(){
 }
 
 function determineScore(rightType, rightConnections, rightAmount, rightUnique){
-	if(!allQuestionsAreAsked() && !gameIsFinished){
+	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
 			 setProgress('Great Job!', 1, 'black');
 		}
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
 			setProgress('Your answer is incorrect. You do not have the right connections between atoms.', 0.5, 'red');
-			currentQuestion.repeat = 1;
+			if(currentQuestion.repeat == -1){
+				console.log('hier ga ik toch in')
+				currentQuestion.repeat = 1;
+			}
 		}
 		else if(!rightAmount && rightConnections){
 			setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
-			currentQuestion.repeat = 2;
+			if(currentQuestion.repeat == -1){
+				currentQuestion.repeat = 2;
+			}
 		}
 		else if(!rightType && rightConnections && rightUnique){
 			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', 0.25, 'red');
-			currentQuestion.repeat = 2;
+			if(currentQuestion.repeat == -1){
+				currentQuestion.repeat = 2;
+			}
 		}
 		else if(!rightAmount && !rightUnique){
 			setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
-			currentQuestion.repeat = 3;
+			if(currentQuestion.repeat == -1){
+				currentQuestion.repeat = 3;
+			}
 		}
 		else if(rightUnique){
 			setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
-			currentQuestion.repeat = 2;
+			if(currentQuestion.repeat == -1){
+				currentQuestion.repeat = 2;
+			}
 		}
-	}
-	else{
-		showLastPopup('Great Job!');
-		deleteSprites();
 	}
 }
 
@@ -488,6 +491,9 @@ function deleteSprites(){
 }
 
 function setProgress(feedback, score, colour){
+	if(allQuestionsAreAsked()){
+		showLastPopup();
+	}
 	totalScore += convertScoreChange(score);
 	totalScore = Math.max(0,totalScore);
 	updateBar();
