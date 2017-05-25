@@ -82,8 +82,8 @@ var text = [];
 var feedbackText = [];
 var buttonsList = [];
 
-var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton'];
-var positionY = [100, 150, 200, 250, 300, 350];
+var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton', 'ZButton'];
+var positionY = [100, 150, 200, 250, 300, 350, 400];
 var gameIsFinished = false;
 var randomStrategy = false;
 
@@ -95,12 +95,14 @@ var nextQuestion;
 var totalScore = 10; // van 0 tot 100. 0 is niks 100 is alles.
 
 function preload() {
-		game.load.image('CButton', 'images/CAtoomButtonBrown.png');
-		game.load.image('OButton', 'images/OAtomButtonBrown.png');
-		game.load.image('HButton', 'images/HAtoomButtonBrown.png');
-		game.load.image("FButton", 'images/FAtomButton.png')
-		game.load.image("QButton", 'images/BrAtomButton.png')
-		game.load.image("IButton", 'images/IAtomButton.png')
+		game.load.image('CButton', 'images/CAtoomButtonGreen.png');
+		game.load.image('OButton', 'images/OAtoomButtonGreen.png');
+		game.load.image('HButton', 'images/HAtoomButtonGreen.png');
+		game.load.image("FButton", 'images/FAtoomButtonGreen.png');
+		game.load.image("QButton", 'images/BrAtoomButtonGreen.png');
+		game.load.image("IButton", 'images/IAtoomButtonGreen.png');
+		game.load.image("ZButton", "images/ClAtoomButtonGreen.png");
+		game.load.image("Z", "images/ClAtom.png");
 		game.load.image('delete', 'images/garbage.png');
 		game.load.image('C', 'images/CAtom1.png');
 		game.load.image('H', 'images/HAtom.png');
@@ -147,7 +149,7 @@ function create(){
 	else{
 		console.log("Klaar");
 	}
-	var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I'];
+	var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
 	currentQuestion.makeButtons();
