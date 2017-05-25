@@ -2,8 +2,8 @@
   display : none;
   position: fixed;
   z-index: 1;
-  top: 150px;
-  left: 223px;
+  top: 515px;
+  left: 130px;
   overflow: auto;
 }
 
@@ -19,11 +19,12 @@
 }
 
 .popup-content{
-  background-color: #E3E3D1;
+  background-color: #DEB887;
   color: black;
-  width: 300px;
+  width: 520px;
+  height: 65px;
   border: 1px solid #888;
-  border-color: #FFFFFF;
+  border-color: #DEB887;
   text-align: center;
   border-radius: 15px;
 }

@@ -25,7 +25,7 @@
 		<div id="wrongAnswer" class = "popup" >
 			<div class = "popup-content">
 				<p id = "textAnswer"></p>
-				<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">
+				<!--'<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">-->
 			</div	>
 		</div>
 		<div id= "gamedone" class = "popup">
@@ -90,6 +90,7 @@ var randomStrategy = false;
 var floor;
 var doneButton;
 var deleteButton;
+var nextQuestion;
 
 var totalScore = 10; // van 0 tot 100. 0 is niks 100 is alles.
 
@@ -150,14 +151,15 @@ function create(){
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
 	currentQuestion.makeButtons();
-	doneButton = game.add.button(700, 520, 'done', evaluateAnswer3, this);
-
+	doneButton = game.add.button(695, 520, 'done', evaluateAnswer3, this);
+	nextQuestion = game.add.button(700, 510, 'nextQuestion', showNextQuestion, this);
 	deleteButton = game.add.image(12, 500, 'delete');
 
 	deleteButton.scale.setTo(0.4, 0.4);
 	doneButton.scale.setTo(0.50, 0.50);
 	doneButton.visible = false;
 	deleteButton.visible = false;
+	nextQuestion.visible = false;
 
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = false;
@@ -413,9 +415,13 @@ function readQuestion(){
 }
 
 function showNextQuestion(){
+	deleteSprites();
+	nextQuestion.visible = false;
+	doneButton.visible = true;
 	var textAnswer = document.getElementById('textAnswer');
 	textAnswer.style.color = "black";
 	popup.style.display = 'none';
+	missionpopup.style.display = 'block';
 	currentQuestion = decideQuestion(priorityQueueQuestions);
 	if(currentQuestion != null){
 		currentQuestion.showQuestion();
@@ -461,9 +467,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 		}
 		else if(rightUnique){
 			setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
-
 		}
-		deleteSprites();
 	}
 	else{
 		showLastPopup('Great Job!');
@@ -490,6 +494,9 @@ function setProgress(feedback, score, colour){
 	textAnswer.style.color = colour;
 	textAnswer.innerText =  feedback;
 	popup.style.display = 'block';
+	missionpopup.style.display = 'none';
+	doneButton.visible = false;
+	nextQuestion.visible = true;
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
