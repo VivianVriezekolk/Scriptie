@@ -321,9 +321,7 @@ function decideAdaptively(){
 			console.log(priorityQueueQuestions.repeat +  ", deze ga ik doen: " + priorityQueueQuestions.length);
 			priorityQueueQuestions[i].isAsked = true;
 			if(priorityQueueQuestions[i].repeat > 0){
-				console.log(priorityQueueQuestions[i].repeat);
 				priorityQueueQuestions[i].repeat -= 1;
-				console.log(priorityQueueQuestions[i].repeat);
 			}
 			return priorityQueueQuestions[i];
 		}
@@ -521,48 +519,6 @@ function setProgress(feedback, score, colour){
 	nextQuestion.visible = true;
 }
 
-// This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
-// After that it destroys the sprites and empties the currentMolecule list. This function needs to be split up.
-function evaluateAnswer(){
-	printMolecule();
-	feedbackText = [];
-	if(!gameIsFinished){
-		if(checkTheAnswer()){
-			if(!allQuestionsAreAsked()){
-				var textAnswer = document.getElementById('textAnswer');
-				currentQuestion.score = 1;
-				textAnswer.innerText = 'Great job!';
-				popup.style.display = 'block';
-			}
-			else{
-				currentQuestion.score = 1;
-				showLastPopup('Great Job!');
-			}
-			totalScore += convertScoreChange(1);
-		}
-		else{
-			if(!allQuestionsAreAsked()){
-				var textAnswer = document.getElementById('textAnswer');
-				textAnswer.style.color = "red";
-				textAnswer.innerText = 'Your answer is incorrect. ' + feedbackText;
-				popup.style.display = 'block';
-			}
-			else{
-				showLastPopup('Your answer is incorrect.');
-			}
-		}
-		for(var i=0; i<currentQuestion.currentMolecule.length; i++){
-			currentQuestion.currentMolecule[i].sprite.destroy();
-		}
-		currentQuestion.currentMolecule = [];
-		addWrongQuestion();
-	}
-	totalScore = Math.max(0,totalScore);
-	updateBar();
-	updateBarColor();
-	updateSalary();
-}
-
 function addWrongQuestion(){
 	var currentLength = priorityQueueQuestions.length;
 	for(var i=0; i < currentQuestion.repeat; i++){
@@ -585,81 +541,9 @@ function printMolecule(){
 	}
 }
 
-// this function checks whether the currentMolecule has the right amount of atoms and the correct neighbours for each atom.
-function checkTheAnswer(){
-	if(currentQuestion.currentMolecule.length != currentQuestion.molecule.length){
-		console.log('You do not have the right amount of atoms!');
-		feedbackText = 'You do not have the right amount of atoms!';
-		//this.height = move(determineShiftInBar(1.0));
-		totalScore += convertScoreChange(-1);
-		if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
-			currentQuestion.repeat = 2;
-		}
-		//console.log(this.height);
-		return false;
-	}
-	else{
-		for(var j=0; j< currentQuestion.molecule.length; j++){
-			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
-					currentQuestion.score = 0.50;
-					// this.height = move(determineShiftInBar(-0.5));
-					// console.log(determineShiftInBar(-0.5));
-					totalScore += convertScoreChange(0.5);
-					feedbackText = 'You do not have the right types of atoms';
-					if(currentQuestion.repeat == 0 && !currentQuestion.alreadyAdded){
-						currentQuestion.repeat = 3;
-					}
-					return false;
-			}
-		}
-		currentQuestion.score = 0.75;
-		// this.height = move(determineShiftInBar(-0.75));
-		// console.log(determineShiftInBar(-0.75));
-
-	 	var c = checkNeighbours();
-		if (!c)
-			totalScore += convertScoreChange(0.75);
-		return  c;
-	}
-}
-
 function convertScoreChange(answerScore) {
 	var totalDifficulty = determineOveralDifficulty();
 	return answerScore * 90 * currentQuestion.difficulty / totalDifficulty;
-}
-
-// maak kopie van correct antwoord zodat je als je het antwoord fout hebt, nog verder kan gaan om het te verbeteren.
-// check eerst of values of atomen gelijk zijn en kijk daarna naar de verbindingen ervan. Sorteer neighbours op alfabetische volgorde en check of de lijstjes
-// gelijk zijn, als dat zo is, verwijder het atoom uit het correcte antwoord, zo niet dan return false
-
-// you need to delete the neighbour if it is right otherwise you could find it again while it is checked already
-// This function checks whether each atom of currentMolecule has the correct neighbours. (It is still not working.)
-function checkNeighbours(){
-	for(var k=0; k< currentQuestion.molecule.length; k++){
-		for(var f=0; f< currentQuestion.currentMolecule.length; f++){
-			if(currentQuestion.molecule[k].value == currentQuestion.currentMolecule[f].value){
-				currentQuestion.molecule[k].neighbour.sort(function(a, b){
-						return a.value < b.value;
-				});
-				for(var v=0; v<currentQuestion.molecule[k].neighbour.length; v++){
-					console.log("neighbour: " + currentQuestion.molecule[k].neighbour[v].value);
-				}
-				currentQuestion.currentMolecule[f].neighbour.sort(function(a, b){
-					return a.value < b.value;
-				});
-				if(!equalLists(currentQuestion.molecule[k].neighbour, currentQuestion.currentMolecule[f].neighbour)){
-					feedbackText = 'You do not have the right connections between the atoms.';
-					currentQuestion.repeat = 1;
-					return false;
-				}
-				console.log(k);
-				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-				// currentQuestion.molecule.splice(k, 1);
-			}
-		}
-	}
-	currentQuestion.molecule = currentQuestion.copyMolecule;
-	return true;
 }
 
 // This function checks whether two lists are the same.
@@ -673,23 +557,6 @@ function equalLists(neighbourMolecule, neighbourCurrentMolecule){
 		}
 	}
 	return true;
-}
-
-// This function checks whether a specific atom has the right neighbours.
-function checkNeighboursOfAtom(a, b){
-	var boolean = false;
-		for(var i=0; i < a.neighbour.length; i++){
-				for(var j=0; j< b.neighbour.length; j++){
-					if(countNumberOfAtoms(a.neighbour, a.neighbour[i].value) == countNumberOfAtoms(b.neighbour, a.neighbour[i].value)){
-						boolean = true;
-					}
-					else{
-						console.log("het ging hier fout" + countNumberOfAtoms(a.neighbour, a.neighbour[i].value) + ' ' + countNumberOfAtoms(b.neighbour, a.neighbour[i].value));
-						return boolean = false;
-					}
-				}
-		}
-		return boolean;
 }
 
 // This function counts the number of atoms with a specific value in a molecule
