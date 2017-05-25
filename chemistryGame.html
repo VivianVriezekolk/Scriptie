@@ -137,7 +137,7 @@ function create(){
 
 	makeStartPopup();
 	readQuestion();
-	makePriorityQue();
+	makePriorityQueue();
 	currentQuestion = decideQuestion();
 
 	if(currentQuestion != null){
@@ -150,7 +150,7 @@ function create(){
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
 	currentQuestion.makeButtons();
-	doneButton = game.add.button(700, 520, 'done', evaluateAnswer, this);
+	doneButton = game.add.button(700, 520, 'done', evaluateAnswer3, this);
 
 	deleteButton = game.add.image(12, 500, 'delete');
 
@@ -276,7 +276,7 @@ function removeAtom(atom){
 	}
 }
 
-function makePriorityQue(){
+function makePriorityQueue(){
 	var priority = [];
 	for(var i=0; i<listOfQuestions.length; i++){
 		priority.push(listOfQuestions[i].difficulty);
@@ -433,63 +433,43 @@ function showLastPopup(text){
 	finish.style.display = 'block';
 }
 
-function evaluateAnswer2(){
-	printMolecule();
-	feedbackText = [];
+function evaluateAnswer3(){
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
-	var rightType = currentQuestion.checkTypeOfAtoms();
-	var rightConnections = currentQuestion.checkConnections();
-	console.log(rightAmount);
+	var rightAmountUnique = currentQuestion.checkUniqueAtoms();
+	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
+	var rightConnections = currentQuestion.checkConnections2();
+	console.log(rightAmount, rightType, rightAmountUnique, rightConnections);
+	determineScore(rightType, rightConnections, rightAmount, rightAmountUnique);
+}
 
-	if(!gameIsFinished){
-		if(!allQuestionsAreAsked()){
-			if(rightAmount && rightType && rightConnections){
-				var textAnswer = document.getElementById('textAnswer');
-				currentQuestion.score = 1;
-				textAnswer.innerText = 'Great job!';
-				popup.style.display = 'block';
-			}
-			else if(rightAmount && !currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
-				// drie keer herhalen.
-				var textAnswer = document.getElementById('textAnswer');
-				textAnswer.style.color = "red";
-				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
-				popup.style.display = 'block';
-			}
-			else if(!currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
-				var textAnswer = document.getElementById('textAnswer');
-				textAnswer.style.color = "red";
-				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
-				popup.style.display = 'block';
-				// 2x herhalen
-			}
-			else if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && !currentQuestion.checkConnections()){
-				// 1 keer herhalen
-				var textAnswer = document.getElementById('textAnswer');
-				textAnswer.style.color = "red";
-				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
-				popup.style.display = 'block';
-			}
-			else if(!currentQuestion.checkTypeOfAtoms() && currentQuestion.checkUniqueAtoms() && !currentQuestion.checkConnections() && !currentQuestion.checkTypeOfAtoms()){
-				var textAnswer = document.getElementById('textAnswer');
-				textAnswer.style.color = "red";
-				textAnswer.innerText = 'Your answer is incorrect. ' + currentQuestion.feedbackText;
-				popup.style.display = 'block';
-			}
+function determineScore(rightType, rightConnections, rightAmount, rightAmountUnique){
+	if(!allQuestionsAreAsked()){
+		if(rightType && rightConnections && rightAmount && rightAmountUnique){
+			var textAnswer = document.getElementById('textAnswer');
+			currentQuestion.score = 1;
+			totalScore += convertScoreChange(1);
+			textAnswer.innerText = 'Great job!';
+			popup.style.display = 'block';
 		}
 		else{
-			if(currentQuestion.checkAmountOfAtoms() && currentQuestion.checkTypeOfAtoms() && currentQuestion.checkConnections()){
-				currentQuestion.score = 1;
-				showLastPopup('Great Job!');
-			}
-			else{
-				showLastPopup('Your answer is incorrect.');
-			}
+			var textAnswer = document.getElementById('textAnswer');
+			textAnswer.style.color = "red";
+			textAnswer.innerText = 'Your answer is incorrect. ' + feedbackText;
+			totalScore += convertScoreChange(-1);
+			popup.style.display = 'block';
 		}
 		for(var i=0; i<currentQuestion.currentMolecule.length; i++){
 			currentQuestion.currentMolecule[i].sprite.destroy();
 		}
 		currentQuestion.currentMolecule = [];
+		totalScore = Math.max(0,totalScore);
+		updateBar();
+		updateBarColor();
+		updateSalary();
+	}
+	else{
+		showLastPopup('Great Job!');
+
 	}
 }
 

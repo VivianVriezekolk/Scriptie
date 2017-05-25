@@ -24,70 +24,87 @@ function Trial(game){
 
 // checks the amount of atoms
   this.checkAmountOfAtoms = function(){
+    console.log("hallo");
     if(this.currentMolecule.length != this.molecule.length){
       this.feedbackText = 'You do not have the right amount of atoms!';
-      currentQuestion.repeat = 2;
       return false;
     }
     return true;
   }
 
+// checks if all unique atoms are there
   this.checkUniqueAtoms = function(){
     var values = this.determineUniqueAtoms();
-    for(var i=0; i< values.length; i++){
-      for(var j=0; j< this.currentMolecule.length; i++){
-        if(values[i] == this.currentMolecule[j].value){
-          values.splice(i,1);
-        }
+
+    let set2 = new Set();
+    for(var i=0; i < this.currentMolecule.length; i++){
+      set2.add(this.currentMolecule[i].value);
+    }
+
+    if (values.size !== set2.size) {
+      return false;
+    }
+    for (var a of values) {
+      if (!set2.has(a)) {
+        return false;
       }
     }
-    if(values.length == 0){
-      this.feedbackText = "You have all the unique atoms in the molecule";
-      console.log("hallo");
-      return true;
-    }
-    return false;
-  }
+    return true;
 
-// checks the type of atoms
-  this.checkTypeOfAtoms = function(){
+  };
+
+// checks if the amount of unique atoms is right
+  this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.currentMolecule.length; j++){
 			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 					this.feedbackText = 'You do not have the right types of atoms';
-					currentQuestion.repeat = 3;
 					return false;
 			}
 		}
     return true;
   }
 
-// should check the connections of the atoms (maar hou rekening mee dat de lengte van de moleculen wellicht niet even lang zijn, dus loop over currentMolecule)
-  this.checkConnections = function(){
-    for(var k=0; k< this.molecule.length; k++){
-  		for(var f=0; f< this.currentMolecule.length; f++){
-  			if(this.molecule[k].value == this.currentMolecule[f].value){
-  				this.molecule[k].neighbour.sort(function(a, b){
-  						return a.value < b.value;
-  				});
-  				for(var v=0; v<this.molecule[k].neighbour.length; v++){
-  					console.log("neighbour: " + currentQuestion.molecule[k].neighbour[v].value);
-  				}
-  				this.currentMolecule[f].neighbour.sort(function(a, b){
-  					return a.value < b.value;
-  				});
-  				if(!equalLists(this.molecule[k].neighbour, this.currentMolecule[f].neighbour)){
-  					this.feedbackText = 'You do not have the right connections between the atoms.';
-  					return false;
-  				}
-  				console.log(k);
-  				// moet deze splice nou wel of niet? Want zonder deze gaat het wel goed, nog over nadenken!!
-  				this.molecule.splice(k, 1);
-  			}
-  		}
-  	}
-  	this.molecule = this.copyMolecule;
-  	return true;
+// de rest moet true zijn anders gaat dit fout
+  this.checkConnections2 = function(){
+    var copyMolecule = [];
+    for(var i=0; i< this.currentMolecule.length; i++){
+      copyMolecule.push(this.currentMolecule[i]);
+    }
+    console.log(copyMolecule);
+    this.molecule.sort(function(a, b){
+        return a.value < b.value;
+    });
+    this.currentMolecule.sort(function(a, b){
+        return a.value < b.value;
+    });
+    var boolean = false;
+    console.log(this.molecule, this.currentMolecule);
+    for(var i=0; i<this.molecule.length; i++){
+      var boolean = this.findCorrectMatch(this.molecule[i]);
+    }
+    console.log(copyMolecule);
+    for(var i=0; i < copyMolecule.length; i++){
+      this.currentMolecule.push(copyMolecule[i]);
+    }
+    return boolean;
+  };
 
+  this.findCorrectMatch = function(atom){
+    atom.neighbour.sort(function(a, b){
+        return a.value < b.value;
+    });
+    for(var i=0; i<this.currentMolecule.length; i++){
+      if(this.currentMolecule[i].value == atom.value){
+        this.currentMolecule[i].neighbour.sort(function(a, b){
+            return a.value < b.value;
+        });
+        if(equalLists(atom.neighbour, this.currentMolecule[i].neighbour)){
+          this.currentMolecule.splice(i,1);
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
@@ -104,18 +121,19 @@ function Trial(game){
   };
 
   this.determineUniqueAtoms = function(){
-    var numberOfUniqueAtoms = 1;
-    var values = [];
-    values.push(this.molecule[0].value);
-    console.log(this.molecule[0].value);
-    for(var i=1; i < this.molecule.length; i++){
-      if(!values.includes(this.molecule[i].value)){
-        numberOfUniqueAtoms = numberOfUniqueAtoms + 1;
-        values.push(this.molecule[i].value);
-      }
+    let set = new Set();
+    for(var i=0; i< this.molecule.length; i++){
+      set.add(this.molecule[i].value);
     }
-    console.log(values[0]);
-    return values;
+    return set;
+  };
+
+  this.determineCurrentUnique = function(){
+    let set = new Set();
+    for(var i=0; i< this.currentMolecule.length; i++){
+      set.add(this.currentMolecule[i].value);
+    }
+    return set;
   };
 
   this.determineDifficulty = function(){
@@ -123,7 +141,7 @@ function Trial(game){
     for(var i=0; i< this.molecule.length; i++){
       numberOfAtoms = numberOfAtoms + 1;
     }
-    var numberOfUniqueAtoms = this.determineUniqueAtoms().length;
+    var numberOfUniqueAtoms = this.determineUniqueAtoms().size;
     this.difficulty = +numberOfAtoms - +this.familiarity + +numberOfUniqueAtoms;
     console.log("Difficulty: " + this.difficulty);
   };
@@ -137,14 +155,13 @@ function Trial(game){
   this.makeButtons = function(){
     this.removeButtons();
     var values = this.determineUniqueAtoms();
-    for(var i=0; i < values.length; i++){
+    for(elem of values){
       for(var j=0; j < buttons.length; j++){
-        if(buttons[j].indexOf(values[i]) > -1){
-          var buttonTest = new button(buttons[j], values[i], 30, positionY[j]);
+        if(buttons[j].indexOf(elem) > -1){
+          var buttonTest = new button(buttons[j], elem, 30, positionY[j]);
         }
       }
     }
-
   };
 
 }
