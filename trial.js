@@ -24,9 +24,7 @@ function Trial(game){
 
 // checks the amount of atoms
   this.checkAmountOfAtoms = function(){
-    console.log("hallo");
     if(this.currentMolecule.length != this.molecule.length){
-      this.feedbackText = 'You do not have the right amount of atoms!';
       return false;
     }
     return true;
@@ -57,7 +55,6 @@ function Trial(game){
   this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.currentMolecule.length; j++){
 			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
-					this.feedbackText = 'You do not have the right types of atoms';
 					return false;
 			}
 		}

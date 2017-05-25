@@ -435,42 +435,61 @@ function showLastPopup(text){
 
 function evaluateAnswer3(){
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
-	var rightAmountUnique = currentQuestion.checkUniqueAtoms();
+	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections2();
-	console.log(rightAmount, rightType, rightAmountUnique, rightConnections);
-	determineScore(rightType, rightConnections, rightAmount, rightAmountUnique);
+	console.log(rightAmount, rightType, rightUnique, rightConnections);
+	determineScore(rightType, rightConnections, rightAmount, rightUnique);
 }
 
-function determineScore(rightType, rightConnections, rightAmount, rightAmountUnique){
-	if(!allQuestionsAreAsked()){
-		if(rightType && rightConnections && rightAmount && rightAmountUnique){
-			var textAnswer = document.getElementById('textAnswer');
-			currentQuestion.score = 1;
-			totalScore += convertScoreChange(1);
-			textAnswer.innerText = 'Great job!';
-			popup.style.display = 'block';
+function determineScore(rightType, rightConnections, rightAmount, rightUnique){
+	if(!allQuestionsAreAsked() && !gameIsFinished){
+		if(rightType && rightConnections && rightAmount && rightUnique){
+			 setProgress('Great Job!', 1, 'black');
 		}
-		else{
-			var textAnswer = document.getElementById('textAnswer');
-			textAnswer.style.color = "red";
-			textAnswer.innerText = 'Your answer is incorrect. ' + feedbackText;
-			totalScore += convertScoreChange(-1);
-			popup.style.display = 'block';
+		else if(rightType && !rightConnections && rightAmount && rightUnique){
+			setProgress('Your anser is incorrect. You do not have the right connections between atoms.', 0.5, 'red');
 		}
-		for(var i=0; i<currentQuestion.currentMolecule.length; i++){
-			currentQuestion.currentMolecule[i].sprite.destroy();
+		else if(!rightAmount && rightConnections){
+			setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
 		}
-		currentQuestion.currentMolecule = [];
-		totalScore = Math.max(0,totalScore);
-		updateBar();
-		updateBarColor();
-		updateSalary();
+		else if(!rightType && rightConnections && rightUnique){
+			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', 0.25, 'red');
+		}
+		else if(!rightAmount && !rightUnique){
+			setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
+		}
+		else if(rightUnique){
+			setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
+
+		}
+		deleteSprites();
 	}
 	else{
 		showLastPopup('Great Job!');
-
+		deleteSprites();
 	}
+}
+
+function deleteSprites(){
+	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
+		currentQuestion.currentMolecule[i].sprite.destroy();
+	}
+	currentQuestion.currentMolecule = [];
+}
+
+function setProgress(feedback, score, colour){
+	totalScore += convertScoreChange(score);
+	totalScore = Math.max(0,totalScore);
+	updateBar();
+	updateBarColor();
+	updateSalary();
+
+	var textAnswer = document.getElementById('textAnswer');
+	currentQuestion.score = score;
+	textAnswer.style.color = colour;
+	textAnswer.innerText =  feedback;
+	popup.style.display = 'block';
 }
 
 // This function should call the next question. It is now callin the checkTheAnswer function which checks if the molecule built is the correct molecule.
