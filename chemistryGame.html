@@ -91,6 +91,7 @@ var buttonsList = [];
 var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton', 'ZButton'];
 var positionY = [75, 125, 175, 225, 275, 325, 375];
 var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
+var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
 var uniqueButtons = false;
@@ -112,14 +113,14 @@ function preload() {
 		game.load.image("QButton", 'images/BrAtoomButtonGreen.png');
 		game.load.image("IButton", 'images/IAtoomButtonGreen.png');
 		game.load.image("ZButton", "images/ClAtoomButtonGreen.png");
-		game.load.image("Z", "images/ClAtom.png");
+		game.load.image("Z", "images/ClAtomCircle.png");
 		game.load.image('delete', 'images/garbage.png');
-		game.load.image('C', 'images/CAtom1.png');
-		game.load.image('H', 'images/HAtom.png');
-		game.load.image('O', 'images/OAtom.png');
-		game.load.image('I', 'images/IAtom.png');
-		game.load.image('Q', 'images/BrAtom.png');
-		game.load.image('F', 'images/FAtom.png');
+		game.load.image('C', 'images/CAtomCircle.png');
+		game.load.image('H', 'images/HAtomCircle.png');
+		game.load.image('O', 'images/OAtomCircle.png');
+		game.load.image('I', 'images/IAtomCircle.png');
+		game.load.image('Q', 'images/BrAtomCircle.png');
+		game.load.image('F', 'images/FAtomCircle.png');
 		game.load.image('done', 'images/doneButton2.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextQuestion.png');
@@ -421,8 +422,10 @@ function makeTrial(trial, index, textsQuestion){
 			var newQuestion = textsQuestion[i].split(/~/);
 			var atomsOfMolecule = newQuestion[1];
 			for(var j=0; j < atomsOfMolecule.length; j++){
-				trial.molecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
-				trial.copyMolecule.push(new Atom(atomsOfMolecule[j], false, id+j, game));
+				var atom = new Atom(atomsOfMolecule[j], false, id+j, game);
+				trial.molecule.push(atom);
+				trial.copyMolecule.push(atom);
+				atom.covalence = atom.determineCovalence();
 			}
 		}
 		else if(textsQuestion[i].indexOf('Familiarity') > -1){
@@ -630,6 +633,7 @@ function button(buttonName, element, X, Y){
 		if(!gameIsFinished){
   		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
   		var atomNew = new Atom(element, true, id, game);
+			atomNew.covalence = atomNew.determineCovalence();
   		currentQuestion.currentMolecule.push(atomNew);
 			id = id+1;
   	//}
@@ -659,6 +663,7 @@ function snap(currentMolecule){
 				if(distance < 40){
 					currentMolecule[i].addConnection(currentMolecule[j]);
 					currentMolecule[i].sprite.input.enableSnap(32, 32, true, true);
+					currentMolecule[i].determineTint();
 				}
 			}
 		}
@@ -679,6 +684,7 @@ function undoneSnap(currentMolecule){
 		if(currentMolecule[i].neighbour.length == 0){
 			currentMolecule[i].sprite.input.enableSnap(32, 32, false, true);
 		}
+		currentMolecule[i].determineTint();
 	}
 }
 
