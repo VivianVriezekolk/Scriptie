@@ -13,6 +13,7 @@ function Trial(game){
   this.repeat = -1;
   this.feedbackText = [];
   this.alreadyAdded = false;
+  this.maxScore = 1;
 
   this.finishGame = function(){
     this.currentQuestionText = [];
