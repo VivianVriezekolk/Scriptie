@@ -93,7 +93,7 @@ var positionY = [75, 125, 175, 225, 275, 325, 375];
 var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
-var randomStrategy = true;
+var randomStrategy = false;
 var uniqueButtons = false;
 var hintConnections = false;
 var giveHints = false;
@@ -403,8 +403,10 @@ function getScore(){
 }
 
 function allQuestionsAreAsked(){
+	console.log(priorityQueueQuestions.length);
 	for(var i=0; i<priorityQueueQuestions.length; i++){
-		if(priorityQueueQuestions[i].isAsked == false){
+		console.log(priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
+		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
 			return false;
 		}
 	}
@@ -515,7 +517,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
 			setProgress('Your answer is incorrect. You do not have the right connections between atoms.', 0.5, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.5;
+				currentQuestion.maxScore = 0.4;
 				currentQuestion.repeat = 1;
 			}
 			hintConnections = true;
@@ -523,7 +525,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 		else if(!rightAmount && rightConnections){
 			setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.25;
+				currentQuestion.maxScore = 0.20;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
@@ -531,7 +533,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 		else if(!rightType && rightConnections && rightUnique){
 			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', 0.25, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore == 0.25;
+				currentQuestion.maxScore == 0.20;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
