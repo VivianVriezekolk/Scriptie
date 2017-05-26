@@ -95,6 +95,7 @@ var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
 var uniqueButtons = false;
+var evaluateAnswer = false;
 
 var floor;
 var doneButton;
@@ -463,6 +464,7 @@ function readQuestion(){
 }
 
 function showNextQuestion(){
+	evaluateAnswer = false;
 	deleteSprites();
 	nextQuestion.visible = false;
 	doneButton.visible = true;
@@ -480,6 +482,7 @@ function showNextQuestion(){
 }
 
 function evaluateAnswer3(){
+	evaluateAnswer = true;
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
 	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();

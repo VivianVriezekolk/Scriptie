@@ -54,7 +54,8 @@ function Trial(game){
 
 // checks if the amount of unique atoms is right
   this.checkAmountOfTypeOfAtoms = function(){
-    for(var j=0; j< currentQuestion.currentMolecule.length; j++){
+    for(var j=0; j< currentQuestion.molecule.length; j++){
+      console.log(currentQuestion.molecule);
 			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 					return false;
 			}

@@ -1,4 +1,4 @@
-function Atom(value, currentAtom, id, game, covalence) {
+function Atom(value, currentAtom, id, game) {
     this.value = value
 		this.neighbour = [];
 		this.id = id;
@@ -12,13 +12,13 @@ function Atom(value, currentAtom, id, game, covalence) {
       var Yrandom = determineYPositionInGrid();
       console.log("X is " + Xrandom + ", Y is " + Yrandom);
 			this.sprite = game.add.sprite(Xrandom, Yrandom, value);
-      this.sprite.scale.setTo(0.7, 0.7);
+      this.sprite.scale.setTo(0.65, 0.65);
       this.sprite.inputEnabled = true;
   		this.sprite.input.enableDrag();
   		this.sprite.input.enableDrag(true);
   		this.sprite.input.enableSnap(32, 32, false, true);
       this.sprite.events.onDragStop.add(deleteAtom, this);
-      this.sprite.tint = 'none';
+      this.sprite.tint = 0xFFFFFF;
 		}
 
     function determineXPositionInGrid(){
@@ -38,25 +38,28 @@ function Atom(value, currentAtom, id, game, covalence) {
     }
 
     this.determineTint = function(){
-      if(this.connected == 0){
+      if(this.connected == 0 && !evaluateAnswer){
         this.sprite.tint = 0xFFFFFF;
         console.log("hallo");
       }
       else{
-        if(this.connected >= this.covalence){
+        if(this.connected >= this.covalence && !evaluateAnswer){
           this.sprite.tint = 0xff0000;
         }
-        else{
+        else if(!evaluateAnswer){
         this.sprite.tint = 0x009933;
         }
       }
     }
 
     this.determineCovalence = function(){
-      for(var i=0; i < atomValues.length; i++){
-        if(this.value == atomValues[i]){
-          console.log("value " + this.value + ", covalence " + covalences[i]);
-          return covalences[i];
+      console.log(evaluateAnswer);
+      if(!evaluateAnswer){
+        for(var i=0; i < atomValues.length; i++){
+          if(this.value == atomValues[i]){
+            console.log("value " + this.value + ", covalence " + covalences[i]);
+            return covalences[i];
+          }
         }
       }
     }
@@ -68,8 +71,8 @@ function Atom(value, currentAtom, id, game, covalence) {
         this.connected += 1;
         //snappedAtom.connected += 1;
 				this.neighbour.push(snappedAtom);
-        this.sprite.tint = 0xFF0000;
-        snappedAtom.sprite.tint = 0xFF0000;
+        //this.sprite.tint = 0xFF0000;
+        //snappedAtom.sprite.tint = 0xFF0000;
         console.log(this.neighbour.connected);
 			}
 		}
@@ -81,7 +84,6 @@ function Atom(value, currentAtom, id, game, covalence) {
           console.log(this.neighbour[i].connected);
           if(this.connected > 0){
             this.connected -= 1;
-            //lostAtom.connected -= 1;
           }
           console.log(this.neighbour[i].connected);
 					console.log(lostAtom.value + " is removed from " + this.value);
