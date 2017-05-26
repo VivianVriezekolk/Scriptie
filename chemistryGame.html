@@ -362,7 +362,7 @@ function showTotalScore(){
 	var lastPop = document.getElementById('score');
 	finish.style.display = 'none';
 	var endText = determineText();
-	lastPop.innerText = "Your final score is " + totalScore + " euros. " + endText;
+	lastPop.innerText = "Your final salary is " + Math.floor(totalScore) + " euros. " + endText;
 }
 
 function showLastPopup(text){
