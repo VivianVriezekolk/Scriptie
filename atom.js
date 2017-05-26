@@ -43,14 +43,21 @@ function Atom(value, currentAtom, id, game) {
         console.log("hallo");
       }
       else{
-        if(this.connected == this.covalence && !evaluateAnswer){
-          this.sprite.tint = 0x009933;
+        if(giveHints){
+          if(this.connected == this.covalence && !evaluateAnswer && giveHints){
+            this.sprite.tint = 0x009933;
+          }
+          else if(this.connected < this.covalence && !evaluateAnswer){
+            this.sprite.tint = 0xccff99;
+          }
+          else if(this.connected > this.covalence && !evaluateAnswer && giveHints){
+            this.sprite.tint = 0xff0000;
+          }
         }
-        else if(this.connected < this.covalence && !evaluateAnswer){
-          this.sprite.tint = 0xccff99;
-        }
-        else if(this.connected > this.covalence && !evaluateAnswer){
-          this.sprite.tint = 0xff0000;
+        else{
+          if(!evaluateAnswer){
+            this.sprite.tint = 0xccff99;
+          }
         }
       }
     }
@@ -72,10 +79,7 @@ function Atom(value, currentAtom, id, game) {
       console.log(this.connected, snappedAtom.connected);
 			if(!atomsAreSnapped(this, snappedAtom)){
         this.connected += 1;
-        //snappedAtom.connected += 1;
 				this.neighbour.push(snappedAtom);
-        //this.sprite.tint = 0xFF0000;
-        //snappedAtom.sprite.tint = 0xFF0000;
         console.log(this.neighbour.connected);
 			}
 		}

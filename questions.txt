@@ -1,5 +1,6 @@
 
 Question~You need to make one water molecule.
+Name~Water
 Molecule~HOH
 Familiarity~2
 Bindings
@@ -8,6 +9,7 @@ Bindings
 010
 
 Question~You need to make one methane molecule.
+Name~Methane
 Molecule~CHHHH
 Familiarity~0
 Bindings
@@ -18,6 +20,7 @@ Bindings
 10000
 
 Question~You need to make one carbon dioxide molecule.
+Name~Carbondioxide
 Molecule~COO
 Familiarity~1
 Bindings
@@ -26,6 +29,7 @@ Bindings
 100
 
 Question~You need to make one oxygen molecule.
+Name~Oxygen
 Molecule~OO
 Familiarity~2
 Bindings
@@ -33,6 +37,7 @@ Bindings
 10
 
 Question~You need to make one fluor molecule.
+Name~Fluor
 Molecule~FF
 Familiarity~1
 Bindings
@@ -40,6 +45,7 @@ Bindings
 10
 
 Question~You need to make one hydrogen molecule.
+Name~Hydrogen
 Molecule~HH
 Familiarity~2
 Bindings
@@ -47,6 +53,7 @@ Bindings
 10
 
 Question~You need to make one Iodine molecule.
+Name~Iodine
 Molecule~II
 Familiarity~1
 Bindings
@@ -54,6 +61,7 @@ Bindings
 10
 
 Question~You need to make one bromine molecule.
+Name~Bromine
 Molecule~QQ
 Familiarity~1
 Bindings
@@ -61,13 +69,15 @@ Bindings
 10
 
 Questions~You need to make one chloride molecule.
+Name~Chloride
 Molecule~ZZ
 Familiarity~1
 Bindings
 01
 10
 
-Question~You need to make propaan.
+Question~You need to make propane.
+Name~Propane
 Molecule~CCCHHHHHHHH
 Familiarity~1
 Bindings
@@ -84,6 +94,7 @@ Bindings
 10000000010
 
 Question~You need to make methanol.
+Name~Methanol
 Molecule~CHHHOH
 Familiarity~0
 Bindings
@@ -95,6 +106,7 @@ Bindings
 000010
 
 Questions~You need to make one dichloormethane molecule.
+Name~Dichloormethane
 Molecule~CZZHH
 Familiarity~0
 Bindings

@@ -1,6 +1,7 @@
 function Trial(game){
   var delayText = new DelayText(game);
   this.game = game;
+  this.moleculeName = [];
   this.currentQuestionText = [];
   this.currentMolecule = [];
   this.molecule = [];
@@ -116,15 +117,32 @@ function Trial(game){
     delayText.content = content;
     missionText.innerText = "";
     delayText.nextLine();
+    this.setPropertiesQuestion();
+  };
+
+  this.setPropertiesQuestion = function(){
     if(this.repeat != -1 && uniqueButtons){
       this.makeButtons();
       uniqueButtons = false;
+      giveHints = false;
+      hintConnections = false;
+    }
+    else if(this.repeat != -1 && hintConnections){
+      giveHints = true;
     }
     else{
       uniqueButtons = false;
+      giveHints = false;
+      hintConnections = false;
       makeButtons();
     }
-  };
+  }
+
+  this.determineCovalence = function(){
+    for(var i=0; i < this.molecule.length; i++){
+      this.molecule[i].determineCovalence();
+    }
+  }
 
   this.determineUniqueAtoms = function(){
     let set = new Set();
