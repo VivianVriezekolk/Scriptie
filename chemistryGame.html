@@ -274,7 +274,7 @@ function updateBarColor(){
 
 function updateSalary(){
 	var salarytext = document.getElementById('salarytext');
-	var roundScore = Math.round(totalScore);
+	var roundScore = 60 * Math.round(totalScore);
 	if(roundScore == 1){
 		salarytext.innerText = "Your salary is " + 1 + " euro.";
 	}
@@ -512,7 +512,9 @@ function evaluateAnswer3(){
 function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
-			 setProgress('Great Job!', 1, 'black');
+			// als je het goed hebt wordt de vraag niet nog een keer gesteld, anders wel.
+			currentQuestion.repeat = 0;
+			setProgress('Great Job!', 1, 'black');
 		}
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
 			setProgress('Your answer is incorrect. You do not have the right connections between atoms.', 0.5, 'red');
