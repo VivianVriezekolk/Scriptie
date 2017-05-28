@@ -346,29 +346,33 @@ function decideOrderQuestions(){
 
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -1){
-			priorityQueueQuestions.splice(i+3, 0, priorityQueueQuestions[i]);
+			var position = Math.min(priorityQueueQuestions.length, i+3);
+			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[i+3]);
+			console.log(priorityQueueQuestions[position]);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.75){
-			priorityQueueQuestions.splice(i+4, 0, priorityQueueQuestions[i]);
+			var position = Math.min(priorityQueueQuestions.length, i+4);
+			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[i+4]);
+			console.log(priorityQueueQuestions[position]);
 			return;
 
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.5){
-			priorityQueueQuestions.splice(i+5, 0, priorityQueueQuestions[i]);
+			var position = Math.min(priorityQueueQuestions.length, i+5);
+			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[i+5]);
+			console.log(priorityQueueQuestions[position]);
 			return;
 
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.25){
-			priorityQueueQuestions.splice(i+6, 0, priorityQueueQuestions[i]);
+			var position = Math.min(priorityQueueQuestions.length, i+6);
+			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[i+6]);
+			console.log(priorityQueueQuestions[position]);
 			return;
 		}
 	 }
