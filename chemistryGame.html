@@ -548,15 +548,28 @@ function changeCovalence(question){
 
 function evaluateAnswer3(){
 	evaluateAnswer = true;
+	var tooMany = false;
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
 	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
+	// rightconnections doet het nog niet helemaal goed lijkt het.
 	var rightConnections = currentQuestion.checkConnections2();
+
+	if(!rightAmount){
+		var amountMolecule = currentQuestion.molecule.length;
+		var amountCurrent = currentQuestion.currentMolecule.length;
+		if(amountMolecule - amountCurrent > 0){
+			tooMany = true;
+		}
+		else{
+			tooMany = false;
+		}
+	}
 	console.log(rightAmount, rightType, rightUnique, rightConnections);
-	determineScore(rightType, rightConnections, rightAmount, rightUnique);
+	determineScore(rightType, rightConnections, rightAmount, rightUnique, tooMany);
 }
 
-function determineScore(rightType, rightConnections, rightAmount, rightUnique){
+function determineScore(rightType, rightConnections, rightAmount, rightUnique, tooMany){
 	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
 			// als je het goed hebt wordt de vraag niet nog een keer gesteld, anders wel.

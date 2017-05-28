@@ -76,7 +76,7 @@ function Atom(value, currentAtom, id, game) {
 
 		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
-      console.log(this.connected, snappedAtom.connected);
+    //  console.log(this.connected, snappedAtom.connected);
 			if(!atomsAreSnapped(this, snappedAtom)){
         this.connected += 1;
 				this.neighbour.push(snappedAtom);
