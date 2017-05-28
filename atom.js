@@ -43,14 +43,14 @@ function Atom(value, currentAtom, id, game) {
         console.log("hallo");
       }
       else{
-        if(giveHints){
-          if(this.connected == this.covalence && !evaluateAnswer && giveHints){
+        if(currentQuestion.giveHints){
+          if(this.connected == this.covalence && !evaluateAnswer){
             this.sprite.tint = 0x009933;
           }
           else if(this.connected < this.covalence && !evaluateAnswer){
             this.sprite.tint = 0xccff99;
           }
-          else if(this.connected > this.covalence && !evaluateAnswer && giveHints){
+          else if(this.connected > this.covalence && !evaluateAnswer){
             this.sprite.tint = 0xff0000;
           }
         }

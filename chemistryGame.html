@@ -95,7 +95,7 @@ var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
 var uniqueButtons = false;
-var hintConnections = false;
+//var hintConnections = false;
 var giveHints = false;
 var evaluateAnswer = false;
 
@@ -329,6 +329,7 @@ function pickRandomQuestion(){
 }
 
 function decideAdaptively(){
+	decideOrderQuestions();
 	for(var i=0; i< priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat >= 1){
 			priorityQueueQuestions[i].isAsked = true;
@@ -338,6 +339,39 @@ function decideAdaptively(){
 			return priorityQueueQuestions[i];
 		}
 	}
+}
+
+function decideOrderQuestions(){
+// de waardes moeten nog aangepast worden, het moet ook zo zijn dat ze worden herhaald als de vragen weer wat moeilijker worden, nog even naar kijken.
+
+	for(var i=0; i < priorityQueueQuestions.length; i++){
+		if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -1){
+			priorityQueueQuestions.splice(i+3, 0, priorityQueueQuestions[i]);
+			priorityQueueQuestions.splice(i, 1);
+			console.log(priorityQueueQuestions[i+3]);
+			return;
+		}
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.75){
+			priorityQueueQuestions.splice(i+4, 0, priorityQueueQuestions[i]);
+			priorityQueueQuestions.splice(i, 1);
+			console.log(priorityQueueQuestions[i+4]);
+			return;
+
+		}
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.5){
+			priorityQueueQuestions.splice(i+5, 0, priorityQueueQuestions[i]);
+			priorityQueueQuestions.splice(i, 1);
+			console.log(priorityQueueQuestions[i+5]);
+			return;
+
+		}
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.25){
+			priorityQueueQuestions.splice(i+6, 0, priorityQueueQuestions[i]);
+			priorityQueueQuestions.splice(i, 1);
+			console.log(priorityQueueQuestions[i+6]);
+			return;
+		}
+	 }
 }
 
 function determineText(){
@@ -522,7 +556,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 				currentQuestion.maxScore = 0.4;
 				currentQuestion.repeat = 1;
 			}
-			hintConnections = true;
+			currentQuestion.hintConnections = true;
 		}
 		else if(!rightAmount && rightConnections){
 			setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');

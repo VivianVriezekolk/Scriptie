@@ -15,6 +15,8 @@ function Trial(game){
   this.feedbackText = [];
   this.alreadyAdded = false;
   this.maxScore = 1;
+  this.hintConnections = false;
+  this.giveHints = false;
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -124,16 +126,16 @@ function Trial(game){
     if(this.repeat != -1 && uniqueButtons){
       this.makeButtons();
       uniqueButtons = false;
-      giveHints = false;
-      hintConnections = false;
+      this.giveHints = false;
+      this.hintConnections = false;
     }
-    else if(this.repeat != -1 && hintConnections){
-      giveHints = true;
+    else if(this.repeat != -1 && currentQuestion.hintConnections){
+      this.giveHints = true;
     }
     else{
       uniqueButtons = false;
-      giveHints = false;
-      hintConnections = false;
+      this.giveHints = false;
+      this.hintConnections = false;
       makeButtons();
     }
   }
