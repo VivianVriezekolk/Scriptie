@@ -47,6 +47,12 @@
 			</div>
 		</div>
 
+		<div class = "atomButtons">
+			<div class = "textProgresscontent">
+				<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Atom creators</p>
+			</div>
+		</div>
+
 		<div class = "progress">
 			<div id="myProgress">
 		  	<div id="myBar"></div>
@@ -398,7 +404,7 @@ function showTotalScore(){
 	var lastPop = document.getElementById('score');
 	finish.style.display = 'none';
 	var endText = determineText();
-	lastPop.innerText = "Your final salary is " + Math.floor(totalScore) + " euros. " + endText;
+	lastPop.innerText = "Your final salary is " + 60* Math.floor(totalScore) + " euros. " + endText;
 }
 
 function showLastPopup(text){

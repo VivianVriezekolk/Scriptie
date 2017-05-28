@@ -78,9 +78,9 @@
 
 .textProgresscontent{
   display: 'block';
-  background-color: white;
+  background-color: inherit;
   color: green;
-  width: 75px;
+  width: 70px;
   height: 45px;
   border-radius: 10px;
   border-color: white;
@@ -111,7 +111,16 @@
   position: fixed;
   z-index: 1;
   top: 4px;
-  left: 700px;
+  left: 705px;
+  overflow: auto;
+}
+
+.atomButtons{
+  display : 'block';
+  position: fixed;
+  z-index: 1;
+  top: 4px;
+  left: 15px;
   overflow: auto;
 }
 
