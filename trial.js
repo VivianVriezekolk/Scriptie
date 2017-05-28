@@ -83,6 +83,7 @@ function Trial(game){
     var boolean = false;
     console.log(this.molecule, this.currentMolecule);
     for(var i=0; i<this.molecule.length; i++){
+      console.log("molecuul " + this.moleculep[i]);
       var boolean = this.findCorrectMatch(this.molecule[i]);
     }
     console.log(copyMolecule);
@@ -101,6 +102,7 @@ function Trial(game){
         this.currentMolecule[i].neighbour.sort(function(a, b){
             return a.value < b.value;
         });
+        // waarschijnlijk zit het probleem bij de equallists want hij heeft er 1 extra dus dan klopt het niet meer.
         if(equalLists(atom.neighbour, this.currentMolecule[i].neighbour)){
           this.currentMolecule.splice(i,1);
           return true;
