@@ -17,6 +17,7 @@ function Trial(game){
   this.maxScore = 1;
   this.hintConnections = false;
   this.giveHints = false;
+  this.uniqueButtons = false;
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -123,9 +124,9 @@ function Trial(game){
   };
 
   this.setPropertiesQuestion = function(){
-    if(this.repeat != -1 && uniqueButtons){
+    if(this.repeat != -1 && this.uniqueButtons){
       this.makeButtons();
-      uniqueButtons = false;
+      this.uniqueButtons = false;
       this.giveHints = false;
       this.hintConnections = false;
     }
@@ -133,7 +134,7 @@ function Trial(game){
       this.giveHints = true;
     }
     else{
-      uniqueButtons = false;
+      this.uniqueButtons = false;
       this.giveHints = false;
       this.hintConnections = false;
       makeButtons();

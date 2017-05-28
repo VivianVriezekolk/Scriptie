@@ -100,7 +100,7 @@ var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
-var uniqueButtons = false;
+//var uniqueButtons = false;
 //var hintConnections = false;
 var giveHints = false;
 var evaluateAnswer = false;
@@ -386,7 +386,7 @@ function decideOrderQuestions(){
 
 function determineText(){
 	if(totalScore < 55){
-		return 'You\'re salary is not that high, perhaps you should take a second job.';
+		return 'Your salary is not that high, perhaps you should take a second job.';
 	}
 	else if(totalScore < 70 && totalScore > 55){
 		return 'Great job!';
@@ -409,6 +409,9 @@ function showTotalScore(){
 
 function showLastPopup(text){
 	var gameDone = document.getElementById('finishText');
+	if(text.indexOf('incorrect') > -1){
+		gameDone.style.color = 'red';
+	}
 	gameDone.innerText = text;
 	finish.style.display = 'block';
 	next.visible = true;
@@ -585,15 +588,17 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique){
 			}
 		}
 		else if(!rightAmount && !rightUnique){
+			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal.
 			setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.1;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
-			uniqueButtons = true;
+			currentQuestion.uniqueButtons = true;
 		}
 		else if(rightUnique){
+			// kan ook zijn dat je er te veel hebt.
 			setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.25;
