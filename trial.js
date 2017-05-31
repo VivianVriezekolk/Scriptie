@@ -83,7 +83,7 @@ function Trial(game){
     var boolean = false;
     console.log(this.molecule, this.currentMolecule);
     for(var i=0; i<this.molecule.length; i++){
-      console.log("molecuul " + this.moleculep[i]);
+      console.log("molecuul " + this.molecule[i]);
       var boolean = this.findCorrectMatch(this.molecule[i]);
     }
     console.log(copyMolecule);
@@ -103,13 +103,39 @@ function Trial(game){
             return a.value < b.value;
         });
         // waarschijnlijk zit het probleem bij de equallists want hij heeft er 1 extra dus dan klopt het niet meer.
-        if(equalLists(atom.neighbour, this.currentMolecule[i].neighbour)){
+        if(this.checkRightNeighbours(atom.neighbour, this.currentMolecule[i].neighbour)){
           this.currentMolecule.splice(i,1);
           return true;
         }
       }
     }
     return false;
+  }
+
+  this.arrayContainsArray = function(superset, subset) {
+    if (0 === subset.length) {
+      return false;
+    }
+    return subset.every(function (value) {
+      console.log(value);
+      return (superset.indexOf(value) >= 0);
+    });
+  }
+
+  this.makeListOfValues = function(molecuul){
+    var values = [];
+    for(var i=0; i < molecuul.length; i++){
+      values.push(molecuul[i].value);
+    }
+    return values;
+  }
+
+  this.checkRightNeighbours = function(atom, currentNeighbours){
+    var valuesAtom = this.makeListOfValues(atom);
+    var valuesCurrent = this.makeListOfValues(currentNeighbours);
+    var boolean = this.arrayContainsArray(valuesCurrent, valuesAtom);
+    console.log(boolean + ", " + atom + ", " + currentNeighbours);
+    return boolean;
   }
 
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
