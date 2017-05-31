@@ -80,7 +80,7 @@ function Atom(value, currentAtom, id, game) {
 			if(!atomsAreSnapped(this, snappedAtom)){
         this.connected += 1;
 				this.neighbour.push(snappedAtom);
-        console.log(this.neighbour.connected);
+      //  console.log(this.neighbour.connected);
 			}
 		}
 

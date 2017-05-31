@@ -73,6 +73,7 @@ function Trial(game){
     for(var i=0; i< this.currentMolecule.length; i++){
       copyMolecule.push(this.currentMolecule[i]);
     }
+
     console.log(copyMolecule);
     this.molecule.sort(function(a, b){
         return a.value < b.value;
@@ -85,11 +86,19 @@ function Trial(game){
     for(var i=0; i<this.molecule.length; i++){
       console.log("molecuul " + this.molecule[i]);
       var boolean = this.findCorrectMatch(this.molecule[i]);
+      if(!boolean){
+        for(var i=0; i < copyMolecule.length; i++){
+          this.currentMolecule.push(copyMolecule[i]);
+        }
+        return false;
+      }
     }
     console.log(copyMolecule);
     for(var i=0; i < copyMolecule.length; i++){
       this.currentMolecule.push(copyMolecule[i]);
     }
+    console.log(this.currentMolecule);
+    console.log(this.molecule);
     return boolean;
   };
 

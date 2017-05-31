@@ -550,6 +550,7 @@ function evaluateAnswer3(){
 	evaluateAnswer = true;
 	var tooMany = false;
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
+	// moet deze niet ook true opleveren als je wel de goede gebruikt?
 	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	// rightconnections doet het nog niet helemaal goed lijkt het.
@@ -558,10 +559,16 @@ function evaluateAnswer3(){
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
-		if(amountMolecule - amountCurrent > 0){
+		console.log(amountMolecule); // 2
+		console.log(amountCurrent); // 3
+		var getal = amountMolecule - amountCurrent;
+		console.log(getal);
+		if(getal < 0){
+			console.log("Je hebt teveel atomen");
 			tooMany = true;
 		}
 		else{
+			console.log("Je hebt te weinig atomen");
 			tooMany = false;
 		}
 	}
@@ -585,11 +592,19 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			currentQuestion.hintConnections = true;
 		}
 		else if(!rightAmount && rightConnections){
-			setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
+			if(tooMany){
+				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
+			}
+			else{
+				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', 0.25, 'red');
+			}
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.20;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
+			}
+			if(!rightUnique){
+				currentQuestion.uniqueButtons = true;
 			}
 		}
 		else if(!rightType && rightConnections && rightUnique){
@@ -602,7 +617,13 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 		}
 		else if(!rightAmount && !rightUnique){
 			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal.
-			setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
+			if(currentQuestion.currentMolecule.length != 0){
+				setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
+			}
+			else{
+				setProgress('Your answer is incorrect. You do not have the right amount of atoms.', -1, 'red');
+			}
+
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.1;
 				currentQuestion.repeat = 3;
@@ -610,14 +631,27 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			}
 			currentQuestion.uniqueButtons = true;
 		}
+		else if(rightUnique && rightAmount){
+			setProgress('Your answer is incorrect. You do use the right atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
+		}
 		else if(rightUnique){
+			console.log("hallo");
 			// kan ook zijn dat je er te veel hebt.
-			setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
+			if(tooMany){
+				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', 0.25, 'red');
+			}
+			else{
+				setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
+			}
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.25;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
+		}
+		else if(rightAmount){
+			setProgress('Your answer is incorrect. You have the right amount of atoms, but you need to use other types.', -0.75, 'red');
+			currentQuestion.uniqueButtons = true;
 		}
 	}
 }
@@ -652,6 +686,7 @@ function setProgress(feedback, score, colour){
 }
 
 function deleteSprites(){
+	console.log(currentQuestion.copyMolecule.length);
 	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
 		currentQuestion.currentMolecule[i].sprite.destroy();
 	}
