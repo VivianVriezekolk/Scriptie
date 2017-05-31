@@ -18,6 +18,7 @@ function Trial(game){
   this.hintConnections = false;
   this.giveHints = false;
   this.uniqueButtons = false;
+  this.helpText = [];
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -152,7 +153,7 @@ function Trial(game){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = "";
     if(this.repeat != -1){
-      content = ["Assignment: " + "You are not succeeded in making this " + this.moleculeName + " molecule. Could you please try again?"];
+      content = ["Assignment: " + "You are not succeeded in making this " + this.moleculeName + " molecule. Could you please try again?" + " " + this.helpText];
     }
     else{
       content = ["Assignment: " + this.currentQuestionText];
@@ -172,6 +173,7 @@ function Trial(game){
       this.uniqueButtons = false;
       this.giveHints = false;
       this.hintConnections = false;
+      this.helpText = [];
     }
     else if(this.repeat != -1 && currentQuestion.hintConnections && !randomStrategy){
       this.giveHints = true;

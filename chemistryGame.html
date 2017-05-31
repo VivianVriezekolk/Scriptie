@@ -216,12 +216,21 @@ function render () {
 
 function makeStartPopup(){
 	var startTextofGame = document.getElementById('startTextofGame');
+	if(!randomStrategy){
 	startTextofGame.innerText =
 		"You are working in a laboratory. " +
 		"When you click on Start you are asked to complete some important assignments! " +
 		"Try to complete as many assignments as you can and become rich (and save the world)! The bar on the right gives you an indication of how much money you are earning. " +
 		"Your assistent will help you if you are in need. " +
 		"We need you! Do not disappoint us!"
+	}
+	else{
+		startTextofGame.innerText =
+			"You are working in a laboratory. " +
+			"When you click on Start you are asked to complete some important assignments! " +
+			"Try to complete as many assignments as you can and become rich (and save the world)! The bar on the right gives you an indication of how much money you are earning. " +
+			"We need you! Do not disappoint us!"
+	}
 }
 
 function startG(){
@@ -328,14 +337,19 @@ function makePriorityQueue(){
 
 function pickRandomQuestion(){
 	if(!allQuestionsAreAsked()){
-		console.log("blaaa");
-		// hier loopt hij vast.
-		var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
-		while(priorityQueueQuestions[x].isAsked == true){
-			x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+		if(currentQuestion.repeat > 0 && currentQuestion.molecule.length != 0){
+			currentQuestion.repeat -= 1;
+			return currentQuestion;
 		}
-		priorityQueueQuestions[x].isAsked = true;
-		return priorityQueueQuestions[x];
+		else{
+			// hier loopt hij vast.
+			var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+			while(priorityQueueQuestions[x].isAsked == true || priorityQueueQuestions[x].repeat != -1){
+				x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+			}
+			priorityQueueQuestions[x].isAsked = true;
+			return priorityQueueQuestions[x];
+		}
 	}
 	else{
 		showLastPopup();
@@ -641,6 +655,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			}
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
+				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
 			}
 		}
 		else if(rightUnique && rightAmount){
@@ -665,6 +680,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			setProgress('Your answer is incorrect. You have the right amount of atoms, but you need to use other types.', -0.75, 'red');
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
+				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
 			}
 		}
 	}

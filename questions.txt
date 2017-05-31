@@ -8,7 +8,7 @@ Bindings
 101
 010
 
-Question~Methane contributes 25 times more to global warming then carbon dioxide. Can you make us one methane molecule?
+Question~Methane contributes 25 times more to global warming than carbon dioxide. Can you make us one methane molecule?
 Name~Methane
 Molecule~CHHHH
 Familiarity~0
@@ -28,7 +28,7 @@ Bindings
 100
 100
 
-Question~We have got a problem! Our atmosfere ran out of oxygen! Can you perhaps make an oxygen molecule?
+Question~We have got a problem! Our atmosphere ran out of oxygen! Can you perhaps make an oxygen molecule?
 Name~Oxygen
 Molecule~OO
 Familiarity~2
