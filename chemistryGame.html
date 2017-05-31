@@ -218,9 +218,10 @@ function makeStartPopup(){
 	var startTextofGame = document.getElementById('startTextofGame');
 	startTextofGame.innerText =
 		"You are working in a laboratory. " +
-		"When you click on Start you are asked to complete some important missions! " +
-		"Try to complete as many mission as you can and become rich! The bar on the right gives you an indication of how much money you are earning. " +
-		"We need you, do not disappoint us."
+		"When you click on Start you are asked to complete some important assignments! " +
+		"Try to complete as many assignments as you can and become rich (and save the world)! The bar on the right gives you an indication of how much money you are earning. " +
+		"Your assistent will help you if you are in need. " +
+		"We need you! Do not disappoint us!"
 }
 
 function startG(){
@@ -326,12 +327,19 @@ function makePriorityQueue(){
 }
 
 function pickRandomQuestion(){
-	var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
-	while(priorityQueueQuestions[x].isAsked == true){
-		x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+	if(!allQuestionsAreAsked()){
+		console.log("blaaa");
+		// hier loopt hij vast.
+		var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+		while(priorityQueueQuestions[x].isAsked == true){
+			x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
+		}
+		priorityQueueQuestions[x].isAsked = true;
+		return priorityQueueQuestions[x];
 	}
-	priorityQueueQuestions[x].isAsked = true;
-	return priorityQueueQuestions[x];
+	else{
+		showLastPopup();
+	}
 }
 
 function decideAdaptively(){
@@ -589,7 +597,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 				currentQuestion.maxScore = 0.4;
 				currentQuestion.repeat = 1;
 			}
-			currentQuestion.hintConnections = true;
+			if(!randomStrategy){
+				currentQuestion.hintConnections = true;
+			}
 		}
 		else if(!rightAmount && rightConnections){
 			if(tooMany){
@@ -603,7 +613,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
-			if(!rightUnique){
+			if(!rightUnique && !randomStrategy){
 				currentQuestion.uniqueButtons = true;
 			}
 		}
@@ -629,7 +639,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
-			currentQuestion.uniqueButtons = true;
+			if(!randomStrategy){
+				currentQuestion.uniqueButtons = true;
+			}
 		}
 		else if(rightUnique && rightAmount){
 			setProgress('Your answer is incorrect. You do use the right atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
@@ -651,7 +663,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 		}
 		else if(rightAmount){
 			setProgress('Your answer is incorrect. You have the right amount of atoms, but you need to use other types.', -0.75, 'red');
-			currentQuestion.uniqueButtons = true;
+			if(!randomStrategy){
+				currentQuestion.uniqueButtons = true;
+			}
 		}
 	}
 }
@@ -668,6 +682,7 @@ function setProgress(feedback, score, colour){
 	currentQuestion.score = score;
 
 	if(allQuestionsAreAsked()){
+		console.log("hallo");
 		doneButton.visible = false;
 		nextQuestion.visible = false;
 		popup.style.display = 'none';

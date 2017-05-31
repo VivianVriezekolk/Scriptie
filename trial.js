@@ -150,7 +150,13 @@ function Trial(game){
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
   this.showQuestion = function(){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
-    var content = ["Mission: " + this.currentQuestionText];
+    var content = "";
+    if(this.repeat != -1){
+      content = ["Assignment: " + "You are not succeeded in making this " + this.moleculeName + " molecule. Could you please try again?"];
+    }
+    else{
+      content = ["Assignment: " + this.currentQuestionText];
+    }
     missionpopup.style.display = 'block';
     delayText.wordIndex = 0;
     delayText.lineIndex = 0;
@@ -161,13 +167,13 @@ function Trial(game){
   };
 
   this.setPropertiesQuestion = function(){
-    if(this.repeat != -1 && this.uniqueButtons){
+    if(this.repeat != -1 && this.uniqueButtons && !randomStrategy){
       this.makeButtons();
       this.uniqueButtons = false;
       this.giveHints = false;
       this.hintConnections = false;
     }
-    else if(this.repeat != -1 && currentQuestion.hintConnections){
+    else if(this.repeat != -1 && currentQuestion.hintConnections && !randomStrategy){
       this.giveHints = true;
     }
     else{

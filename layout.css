@@ -12,7 +12,7 @@
   position: fixed;
   z-index: 1;
   top: 515px;
-  left: 220px;
+  left: 100px;
   overflow: auto;
   background-color: #ff8000;
   border-radius: 20px;
@@ -42,7 +42,7 @@
   display: 'block';
   background-color: #894E4E;
   color: white;
-  width: 350px;
+  width: 565px;
   height: 60px;
   border: 5px solid #888;
   border-color: #894E4E;
@@ -111,7 +111,7 @@
   position: fixed;
   z-index: 1;
   top: 4px;
-  left: 705px;
+  left: 700px;
   overflow: auto;
 }
 
