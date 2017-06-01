@@ -19,6 +19,8 @@ function Trial(game){
   this.giveHints = false;
   this.uniqueButtons = false;
   this.helpText = [];
+  this.helpNumber = false;
+
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -60,7 +62,7 @@ function Trial(game){
 // checks if the amount of unique atoms is right
   this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.molecule.length; j++){
-      console.log(currentQuestion.molecule);
+    //  console.log(currentQuestion.molecule);
 			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 					return false;
 			}
@@ -75,7 +77,7 @@ function Trial(game){
       copyMolecule.push(this.currentMolecule[i]);
     }
 
-    console.log(copyMolecule);
+    //console.log(copyMolecule);
     this.molecule.sort(function(a, b){
         return a.value < b.value;
     });
@@ -83,9 +85,9 @@ function Trial(game){
         return a.value < b.value;
     });
     var boolean = false;
-    console.log(this.molecule, this.currentMolecule);
+    //console.log(this.molecule, this.currentMolecule);
     for(var i=0; i<this.molecule.length; i++){
-      console.log("molecuul " + this.molecule[i]);
+    //  console.log("molecuul " + this.molecule[i]);
       var boolean = this.findCorrectMatch(this.molecule[i]);
       if(!boolean){
         for(var i=0; i < copyMolecule.length; i++){
@@ -94,12 +96,12 @@ function Trial(game){
         return false;
       }
     }
-    console.log(copyMolecule);
+  //  console.log(copyMolecule);
     for(var i=0; i < copyMolecule.length; i++){
       this.currentMolecule.push(copyMolecule[i]);
     }
-    console.log(this.currentMolecule);
-    console.log(this.molecule);
+  //  console.log(this.currentMolecule);
+  //  console.log(this.molecule);
     return boolean;
   };
 
@@ -127,7 +129,7 @@ function Trial(game){
       return false;
     }
     return subset.every(function (value) {
-      console.log(value);
+    //  console.log(value);
       return (superset.indexOf(value) >= 0);
     });
   }
@@ -144,7 +146,7 @@ function Trial(game){
     var valuesAtom = this.makeListOfValues(atom);
     var valuesCurrent = this.makeListOfValues(currentNeighbours);
     var boolean = this.arrayContainsArray(valuesCurrent, valuesAtom);
-    console.log(boolean + ", " + atom + ", " + currentNeighbours);
+  //  console.log(boolean + ", " + atom + ", " + currentNeighbours);
     return boolean;
   }
 
@@ -169,6 +171,7 @@ function Trial(game){
 
   this.setPropertiesQuestion = function(){
     if(this.repeat != -1 && this.uniqueButtons && !randomStrategy){
+      console.log("make buttons");
       this.makeButtons();
       this.uniqueButtons = false;
       this.giveHints = false;
@@ -176,7 +179,9 @@ function Trial(game){
       this.helpText = [];
     }
     else if(this.repeat != -1 && currentQuestion.hintConnections && !randomStrategy){
+      console.log("hier gaat het mis!");
       this.giveHints = true;
+      makeButtons();
     }
     else{
       this.uniqueButtons = false;
@@ -225,11 +230,13 @@ function Trial(game){
   }
 
   this.makeButtons = function(){
+    console.log("hallo!");
     this.removeButtons();
     var values = this.determineUniqueAtoms();
     for(elem of values){
       for(var j=0; j < buttons.length; j++){
         if(buttons[j].indexOf(elem) > -1){
+          console.log(elem);
           var buttonTest = new button(buttons[j], elem, 30, positionY[j]);
         }
       }

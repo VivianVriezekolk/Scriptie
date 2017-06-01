@@ -98,3 +98,26 @@ Bindings
 10000
 10000
 10000
+
+Questions~You need to make one chloorfluormethane molecule.
+Name~Chloorfluormethane
+Molecule~CZFHH
+Familiarity~0
+Bindings
+01111
+10000
+10000
+10000
+10000
+
+Questions~You need to make one broommethanol molecule.
+Name~Broommethanol
+Molecule~CQHHOH
+Familiarity~0
+Bindings
+011110
+100000
+100000
+100000
+100001
+000010

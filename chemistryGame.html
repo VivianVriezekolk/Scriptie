@@ -19,25 +19,26 @@
 </head>
 <body>
 		<div id="startG" class= "firstpopup">
-			<p id = "startTextofGame"></p>
+			<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
+			<p id = "startTextofGame" style = "font: 15px Calibri"></p>
 			<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
 		</div>
 		<div id="wrongAnswer" class = "popup" >
 			<div class = "popup-content">
-				<p id = "textAnswer"></p>
+				<p id = "textAnswer" style ="font: 12px Verdana" ></p>
 				<!--'<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">-->
 			</div	>
 		</div>
 
 		<div id= "gamedone" class = "popup">
 			<div class = "popup-content">
-				<p id = "finishText"></p>
+				<p id = "finishText" style="font: 15px arial;"></p>
 			</div>
 		</div>
 
 		<div id= "totalScore" class= "lastpopup">
 			<div class = "popup-content">
-				<p id = "score"><b> </b></p>
+				<p id = "score" style="font: 15px arial;"></p>
 			</div>
 		</div>
 
@@ -61,7 +62,7 @@
 
 		<div class = "amountSalary">
 			<div class = "SalaryContent">
-				<p id="salarytext" style="font: 15px times new roman; color: green;"></p>
+				<p id="salarytext" style="font: bold 25px times new roman; color: green;"></p>
 			</div>
 		</div>
 
@@ -82,7 +83,7 @@ var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var bar = document.getElementById("myBar");
 
-bar.style.height = "90%";
+bar.style.height = "85%";
 
 var currentQuestion = new Trial(game);
 var id = 0;
@@ -100,8 +101,6 @@ var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
-//var uniqueButtons = false;
-//var hintConnections = false;
 var giveHints = false;
 var evaluateAnswer = false;
 
@@ -112,7 +111,7 @@ var nextQuestion;
 var next;
 var restart;
 
-var totalScore = 10; // van 0 tot 100. 0 is niks 100 is alles.
+var totalScore = 15; // van 0 tot 100. 0 is niks 100 is alles.
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonGreen.png');
@@ -159,7 +158,7 @@ function create(){
 	graphics1.drawRect(685, 10, 105, 480); //7
 
 	whiterect.drawRect(100,10, 575, 480); //2
-
+	updateSalary();
 	makeStartPopup();
 	readQuestion();
 	makePriorityQueue();
@@ -169,7 +168,7 @@ function create(){
 		currentQuestion.showQuestion();
 	}
 	else{
-		console.log("Klaar");
+		//console.log("Klaar");
 	}
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
@@ -191,6 +190,7 @@ function create(){
 
 function makeButtons(){
 	for(var i=0; i< buttons.length; i++){
+		console.log(atomValues[i]);
 		var buttonTest = new button(buttons[i], atomValues[i], 30, positionY[i]);
 	}
 }
@@ -218,18 +218,20 @@ function makeStartPopup(){
 	var startTextofGame = document.getElementById('startTextofGame');
 	if(!randomStrategy){
 	startTextofGame.innerText =
-		"You are working in a laboratory. " +
-		"When you click on Start you are asked to complete some important assignments! " +
-		"Try to complete as many assignments as you can and become rich (and save the world)! The bar on the right gives you an indication of how much money you are earning. " +
-		"Your assistent will help you if you are in need. " +
-		"We need you! Do not disappoint us!"
+		"When you click on Start you are asked to complete some important assignments! \n" +
+		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
+		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
+		"You will be able to drag these atoms around and connect them together. \n" +
+		"If you are in need, your assistent will show up and help you! \n \n"  +
+		"We need you! Do not disappoint us! Good luck."
 	}
 	else{
 		startTextofGame.innerText =
-			"You are working in a laboratory. " +
-			"When you click on Start you are asked to complete some important assignments! " +
-			"Try to complete as many assignments as you can and become rich (and save the world)! The bar on the right gives you an indication of how much money you are earning. " +
-			"We need you! Do not disappoint us!"
+		"When you click on Start you are asked to complete some important assignments! \n" +
+		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
+		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
+		"You will be able to drag these atoms around and connect them together. \n \n " +
+		"We need you! Do not disappoint us! Good luck."
 	}
 }
 
@@ -240,7 +242,7 @@ function startG(){
 	}
 	deleteButton.visible = true;
 	doneButton.visible = true;
-	console.log('start');
+	//console.log('start');
 }
 
 function determineOveralDifficulty(){
@@ -271,10 +273,10 @@ function updateBar() {
 
 function updateBarColor(){
 	var elem = document.getElementById("myProgress");
-	if(totalScore <= 10){
+	if(totalScore <= 15){
 		elem.style.backgroundColor = "red";
 	}
-	else if(totalScore <= 30 && totalScore > 10){
+	else if(totalScore <= 30 && totalScore > 15){
 		elem.style.backgroundColor = "orange";
 	}
 	else if(totalScore <= 50 && totalScore > 30){
@@ -292,17 +294,17 @@ function updateSalary(){
 	var salarytext = document.getElementById('salarytext');
 	var roundScore = 60 * Math.round(totalScore);
 	if(roundScore == 1){
-		salarytext.innerText = "Your salary is " + 1 + " euro.";
+		salarytext.innerText = "$ " + 1;
 	}
 	else{
-		salarytext.innerText = "Your salary is " + roundScore + " euros.";
+		salarytext.innerText = "$ " + roundScore;
 	}
 }
 
 function deleteAtom(){
-	console.log(this.sprite.x + " " + this.sprite.y);
+	//console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 35 && this.sprite.x > 5 && this.sprite.y > 440 && this.sprite.y < 530){
-		console.log(this.sprite.x + " " + this.sprite.y);
+		//console.log(this.sprite.x + " " + this.sprite.y);
 		this.sprite.destroy();
 		removeAtom(this);
 		}
@@ -311,7 +313,7 @@ function deleteAtom(){
 function removeAtom(atom){
 	for(var i=0; i < currentQuestion.currentMolecule.length; i++){
 		if(currentQuestion.currentMolecule[i].id == atom.id){
-			console.log("Dit atoom is verwijderd " + atom.value);
+			//console.log("Dit atoom is verwijderd " + atom.value);
 			currentQuestion.currentMolecule.splice(i, 1);
 		}
 	}
@@ -329,7 +331,7 @@ function makePriorityQueue(){
 		for(var j=0; j<listOfQuestions.length; j++){
 			if(priority[i] == listOfQuestions[j].difficulty && !priorityQueueQuestions.includes(listOfQuestions[j])){
 				this.priorityQueueQuestions.push(listOfQuestions[j]);
-				console.log(listOfQuestions[j].currentQuestionText + " ");
+				//console.log(listOfQuestions[j].currentQuestionText + " ");
 			}
 		}
 	}
@@ -377,14 +379,14 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+3);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[position]);
+			//console.log(priorityQueueQuestions[position]);
 			return;
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.75){
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.75){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[position]);
+			//console.log(priorityQueueQuestions[position]);
 			return;
 
 		}
@@ -392,7 +394,7 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[position]);
+			//console.log(priorityQueueQuestions[position]);
 			return;
 
 		}
@@ -400,7 +402,7 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions[position]);
+			//console.log(priorityQueueQuestions[position]);
 			return;
 		}
 	 }
@@ -472,9 +474,9 @@ function getScore(){
 }
 
 function allQuestionsAreAsked(){
-	console.log(priorityQueueQuestions.length);
+	//console.log(priorityQueueQuestions.length);
 	for(var i=0; i<priorityQueueQuestions.length; i++){
-		console.log(priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
+		//console.log(priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
 			return false;
 		}
@@ -525,11 +527,11 @@ function makeTrial(trial, index, textsQuestion){
 
 function readQuestion(){
   var textQuestion = game.cache.getText('questions');
-	console.log(textQuestion);
+	//console.log(textQuestion);
   textsQuestion = textQuestion.split('\n');
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
-			console.log("You are going to make a new question now!");
+			//console.log("You are going to make a new question now!");
 			makeTrial(new Trial(game), i+1, textsQuestion);
 		}
 	}
@@ -556,7 +558,7 @@ function showNextQuestion(){
 }
 
 function changeCovalence(question){
-	console.log(question.moleculeName);
+	//console.log(question.moleculeName);
 	if(question.moleculeName == 'Carbondioxide'){
 		covalences = [1,2,1,1,1,1,1,1];;
 	}
@@ -581,16 +583,16 @@ function evaluateAnswer3(){
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
-		console.log(amountMolecule); // 2
-		console.log(amountCurrent); // 3
+		//console.log(amountMolecule); // 2
+		//console.log(amountCurrent); // 3
 		var getal = amountMolecule - amountCurrent;
-		console.log(getal);
+		//console.log(getal);
 		if(getal < 0){
-			console.log("Je hebt teveel atomen");
+			//console.log("Je hebt teveel atomen");
 			tooMany = true;
 		}
 		else{
-			console.log("Je hebt te weinig atomen");
+			//console.log("Je hebt te weinig atomen");
 			tooMany = false;
 		}
 	}
@@ -606,7 +608,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			setProgress('Great Job!', 1, 'black');
 		}
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
-			setProgress('Your answer is incorrect. You do not have the right connections between atoms.', 0.5, 'red');
+			setProgress('Almost correct! You do not have the right connections between atoms.', 0.5, 'red');
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.4;
 				currentQuestion.repeat = 1;
@@ -618,7 +620,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 		}
 		else if(!rightAmount && rightConnections){
 			if(tooMany){
-				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there!', 0.25, 'red');
+				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', 0.25, 'red');
 			}
 			else{
 				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', 0.25, 'red');
@@ -650,20 +652,24 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			}
 
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.1;
+				currentQuestion.maxScore = 0.2;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
+				currentQuestion.helpNumber = true;
 				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
 			}
 		}
 		else if(rightUnique && rightAmount){
 			setProgress('Your answer is incorrect. You do use the right atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
+			if(currentQuestion.repeat = -1){
+				currentQuestion.maxScore = 0.2;
+				currentQuestion.repeat = 2;
+			}
 		}
 		else if(rightUnique){
-			console.log("hallo");
 			// kan ook zijn dat je er te veel hebt.
 			if(tooMany){
 				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', 0.25, 'red');
@@ -679,6 +685,11 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 		}
 		else if(rightAmount){
 			setProgress('Your answer is incorrect. You have the right amount of atoms, but you need to use other types.', -0.75, 'red');
+			if(currentQuestion.repeat == -1){
+				currentQuestion.maxScore = 0.25;
+				currentQuestion.repeat = 3;
+				console.log(currentQuestion.maxScore);
+			}
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
 				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
@@ -688,10 +699,10 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 }
 
 function setProgress(feedback, score, colour){
-	console.log(currentQuestion.maxScore);
-	console.log(totalScore);
+	//console.log(currentQuestion.maxScore);
+	console.log("Deze score had je eerst" + totalScore);
 	totalScore += convertScoreChange(score*currentQuestion.maxScore);
-	console.log(totalScore);
+	console.log("Dit is de totale score: " + totalScore);
 	totalScore = Math.max(0,totalScore);
 	updateBar();
 	updateBarColor();
@@ -699,7 +710,7 @@ function setProgress(feedback, score, colour){
 	currentQuestion.score = score;
 
 	if(allQuestionsAreAsked()){
-		console.log("hallo");
+		//console.log("hallo");
 		doneButton.visible = false;
 		nextQuestion.visible = false;
 		popup.style.display = 'none';
@@ -718,7 +729,7 @@ function setProgress(feedback, score, colour){
 }
 
 function deleteSprites(){
-	console.log(currentQuestion.copyMolecule.length);
+	//console.log(currentQuestion.copyMolecule.length);
 	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
 		currentQuestion.currentMolecule[i].sprite.destroy();
 	}
@@ -730,14 +741,14 @@ function addWrongQuestion(){
 	for(var i=0; i < currentQuestion.repeat; i++){
 		if(!currentQuestion.alreadyAdded){
 			priorityQueueQuestions.push(currentQuestion);
-			console.log(currentQuestion);
+			//console.log(currentQuestion);
 		}
 	}
 	if(currentLength != priorityQueueQuestions.length){
 		currentQuestion.alreadyAdded = true;
-		console.log("deze ga ik niet adden");
+		//console.log("deze ga ik niet adden");
 	}
-	console.log(priorityQueueQuestions.length);
+	//console.log(priorityQueueQuestions.length);
 }
 
 function printMolecule(){
@@ -749,7 +760,7 @@ function printMolecule(){
 
 function convertScoreChange(answerScore) {
 	var totalDifficulty = determineOveralDifficulty();
-	return answerScore * 90 * currentQuestion.difficulty / totalDifficulty;
+	return answerScore * 85 * currentQuestion.difficulty / totalDifficulty;
 }
 
 // This function checks whether two lists are the same.
@@ -781,15 +792,21 @@ function button(buttonName, element, X, Y){
   this.buttonName = buttonName;
 
   this.actionOnClick = function(){
-    console.log("You clicked on me!!");
-  //  if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element)){
-		if(!gameIsFinished){
-  		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
-  		var atomNew = new Atom(element, true, id, game);
+    //console.log("You clicked on me!!");
+    if(currentQuestion.helpNumber){
+			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished){
+	  		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
+	  		var atomNew = new Atom(element, true, id, game);
+				atomNew.covalence = atomNew.determineCovalence();
+	  		currentQuestion.currentMolecule.push(atomNew);
+				id = id+1;
+	  	}
+		}
+		else{
+			var atomNew = new Atom(element, true, id, game);
 			atomNew.covalence = atomNew.determineCovalence();
-  		currentQuestion.currentMolecule.push(atomNew);
+			currentQuestion.currentMolecule.push(atomNew);
 			id = id+1;
-  	//}
 		}
   }
   var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
@@ -844,7 +861,7 @@ function undoneSnap(currentMolecule){
 // This function prints all values of the neighbours of atom a.
 function printNeighbours(a){
 	for(var i=0; i< a.neighbour.length; i++){
-		console.log(a.neighbour[i].value);
+		//console.log(a.neighbour[i].value);
 	}
 }
 
