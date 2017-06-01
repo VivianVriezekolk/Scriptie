@@ -1,6 +1,6 @@
 
 Question~Oh no! We ran out of water! As you know water is very important for us to stay alife. You need to make one water molecule!
-Name~Water
+Name~water
 Molecule~HOH
 Familiarity~2
 Bindings
@@ -9,7 +9,7 @@ Bindings
 010
 
 Question~Methane contributes 25 times more to global warming than carbon dioxide. Can you make us one methane molecule?
-Name~Methane
+Name~methane
 Molecule~CHHHH
 Familiarity~0
 Bindings
@@ -20,7 +20,7 @@ Bindings
 10000
 
 Question~We need to examine the structure of a carbon dioxide molecule to counteract global warming. You need to make one carbon dioxide molecule.
-Name~Carbondioxide
+Name~carbondioxide
 Molecule~COO
 Familiarity~1
 Bindings
@@ -29,7 +29,7 @@ Bindings
 100
 
 Question~We have got a problem! Our atmosphere ran out of oxygen! Can you perhaps make an oxygen molecule?
-Name~Oxygen
+Name~oxygen
 Molecule~OO
 Familiarity~2
 Bindings
@@ -37,7 +37,7 @@ Bindings
 10
 
 Question~We want to make some toothpaste. Can you perhaps make one fluor molecule to use for the synthese of toothpaste?
-Name~Fluor
+Name~fluor
 Molecule~FF
 Familiarity~1
 Bindings
@@ -45,7 +45,7 @@ Bindings
 10
 
 Question~We want to make fuel for cars. Could you make one hydrogen molecule please?
-Name~Hydrogen
+Name~hydrogen
 Molecule~HH
 Familiarity~2
 Bindings
@@ -53,7 +53,7 @@ Bindings
 10
 
 Question~You need to make one Iodine molecule.
-Name~Iodine
+Name~iodine
 Molecule~II
 Familiarity~1
 Bindings
@@ -61,7 +61,7 @@ Bindings
 10
 
 Question~You need to make one bromine molecule.
-Name~Bromine
+Name~bromine
 Molecule~QQ
 Familiarity~1
 Bindings
@@ -69,7 +69,7 @@ Bindings
 10
 
 Questions~You need to make one chloride molecule.
-Name~Chloride
+Name~chloride
 Molecule~ZZ
 Familiarity~1
 Bindings
@@ -77,7 +77,7 @@ Bindings
 10
 
 Question~You need to make methanol.
-Name~Methanol
+Name~methanol
 Molecule~CHHHOH
 Familiarity~0
 Bindings
@@ -89,7 +89,7 @@ Bindings
 000010
 
 Questions~You need to make one dichloormethane molecule.
-Name~Dichloormethane
+Name~dichloormethane
 Molecule~CZZHH
 Familiarity~0
 Bindings
@@ -100,7 +100,7 @@ Bindings
 10000
 
 Questions~You need to make one chloorfluormethane molecule.
-Name~Chloorfluormethane
+Name~chloorfluormethane
 Molecule~CZFHH
 Familiarity~0
 Bindings
@@ -111,7 +111,7 @@ Bindings
 10000
 
 Questions~You need to make one broommethanol molecule.
-Name~Broommethanol
+Name~broommethanol
 Molecule~CQHHOH
 Familiarity~0
 Bindings

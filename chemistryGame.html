@@ -139,6 +139,7 @@ function preload() {
 }
 
 function create(){
+	console.log("Hallo ik ben hier iets aan het typen!");
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
 	var whiterect = game.add.graphics(0, 0);
@@ -174,7 +175,7 @@ function create(){
 	// Make buttons
 	doneButton = game.add.button(675, 505, 'done', evaluateAnswer3, this);
 	nextQuestion = game.add.button(680, 500, 'nextQuestion', showNextQuestion, this);
-	deleteButton = game.add.image(12, 500, 'delete');
+	deleteButton = game.add.image(9, 500, 'delete');
 	next = game.add.button(675, 500, 'next', showTotalScore, this);
 
 	deleteButton.scale.setTo(0.4, 0.4);
@@ -303,7 +304,7 @@ function updateSalary(){
 
 function deleteAtom(){
 	//console.log(this.sprite.x + " " + this.sprite.y);
-	if(this.sprite.x < 35 && this.sprite.x > 5 && this.sprite.y > 440 && this.sprite.y < 530){
+	if(this.sprite.x < 90 && this.sprite.x > 10 && this.sprite.y > 500 && this.sprite.y < 590){
 		//console.log(this.sprite.x + " " + this.sprite.y);
 		this.sprite.destroy();
 		removeAtom(this);
@@ -643,7 +644,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			}
 		}
 		else if(!rightAmount && !rightUnique){
-			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal.
+			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal. Nog aanpassen
 			if(currentQuestion.currentMolecule.length != 0){
 				setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
 			}
@@ -792,7 +793,6 @@ function button(buttonName, element, X, Y){
   this.buttonName = buttonName;
 
   this.actionOnClick = function(){
-    //console.log("You clicked on me!!");
     if(currentQuestion.helpNumber){
 			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished){
 	  		console.log(countNumberOfAtoms(currentQuestion.molecule, element));

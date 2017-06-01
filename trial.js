@@ -155,7 +155,7 @@ function Trial(game){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = "";
     if(this.repeat != -1){
-      content = ["Assignment: " + "You are not succeeded in making this " + this.moleculeName + " molecule. Could you please try again?" + " " + this.helpText];
+      content = ["Assignment: " + "You have not succeeded in making this " + this.moleculeName + " molecule. Could you please try again?" + " " + this.helpText];
     }
     else{
       content = ["Assignment: " + this.currentQuestionText];
