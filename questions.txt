@@ -52,7 +52,7 @@ Bindings
 01
 10
 
-Question~You need to make one Iodine molecule.
+Question~Iodine is together with Bromine, Fluor, Chloride a compound of halogen group. These molecules have  similar properties. Can you make one Iodine molecule?
 Name~iodine
 Molecule~II
 Familiarity~1
@@ -121,3 +121,14 @@ Bindings
 100000
 100001
 000010
+
+Questions~You need to make one dichloorfluormethane molecule.
+Name~broommethanol
+Molecule~CZZFH
+Familiarity~0
+Bindings
+01111
+10000
+10000
+10000
+10000
