@@ -607,9 +607,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Great Job!', 1, 'black');
 		}
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
-			setProgress('Almost correct! You do not have the right connections between atoms.', 0.5, 'red');
+			setProgress('Almost correct! You do not have the right connections between atoms.', 0.75, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.4;
+				currentQuestion.maxScore = 0.7;
 				currentQuestion.repeat = 1;
 			}
 			if(!randomStrategy){
@@ -619,13 +619,13 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		}
 		else if(!rightAmount && rightConnections){
 			if(tooMany){
-				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', 0.25, 'red');
+				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', 0.50, 'red');
 			}
 			else{
 				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', 0.25, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.20;
+				currentQuestion.maxScore = 0.40;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
@@ -685,6 +685,10 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 				currentQuestion.maxScore = 0.25;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
+			}
+			if(!randomStrategy){
+				currentQuestion.helpNumber = true;
+				currentQuestion.helpText = "Your assistent is going to help you. You are not able to make more elements than necessary."
 			}
 		}
 		else if(rightAmount){
