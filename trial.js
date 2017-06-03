@@ -59,6 +59,20 @@ function Trial(game){
 
   };
 
+  this.checkSomeUnique = function(){
+    if(!this.checkUniqueAtoms()){
+      for(var i=0; i< this.currentMolecule.length; i++){
+        for(var j=0; j < this.molecule.length; j++){
+          if(this.currentMolecule[i].value == this.molecule[j].value){
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
 // checks if the amount of unique atoms is right
   this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.molecule.length; j++){

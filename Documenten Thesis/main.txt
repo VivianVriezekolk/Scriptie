@@ -1,0 +1,104 @@
+﻿\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Adaptive Educational Game \\ Thesis}
+\author{Vivian Vriezekolk (s4482921) }
+\date{\today}
+\usepackage{biblatex}
+\addbibresource{bib.bib}
+
+\usepackage{color,soul}
+\newcommand{\gk}[1]{\textcolor{red}{#1}}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+% Maybe also write something about the games that you played and which inspired you to make this game.
+
+% http://www.tandfonline.com/doi/abs/10.1080/14241270209389979
+
+
+\subsection*{Video games}
+The video game industry is huge, \gk{and still growing:} in 2017 the market will reach 102.9 billion[1]. % use \cite{} - it will make life easier!
+It is therefore not strange to use this growing market for the improvement of education. % doesn't immediately follow: do we want to use games in education to make money, or is this evidence that games are popular, and we'd like to leverage the same mechanics to teach people? spell it out a bit more: maybe "Educators are interested in meeting this growing demand with products that not only entertain, but educate. 
+Educational games %have the fun side of
+\gk{try to use the intrinsically motivating mechanics of} video games while still being useful for learning. Much research is done about the different learning techniques used for learning. However, most educational games do not take into account these best learning techniques. Also, these educational games are not tested based on efficiency towards learning. 
+
+\subsection*{Traditional Learning Techniques}
+There are many traditional ways of learning. Also, much research has been done about different learning techniques used for learning. In this section I am going to describe the best learning techniques.
+
+\subsection*{Game-based learning over Traditional learning}
+% Some information about why a game should improve learning over traditional learning.
+
+\subsection*{The four pillars}
+% The four pillars described in the paper.
+
+\subsection*{Research Question}
+In this project I tried to answer the following research question: \newline
+
+“Will a game teaching chemistry (molecule structure and names) with an adaptive learning algorithm improve learning compared to the same game without an adaptive learning algorithm?” \newline
+
+To answer this question, I built an game that teaches chemistry. The game makes use of an adaptive algorithm that adjust difficulty of both game dynamic and content to improve learning. 
+
+\section*{Methods}
+% something about the research. 
+% I used Java, Phaser, HTML etc.
+
+\section*{Research plan}
+% How to answer the research question? 
+
+\subsection*{Basic design of the game}
+In this game the molecular structures and names are taught. When the game starts, the player is provided with an explanation of the game. The player is working in a laboratory. The player's goal is to get a salary as high as possible by creating as many correct molecules as possible. \newline
+
+The player can press the "Start" button in the explanation panel. This indicates that the game starts. Some buttons will appear and the first assignment is printed at the bottom of the screen. The player can press buttons on the left side of the game. These buttons create atoms at a random place on the screen. Buttons create the element indicated at the button. The player could make as many atoms as they like. Later on this will be described in more detail. Atoms in the screen can be dragged around. When some atoms are near other atoms, they 'snap' together. This means that they form a connection. In this way a player is able to connect atoms together to create the needed molecule. It could be possible that the player creates by mistake too many atoms. To solve this problem, there is a trash can in the lower left corner. The player can delete an atom by dragging it to the trash can. \newline
+
+When the player thinks he has made the molecule needed for his assignment, he or she could press the 'complete mission' button. The program evaluates the answer and gives feedback. The feedback is situated in different components. One component is the text that is written on the screen. When the player presses the 'Complete mission' button, a pop-up appears with feedback. The other component of feedback is situated in the progress bar on the right. The progress bar will fill or will become emptier depending on the answer given. \newline
+
+The pop-up provided with feedback also has a button. When the player presses this "Next Question" button, the next question will be generated. This loop will endure until all questions are asked. A pop-up with text and two buttons will appear. The text displays how well you did on the assignments by showing you're month salary at that particular moment. The two buttons below this text can be used to restart the game or to finish the game. 
+
+\subsection*{Evaluating questions}
+% Explain the algorithm that evaluates the questions.
+
+\subsection*{Adaptive Algorithm}
+Now that we have discussed the basic design of the game, we can go in depth. The game needs to be adaptive, so I made an algorithm that considers the next question and its properties based on the previous answer of the player. I needed to make certain consideration in making this algorithm:
+
+\begin{enumerate}
+\item The player has to make all the questions in order to finish the game.
+\item The player has to answer the most difficult questions correctly to finish the game.
+\end{enumerate}
+
+If it is the case that the player has to make all the question in order to finish the game, the adaptive algorithm should be implemented with a different purpose than when the second item is true. Let me explain this further. 
+
+When it is necessary to answer all the questions in order to complete the game, then it is not possible to skip certain questions. This seems very logical, but this has a very important implication. When it is not possible to skip a certain question, it is also not possible to determine the next question based on the answers of the player. If there are for example three questions A, B and C, with in order the difficulties 1, 1 and 2. If the player gets the question A right, it should consider the next question to be more difficult, namely C. This means that question B is skipped. The only way that the statement: "The player has to make all the questions in order to finish the game" remains true, is by showing this question at the very end. This is, however, quite striking, because then it would mean that after correctly answering the question C, the next question is easier! This is not very adaptive. \newline
+
+There is, however, another way to make the game adaptive. When the player gets question A right, it would still show B as next question. However, it makes it more difficult for the player by for example showing more elements that could be made. In this situation questions will be asked in increasing difficulty order, but are still adaptive. \newline
+
+When considering the other statement to be true: "The player has to answer the most difficult questions correctly to finish the game", the adaptive algorithm has to be implemented very differently. It means that question B can be skipped, when answering question A correctly. Important to note is, that when answering question A correctly it could be the case that question B is asked later. This could be the case when question C is answered wrong. However, with this approach there are also some disadvantages. It could be the case that questions are asked twice. Now, this could be a problem because it would spoil the idea of being a game. Also it is perhaps boring for the player to answer the question twice. Another problem with the statement being true is that, all questions that are asked in the game, could be part of an exam of the student. This means that if one question is skipped, the algorithm kind of assumes that the player knows this particular question. This could hold when it was a mathematical educational game, but it would not hold for this chemistry game in which all elements should be learned. 
+
+% More in detail about how the adaptive algorithm precisely works. Which statement did you assume to be true?
+
+\subsection*{Determining difficulty of question}
+In order to make use of the adaptive algorithm it is important that questions are labeled with a representation of difficulty. This is possible to do in many ways. I made an algorithm that determines the difficulty based on three items; the amount of atoms, the amount of unique atoms and the familiarity of the molecule. 
+
+\subsection*{Progress bar}
+The feedback that was given after a question is also shown in the progress bar. When a question is right, the bar will fill. It also takes into account the difficulty of the question. The harder the question the higher the progress bar will be.
+% problems: When you skip questions it is not possible to built up a salary that is maximal when you have answered all the questions right. 
+
+\subsection*{Atom creating buttons}
+As described before, in the left panel of the game there are several buttons that create atoms. 
+
+% More in detail about what happens when the player gets a question wrong or right.
+
+\subsection*{Feedback}
+In my game I use immediate feedback. 
+% More in detail about why I choose immediate feedback and what the disadvantages and advantages of both ways are. Also some references.
+
+% Immediate feedback could prevent students from random guessing because they do not have a clue about what they did wrong.
+
+\printbibliography
+ 
+\end{document}
+

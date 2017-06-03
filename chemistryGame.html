@@ -222,8 +222,11 @@ function makeStartPopup(){
 		"When you click on Start you are asked to complete some important assignments! \n" +
 		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
 		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
-		"You will be able to drag these atoms around and connect them together. \n" +
+		"You will be able to drag these atoms around and connect them together. They will become grey when connected. \n" +
 		"If you are in need, your assistent will show up and help you! \n \n"  +
+		"Your assistent can help you in various ways. When atoms suddenly become dark green or red, it means that your assistent is helping you with the connections. " +
+		"Red means that the atom should be connected with less other atoms, dark green means that the atom is connected with the correct amount of atoms and light green means that an atom is connected and could be connected to more atoms. " +
+		"Other types of help will become clear in the game itself! \n \n" +
 		"We need you! Do not disappoint us! Good luck."
 	}
 	else{
@@ -231,7 +234,7 @@ function makeStartPopup(){
 		"When you click on Start you are asked to complete some important assignments! \n" +
 		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
 		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
-		"You will be able to drag these atoms around and connect them together. \n \n " +
+		"You will be able to drag these atoms around and connect them together. They will become grey when connected. \n \n " +
 		"We need you! Do not disappoint us! Good luck."
 	}
 }
@@ -577,6 +580,7 @@ function evaluateAnswer3(){
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
 	// moet deze niet ook true opleveren als je wel de goede gebruikt?
 	var rightUnique = currentQuestion.checkUniqueAtoms();
+	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	// rightconnections doet het nog niet helemaal goed lijkt het.
 	var rightConnections = currentQuestion.checkConnections2();
@@ -584,27 +588,21 @@ function evaluateAnswer3(){
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
-		//console.log(amountMolecule); // 2
-		//console.log(amountCurrent); // 3
 		var getal = amountMolecule - amountCurrent;
-		//console.log(getal);
 		if(getal < 0){
-			//console.log("Je hebt teveel atomen");
 			tooMany = true;
 		}
 		else{
-			//console.log("Je hebt te weinig atomen");
 			tooMany = false;
 		}
 	}
 	console.log(rightAmount, rightType, rightUnique, rightConnections);
-	determineScore(rightType, rightConnections, rightAmount, rightUnique, tooMany);
+	determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany);
 }
 
-function determineScore(rightType, rightConnections, rightAmount, rightUnique, tooMany){
+function determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany){
 	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
-			// als je het goed hebt wordt de vraag niet nog een keer gesteld, anders wel.
 			currentQuestion.repeat = 0;
 			setProgress('Great Job!', 1, 'black');
 		}
@@ -646,10 +644,15 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 		else if(!rightAmount && !rightUnique){
 			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal. Nog aanpassen
 			if(currentQuestion.currentMolecule.length != 0){
-				setProgress('Your answer is incorrect. You do not have the right amount of atoms. You also need to use other atoms.', -1, 'red');
+				if(someRightUnique){
+					setProgress('Your answer is incorrect. You do not have the right amount of atoms. You need to have other types of elements or you have types that are not necessary.', -1, 'red');
+				}
+				else{
+					setProgress('Your answer is incorrect. You do not have the right amount of atoms. You should also consider different elements.', -1, 'red');
+				}
 			}
 			else{
-				setProgress('Your answer is incorrect. You do not have the right amount of atoms.', -1, 'red');
+				setProgress('Your answer is incorrect. Please try next time! Nothing ventured, nothing gained.', -1, 'red');
 			}
 
 			if(currentQuestion.repeat == -1){
@@ -660,11 +663,11 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
 				currentQuestion.helpNumber = true;
-				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
+				currentQuestion.helpText = "Your assistent thinks you need to use these elements. You are also not able to make more elements than necessary.";
 			}
 		}
 		else if(rightUnique && rightAmount){
-			setProgress('Your answer is incorrect. You do use the right atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
+			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
 			if(currentQuestion.repeat = -1){
 				currentQuestion.maxScore = 0.2;
 				currentQuestion.repeat = 2;
@@ -685,7 +688,12 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, t
 			}
 		}
 		else if(rightAmount){
-			setProgress('Your answer is incorrect. You have the right amount of atoms, but you need to use other types.', -0.75, 'red');
+			if(someRightUnique){
+				setProgress('Your answer is incorrect. You have the right amount of atoms, but you do not use all the right element types.', -0.75, 'red');
+			}
+			else{
+				setProgress('Your answer is incorrect. The amount of atoms needed for this assignment is correct, however you should use different elements.', -0.75, 'red');
+			}
 			if(currentQuestion.repeat == -1){
 				currentQuestion.maxScore = 0.25;
 				currentQuestion.repeat = 3;

@@ -56,7 +56,7 @@ function Atom(value, currentAtom, id, game) {
         }
         else{
           if(!evaluateAnswer){
-            this.sprite.tint = 0xccff99;
+            this.sprite.tint = 0xAAAAAA;
           }
         }
       }
