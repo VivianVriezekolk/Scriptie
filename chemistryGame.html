@@ -20,7 +20,7 @@
 <body>
 		<div id="startG" class= "firstpopup">
 			<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
-			<p id = "startTextofGame" style = "font: 15px Calibri"></p>
+			<p id = "startTextofGame" style = "font: 13px Calibri"></p>
 			<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
 		</div>
 		<div id="wrongAnswer" class = "popup" >
@@ -100,7 +100,7 @@ var positionY = [75, 125, 175, 225, 275, 325, 375];
 var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
-var randomStrategy = false;
+var randomStrategy = true;
 var giveHints = false;
 var evaluateAnswer = false;
 
@@ -394,16 +394,23 @@ function decideOrderQuestions(){
 			return;
 
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.5){
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.25){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
+			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
+			priorityQueueQuestions.splice(i, 1);
+			//console.log(priorityQueueQuestions[position]);
+			return;
+		}
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.5){
+			var position = Math.min(priorityQueueQuestions.length, i+6);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
 			return;
 
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.25){
-			var position = Math.min(priorityQueueQuestions.length, i+6);
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.75){
+			var position = Math.min(priorityQueueQuestions.length, i+7);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
@@ -609,7 +616,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
 			setProgress('Almost correct! You do not have the right connections between atoms.', 0.75, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.7;
+				currentQuestion.maxScore = 0.2;
 				currentQuestion.repeat = 1;
 			}
 			if(!randomStrategy){
@@ -622,10 +629,11 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', 0.50, 'red');
 			}
 			else{
+				console.log('Volgens mij kan ik hier nooit inkomen, deze if kan dus wel weg.');
 				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', 0.25, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.40;
+				currentQuestion.maxScore = 0.20;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
@@ -636,7 +644,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		else if(!rightType && rightConnections && rightUnique){
 			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', 0.25, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore == 0.20;
+				currentQuestion.maxScore == 0.30;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
@@ -645,7 +653,12 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal. Nog aanpassen
 			if(currentQuestion.currentMolecule.length != 0){
 				if(someRightUnique){
-					setProgress('Your answer is incorrect. You do not have the right amount of atoms. You need to have other types of elements or you have types that are not necessary.', -1, 'red');
+					if(tooMany){
+						setProgress('Your answer is incorrect. You have too many atoms, however some of these element have the correct type.', -1, 'red');
+					}
+					else{
+						setProgress('Your answer is incorrect. You have too few atoms, however some of these element have the correct type.', -1, 'red');		
+					}
 				}
 				else{
 					setProgress('Your answer is incorrect. You do not have the right amount of atoms. You should also consider different elements.', -1, 'red');
@@ -656,7 +669,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.2;
+				currentQuestion.maxScore = 0.5;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
@@ -669,7 +682,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		else if(rightUnique && rightAmount){
 			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
 			if(currentQuestion.repeat = -1){
-				currentQuestion.maxScore = 0.2;
+				currentQuestion.maxScore = 0.3;
 				currentQuestion.repeat = 2;
 			}
 		}
@@ -682,7 +695,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 				setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.25;
+				currentQuestion.maxScore = 0.3;
 				currentQuestion.repeat = 2;
 				console.log(currentQuestion.maxScore);
 			}
@@ -699,7 +712,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 				setProgress('Your answer is incorrect. The amount of atoms needed for this assignment is correct, however you should use different elements.', -0.75, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.25;
+				currentQuestion.maxScore = 0.55;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
@@ -712,7 +725,6 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 }
 
 function setProgress(feedback, score, colour){
-	//console.log(currentQuestion.maxScore);
 	console.log("Deze score had je eerst" + totalScore);
 	totalScore += convertScoreChange(score*currentQuestion.maxScore);
 	console.log("Dit is de totale score: " + totalScore);
