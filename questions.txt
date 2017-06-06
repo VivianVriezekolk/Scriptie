@@ -60,7 +60,7 @@ Bindings
 01
 10
 
-Question~You need to make one bromine molecule.
+Question~Bromine water could be used to test the presents of certain substances. Bromine water itself is yellow. When the substance turns to a colourless solution it means that Bromine has reacted. Could you please make one Bromine molecule?
 Name~bromine
 Molecule~QQ
 Familiarity~1
@@ -68,15 +68,15 @@ Bindings
 01
 10
 
-Questions~You need to make one chloride molecule.
-Name~chloride
+Questions~Chlorine is one of the important minerals that we need to survive. Could you make one chlorine molecule?
+Name~chlorine
 Molecule~ZZ
 Familiarity~1
 Bindings
 01
 10
 
-Question~You need to make methanol.
+Question~We could synthesize methanol through fermentation. However, we need this molecule now! Could you make one methanol molecule?
 Name~methanol
 Molecule~CHHHOH
 Familiarity~0
@@ -88,7 +88,7 @@ Bindings
 100001
 000010
 
-Questions~You need to make one dichloormethane molecule.
+Questions~A degreasing agent (ontvettingsmiddel) contains dichloormethane. Could you make one dichloormethane for the synthese of a degreasing agent?
 Name~dichloormethane
 Molecule~CZZHH
 Familiarity~0
