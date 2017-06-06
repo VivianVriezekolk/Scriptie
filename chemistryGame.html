@@ -100,7 +100,7 @@ var positionY = [75, 125, 175, 225, 275, 325, 375];
 var atomValues = ['H', 'C', 'O', 'Q', 'F', 'I', 'Z'];
 var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
-var randomStrategy = true;
+var randomStrategy = false;
 var giveHints = false;
 var evaluateAnswer = false;
 
@@ -384,36 +384,32 @@ function decideOrderQuestions(){
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
+			console.log(priorityQueueQuestions);
 			return;
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.75){
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.8 || currentQuestion.score == -0.6){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
+			console.log(priorityQueueQuestions);
 			return;
 
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.25){
+		else if(priorityQueueQuestions[i] == currentQuestion &&  ((currentQuestion.score == -0.5) || (currentQuestion.score == 0.4) || (currentQuestion.score == -0.2))){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
+			console.log(priorityQueueQuestions);
 			return;
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.5){
+		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			//console.log(priorityQueueQuestions[position]);
-			return;
-
-		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0.75){
-			var position = Math.min(priorityQueueQuestions.length, i+7);
-			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
-			priorityQueueQuestions.splice(i, 1);
-			//console.log(priorityQueueQuestions[position]);
+			console.log(priorityQueueQuestions);
 			return;
 		}
 	 }
@@ -570,10 +566,10 @@ function showNextQuestion(){
 
 function changeCovalence(question){
 	//console.log(question.moleculeName);
-	if(question.moleculeName == 'Carbondioxide'){
+	if(question.moleculeName == 'carbondioxide'){
 		covalences = [1,2,1,1,1,1,1,1];;
 	}
-	else if(question.moleculeName == "Oxygen"){
+	else if(question.moleculeName == "oxygen"){
 		covalences = [1,4,1,1,1,1,1,1];;
 	}
 	else{
@@ -614,10 +610,10 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Great Job!', 1, 'black');
 		}
 		else if(rightType && !rightConnections && rightAmount && rightUnique){
-			setProgress('Almost correct! You do not have the right connections between atoms.', 0.75, 'red');
+			setProgress('Almost correct! You do not have the right connections between atoms.', 0, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.2;
-				currentQuestion.repeat = 1;
+				//currentQuestion.maxScore = 0.2;
+				currentQuestion.repeat = 3;
 			}
 			if(!randomStrategy){
 				currentQuestion.hintConnections = true;
@@ -626,15 +622,15 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		}
 		else if(!rightAmount && rightConnections){
 			if(tooMany){
-				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', 0.50, 'red');
+				setProgress('Your answer is incorrect. You have too many atoms, but you are almost there! You are still earning some money!', -0.2, 'red');
 			}
 			else{
 				console.log('Volgens mij kan ik hier nooit inkomen, deze if kan dus wel weg.');
-				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', 0.25, 'red');
+				setProgress('Your answer is incorrect. You need to use more atoms, but you are almost there!', -0.2, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.20;
-				currentQuestion.repeat = 2;
+				//currentQuestion.maxScore = 0.20;
+				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
 			if(!rightUnique && !randomStrategy){
@@ -642,10 +638,10 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 		}
 		else if(!rightType && rightConnections && rightUnique){
-			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', 0.25, 'red');
+			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', -0.4, 'red');
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore == 0.30;
-				currentQuestion.repeat = 2;
+				//currentQuestion.maxScore == 0.30;
+				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
 		}
@@ -657,7 +653,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 						setProgress('Your answer is incorrect. You have too many atoms, however some of these element have the correct type.', -1, 'red');
 					}
 					else{
-						setProgress('Your answer is incorrect. You have too few atoms, however some of these element have the correct type.', -1, 'red');		
+						setProgress('Your answer is incorrect. You have too few atoms, however some of these element have the correct type.', -1, 'red');
 					}
 				}
 				else{
@@ -669,7 +665,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.5;
+				//currentQuestion.maxScore = 0.5;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
@@ -680,24 +676,24 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 		}
 		else if(rightUnique && rightAmount){
-			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', 0.25, 'red');
+			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', -0.5, 'red');
 			if(currentQuestion.repeat = -1){
-				currentQuestion.maxScore = 0.3;
-				currentQuestion.repeat = 2;
+				//currentQuestion.maxScore = 0.3;
+				currentQuestion.repeat = 3;
 			}
 		}
 		else if(rightUnique){
 			// kan ook zijn dat je er te veel hebt.
 			if(tooMany){
-				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', 0.25, 'red');
+				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', -0.6, 'red');
 			}
 			else{
-				setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', 0.25, 'red');
+				setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', -0.6, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.3;
-				currentQuestion.repeat = 2;
-				console.log(currentQuestion.maxScore);
+				//currentQuestion.maxScore = 0.3;
+				currentQuestion.repeat = 3;
+			//	console.log(currentQuestion.maxScore);
 			}
 			if(!randomStrategy){
 				currentQuestion.helpNumber = true;
@@ -706,13 +702,13 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		}
 		else if(rightAmount){
 			if(someRightUnique){
-				setProgress('Your answer is incorrect. You have the right amount of atoms, but you do not use all the right element types.', -0.75, 'red');
+				setProgress('Your answer is incorrect. You have the right amount of atoms, but you do not use all the right element types.', -0.8, 'red');
 			}
 			else{
-				setProgress('Your answer is incorrect. The amount of atoms needed for this assignment is correct, however you should use different elements.', -0.75, 'red');
+				setProgress('Your answer is incorrect. The amount of atoms needed for this assignment is correct, however you should use different elements.', -0.8, 'red');
 			}
 			if(currentQuestion.repeat == -1){
-				currentQuestion.maxScore = 0.55;
+				//currentQuestion.maxScore = 0.55;
 				currentQuestion.repeat = 3;
 				console.log(currentQuestion.maxScore);
 			}
@@ -726,7 +722,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 
 function setProgress(feedback, score, colour){
 	console.log("Deze score had je eerst" + totalScore);
-	totalScore += convertScoreChange(score*currentQuestion.maxScore);
+	totalScore += convertScoreChange(score);
 	console.log("Dit is de totale score: " + totalScore);
 	totalScore = Math.max(0,totalScore);
 	updateBar();

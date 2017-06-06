@@ -22,7 +22,7 @@ Bindings
 Question~We need to examine the structure of a carbon dioxide molecule to counteract global warming. You need to make one carbon dioxide molecule.
 Name~carbondioxide
 Molecule~COO
-Familiarity~1
+Familiarity~2
 Bindings
 011
 100
@@ -99,7 +99,7 @@ Bindings
 10000
 10000
 
-Questions~You need to make one chloorfluormethane molecule.
+Questions~You need to make one chloorfluormethane(dichloorfluormethaan) molecule.
 Name~chloorfluormethane
 Molecule~CZFHH
 Familiarity~0
@@ -122,9 +122,20 @@ Bindings
 100001
 000010
 
-Questions~You need to make one dichloorfluormethane molecule.
-Name~broommethanol
+Questions~You need to make one dichloorfluormethane(dichloorfluormethaan) molecule.
+Name~dichloorfluormethane
 Molecule~CZZFH
+Familiarity~0
+Bindings
+01111
+10000
+10000
+10000
+10000
+
+Questions~You need to make one tetraiodomethane(tetrajoodmethaan) molecule.
+Name~tetraiodomethane
+Molecule~CIIII
 Familiarity~0
 Bindings
 01111
