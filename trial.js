@@ -33,6 +33,7 @@ function Trial(game){
 // checks the amount of atoms
   this.checkAmountOfAtoms = function(){
     if(this.currentMolecule.length != this.molecule.length){
+      console.log(this.molecule.length);
       return false;
     }
     return true;
@@ -41,7 +42,6 @@ function Trial(game){
 // checks if all unique atoms are there
   this.checkUniqueAtoms = function(){
     var values = this.determineUniqueAtoms();
-
     let set2 = new Set();
     for(var i=0; i < this.currentMolecule.length; i++){
       set2.add(this.currentMolecule[i].value);
@@ -76,8 +76,7 @@ function Trial(game){
 // checks if the amount of unique atoms is right
   this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.molecule.length; j++){
-    //  console.log(currentQuestion.molecule);
-			if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
+  		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
 					return false;
 			}
 		}
@@ -85,39 +84,45 @@ function Trial(game){
   }
 
 // de rest moet true zijn anders gaat dit fout
-  this.checkConnections2 = function(){
+// nog beter naar deze functie kijken, hoe werkt hij nu precies?
+  this.checkConnections = function(){
     var copyMolecule = [];
     for(var i=0; i< this.currentMolecule.length; i++){
       copyMolecule.push(this.currentMolecule[i]);
     }
 
-    //console.log(copyMolecule);
     this.molecule.sort(function(a, b){
         return a.value < b.value;
     });
     this.currentMolecule.sort(function(a, b){
         return a.value < b.value;
     });
+
     var boolean = false;
-    //console.log(this.molecule, this.currentMolecule);
     for(var i=0; i<this.molecule.length; i++){
-    //  console.log("molecuul " + this.molecule[i]);
       var boolean = this.findCorrectMatch(this.molecule[i]);
       if(!boolean){
-        for(var i=0; i < copyMolecule.length; i++){
-          this.currentMolecule.push(copyMolecule[i]);
+        this.currentMolecule = this.deleteList(this.currentMolecule);
+        for(var k=0; k < copyMolecule.length; k++){
+          this.currentMolecule.push(copyMolecule[k]);
         }
         return false;
       }
     }
-  //  console.log(copyMolecule);
+    this.currentMolecule = this.deleteList(this.currentMolecule);
     for(var i=0; i < copyMolecule.length; i++){
       this.currentMolecule.push(copyMolecule[i]);
     }
-  //  console.log(this.currentMolecule);
-  //  console.log(this.molecule);
+    console.log(this.copyMolecule);
     return boolean;
   };
+
+  this.deleteList = function(list){
+    while(list.length > 0){
+      list.pop();
+    }
+    return list;
+  }
 
   this.findCorrectMatch = function(atom){
     atom.neighbour.sort(function(a, b){
@@ -143,7 +148,6 @@ function Trial(game){
       return false;
     }
     return subset.every(function (value) {
-    //  console.log(value);
       return (superset.indexOf(value) >= 0);
     });
   }
@@ -160,7 +164,6 @@ function Trial(game){
     var valuesAtom = this.makeListOfValues(atom);
     var valuesCurrent = this.makeListOfValues(currentNeighbours);
     var boolean = this.arrayContainsArray(valuesCurrent, valuesAtom);
-  //  console.log(boolean + ", " + atom + ", " + currentNeighbours);
     return boolean;
   }
 
@@ -209,6 +212,13 @@ function Trial(game){
     for(var i=0; i < this.molecule.length; i++){
       this.molecule[i].determineCovalence();
     }
+  }
+
+  this.makeUndraggable = function(){
+    for(var i=0; i < this.currentMolecule.length; i++){
+      this.currentMolecule[i].makeUndraggable();
+    }
+    return;
   }
 
   this.determineUniqueAtoms = function(){

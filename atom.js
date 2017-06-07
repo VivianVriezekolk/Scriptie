@@ -29,6 +29,12 @@ function Atom(value, currentAtom, id, game) {
       return Xrandom;
     }
 
+    this.makeUndraggable = function(){
+      this.sprite.inputEnabled = false;
+      this.sprite.input.draggable = false;
+      this.sprite.input.enableDrag(false);
+    }
+
     function determineYPositionInGrid(){
       var Yrandom = Math.floor((Math.random() * (455-5)) + 5);
       while(Yrandom % 32 != 0){
@@ -40,7 +46,6 @@ function Atom(value, currentAtom, id, game) {
     this.determineTint = function(){
       if(this.connected == 0 && !evaluateAnswer){
         this.sprite.tint = 0xFFFFFF;
-        console.log("hallo");
       }
       else{
         if(currentQuestion.giveHints){

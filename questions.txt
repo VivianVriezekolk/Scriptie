@@ -99,7 +99,7 @@ Bindings
 10000
 10000
 
-Questions~You need to make one chloorfluormethane(dichloorfluormethaan) molecule.
+Questions~An organ donor's heart must be kept cool, make a chlorofluoromethane (chloorfluormethaan) molecule.
 Name~chloorfluormethane
 Molecule~CZFHH
 Familiarity~0
@@ -110,9 +110,9 @@ Bindings
 10000
 10000
 
-Questions~You need to make one broommethanol molecule.
-Name~broommethanol
-Molecule~CQHHOH
+Questions~You need to make one fluormethanol molecule.
+Name~fluormethanol
+Molecule~CFHHOH
 Familiarity~0
 Bindings
 011110
@@ -122,9 +122,9 @@ Bindings
 100001
 000010
 
-Questions~You need to make one dichloorfluormethane(dichloorfluormethaan) molecule.
-Name~dichloorfluormethane
-Molecule~CZZFH
+Questions~There has been a fire, we need you to quickly make some dibromochloromethane(dibroomchloormethaan) molecule to use as a fire retardant!
+Name~dibroomchloormethane
+Molecule~CQQZH
 Familiarity~0
 Bindings
 01111
@@ -133,7 +133,7 @@ Bindings
 10000
 10000
 
-Questions~You need to make one tetraiodomethane(tetrajoodmethaan) molecule.
+Questions~Oh no! We forgot how yo make tetraiodomethane (tetrajoodmethaan). Do you know how to make one molecule?
 Name~tetraiodomethane
 Molecule~CIIII
 Familiarity~0
