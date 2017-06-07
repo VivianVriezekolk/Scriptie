@@ -137,7 +137,6 @@ function preload() {
 }
 
 function create(){
-	console.log("Hallo ik ben hier iets aan het typen!");
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
 	var whiterect = game.add.graphics(0, 0);
@@ -166,9 +165,6 @@ function create(){
 	if(currentQuestion != null){
 		currentQuestion.showQuestion();
 	}
-	else{
-		//console.log("Klaar");
-	}
 	game.stage.backgroundColor = "#DBB782";
 	// Make buttons
 	doneButton = game.add.button(675, 505, 'done', evaluateAnswer3, this);
@@ -189,7 +185,6 @@ function create(){
 
 function makeButtons(){
 	for(var i=0; i< buttons.length; i++){
-		console.log(atomValues[i]);
 		var buttonTest = new button(buttons[i], atomValues[i], 30, positionY[i]);
 	}
 }
@@ -375,14 +370,12 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+3);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.8 || currentQuestion.score == -0.6){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions);
 			return;
 
 		}
@@ -390,14 +383,12 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			console.log(priorityQueueQuestions);
 			return;
 		}
 	 }
@@ -616,7 +607,6 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			if(currentQuestion.currentMolecule.length != 0){
 				if(someRightUnique){
 					if(tooMany){
-						console.log(currentQuestion.molecule.length, currentQuestion.currentMolecule.length);
 						setProgress('Your answer is incorrect. You have too many atoms, however some of these element have the correct type.', -1, 'red');
 					}
 					else{
@@ -670,9 +660,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 }
 
 function setProgress(feedback, score, colour){
-	console.log("Deze score had je eerst" + totalScore);
 	totalScore += convertScoreChange(score);
-	console.log("Dit is de totale score: " + totalScore);
 	totalScore = Math.max(0,totalScore);
 	updateBar();
 	updateBarColor();
@@ -727,7 +715,6 @@ function button(buttonName, element, X, Y){
   this.actionOnClick = function(){
     if(currentQuestion.helpNumber){
 			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished){
-	  		console.log(countNumberOfAtoms(currentQuestion.molecule, element));
 	  		var atomNew = new Atom(element, true, id, game);
 				atomNew.covalence = atomNew.determineCovalence();
 	  		currentQuestion.currentMolecule.push(atomNew);
