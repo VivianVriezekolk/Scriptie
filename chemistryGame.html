@@ -109,8 +109,6 @@ var doneButton;
 var deleteButton;
 var nextQuestion;
 var next;
-var restart;
-
 var totalScore = 15; // van 0 tot 100. 0 is niks 100 is alles.
 
 function preload() {
@@ -246,7 +244,6 @@ function startG(){
 	}
 	deleteButton.visible = true;
 	doneButton.visible = true;
-	//console.log('start');
 }
 
 function determineOveralDifficulty(){
@@ -306,18 +303,15 @@ function updateSalary(){
 }
 
 function deleteAtom(){
-	//console.log(this.sprite.x + " " + this.sprite.y);
 	if(this.sprite.x < 90 && this.sprite.x > 10 && this.sprite.y > 500 && this.sprite.y < 590){
-		//console.log(this.sprite.x + " " + this.sprite.y);
 		this.sprite.destroy();
 		removeAtom(this);
-		}
+	}
 }
 
 function removeAtom(atom){
 	for(var i=0; i < currentQuestion.currentMolecule.length; i++){
 		if(currentQuestion.currentMolecule[i].id == atom.id){
-			//console.log("Dit atoom is verwijderd " + atom.value);
 			currentQuestion.currentMolecule.splice(i, 1);
 		}
 	}
@@ -335,7 +329,6 @@ function makePriorityQueue(){
 		for(var j=0; j<listOfQuestions.length; j++){
 			if(priority[i] == listOfQuestions[j].difficulty && !priorityQueueQuestions.includes(listOfQuestions[j])){
 				this.priorityQueueQuestions.push(listOfQuestions[j]);
-				//console.log(listOfQuestions[j].currentQuestionText + " ");
 			}
 		}
 	}
@@ -348,7 +341,6 @@ function pickRandomQuestion(){
 			return currentQuestion;
 		}
 		else{
-			// hier loopt hij vast.
 			var x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
 			while(priorityQueueQuestions[x].isAsked == true || priorityQueueQuestions[x].repeat != -1){
 				x = Math.floor(Math.random() * (priorityQueueQuestions.length - 0));
@@ -383,7 +375,6 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+3);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			//console.log(priorityQueueQuestions[position]);
 			console.log(priorityQueueQuestions);
 			return;
 		}
@@ -391,7 +382,6 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			//console.log(priorityQueueQuestions[position]);
 			console.log(priorityQueueQuestions);
 			return;
 
@@ -400,7 +390,6 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			//console.log(priorityQueueQuestions[position]);
 			console.log(priorityQueueQuestions);
 			return;
 		}
@@ -408,7 +397,6 @@ function decideOrderQuestions(){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
-			//console.log(priorityQueueQuestions[position]);
 			console.log(priorityQueueQuestions);
 			return;
 		}
@@ -481,9 +469,7 @@ function getScore(){
 }
 
 function allQuestionsAreAsked(){
-	//console.log(priorityQueueQuestions.length);
 	for(var i=0; i<priorityQueueQuestions.length; i++){
-		//console.log(priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
 			return false;
 		}
@@ -507,7 +493,7 @@ function makeTrial(trial, index, textsQuestion){
 			for(var j=0; j < atomsOfMolecule.length; j++){
 				var atom = new Atom(atomsOfMolecule[j], false, id+j, game);
 				trial.molecule.push(atom);
-				trial.copyMolecule.push(atom);
+				//trial.copyMolecule.push(atom);
 			}
 		}
 		else if(textsQuestion[i].indexOf('Familiarity') > -1){
@@ -520,7 +506,7 @@ function makeTrial(trial, index, textsQuestion){
 					var value = textsQuestion[m];
 					if(value[k] == 1){
 						trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
-						trial.copyMolecule[k].addConnection(trial.copyMolecule[m-(i+1)]);
+						//trial.copyMolecule[k].addConnection(trial.copyMolecule[m-(i+1)]);
 					}
 				}
 			}
@@ -534,11 +520,9 @@ function makeTrial(trial, index, textsQuestion){
 
 function readQuestion(){
   var textQuestion = game.cache.getText('questions');
-	//console.log(textQuestion);
   textsQuestion = textQuestion.split('\n');
 	for(var i=0; i< textsQuestion.length; i++){
 		if(textsQuestion[i] == ""){
-			//console.log("You are going to make a new question now!");
 			makeTrial(new Trial(game), i+1, textsQuestion);
 		}
 	}
@@ -581,7 +565,6 @@ function evaluateAnswer3(){
 	evaluateAnswer = true;
 	var tooMany = false;
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
-	// moet deze niet ook true opleveren als je wel de goede gebruikt?
 	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
@@ -630,7 +613,6 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', -0.4, 'red');
 		}
 		else if(!rightAmount && !rightUnique){
-			// het kan zijn dat er wel 1 atoom bij zat die er in moet zitten, dus de tekst klopt hier niet helemaal. Nog aanpassen
 			if(currentQuestion.currentMolecule.length != 0){
 				if(someRightUnique){
 					if(tooMany){
@@ -658,7 +640,6 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', -0.5, 'red');
 		}
 		else if(rightUnique){
-			// kan ook zijn dat je er te veel hebt.
 			if(tooMany){
 				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', -0.6, 'red');
 			}
@@ -723,41 +704,9 @@ function deleteSprites(){
 	currentQuestion.currentMolecule = [];
 }
 
-function addWrongQuestion(){
-	var currentLength = priorityQueueQuestions.length;
-	for(var i=0; i < currentQuestion.repeat; i++){
-		if(!currentQuestion.alreadyAdded){
-			priorityQueueQuestions.push(currentQuestion);
-		}
-	}
-	if(currentLength != priorityQueueQuestions.length){
-		currentQuestion.alreadyAdded = true;
-	}
-}
-
-function printMolecule(){
-	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
-		console.log("Dit is Atom nummer " +  i + ", " + currentQuestion.currentMolecule[i].value + ", " + currentQuestion.currentMolecule[i].id);
-		console.log(currentQuestion.currentMolecule[i]);
-	}
-}
-
 function convertScoreChange(answerScore) {
 	var totalDifficulty = determineOveralDifficulty();
 	return answerScore * 85 * currentQuestion.difficulty / totalDifficulty;
-}
-
-// This function checks whether two lists are the same.
-function equalLists(neighbourMolecule, neighbourCurrentMolecule){
-	if(neighbourMolecule.length != neighbourCurrentMolecule.length){
-		return false;
-	}
-	for(var i=0; i < neighbourMolecule.length; i++){
-		if(neighbourMolecule[i].value != neighbourCurrentMolecule[i].value){
-			return false;
-		}
-	}
-	return true;
 }
 
 // This function counts the number of atoms with a specific value in a molecule
@@ -838,13 +787,6 @@ function undoneSnap(currentMolecule){
 			currentMolecule[i].sprite.input.enableSnap(32, 32, false, true);
 		}
 		currentMolecule[i].determineTint();
-	}
-}
-
-// This function prints all values of the neighbours of atom a.
-function printNeighbours(a){
-	for(var i=0; i< a.neighbour.length; i++){
-		//console.log(a.neighbour[i].value);
 	}
 }
 

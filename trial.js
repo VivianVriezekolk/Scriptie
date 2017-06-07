@@ -5,7 +5,6 @@ function Trial(game){
   this.currentQuestionText = [];
   this.currentMolecule = [];
   this.molecule = [];
-  this.copyMolecule = [];
   this.text = [];
   this.isAsked = false;
   this.score = 0;
@@ -33,7 +32,6 @@ function Trial(game){
 // checks the amount of atoms
   this.checkAmountOfAtoms = function(){
     if(this.currentMolecule.length != this.molecule.length){
-      console.log(this.molecule.length);
       return false;
     }
     return true;
@@ -90,7 +88,6 @@ function Trial(game){
     for(var i=0; i< this.currentMolecule.length; i++){
       copyMolecule.push(this.currentMolecule[i]);
     }
-
     this.molecule.sort(function(a, b){
         return a.value < b.value;
     });
@@ -113,7 +110,6 @@ function Trial(game){
     for(var i=0; i < copyMolecule.length; i++){
       this.currentMolecule.push(copyMolecule[i]);
     }
-    console.log(this.copyMolecule);
     return boolean;
   };
 
@@ -133,7 +129,6 @@ function Trial(game){
         this.currentMolecule[i].neighbour.sort(function(a, b){
             return a.value < b.value;
         });
-        // waarschijnlijk zit het probleem bij de equallists want hij heeft er 1 extra dus dan klopt het niet meer.
         if(this.checkRightNeighbours(atom.neighbour, this.currentMolecule[i].neighbour)){
           this.currentMolecule.splice(i,1);
           return true;
@@ -188,7 +183,6 @@ function Trial(game){
 
   this.setPropertiesQuestion = function(){
     if(this.repeat != -1 && this.uniqueButtons && !randomStrategy){
-      console.log("make buttons");
       this.makeButtons();
       this.uniqueButtons = false;
       this.giveHints = false;
@@ -196,7 +190,6 @@ function Trial(game){
       this.helpText = [];
     }
     else if(this.repeat != -1 && currentQuestion.hintConnections && !randomStrategy){
-      console.log("hier gaat het mis!");
       this.giveHints = true;
       makeButtons();
     }
@@ -244,8 +237,7 @@ function Trial(game){
     }
     var numberOfUniqueAtoms = this.determineUniqueAtoms().size;
     this.difficulty = +numberOfAtoms - +this.familiarity + +numberOfUniqueAtoms;
-    console.log("Difficulty: " + this.difficulty);
-  };
+    };
 
   this.removeButtons = function(){
     for(var i=0; i < buttonsList.length; i++){
@@ -254,13 +246,11 @@ function Trial(game){
   }
 
   this.makeButtons = function(){
-    console.log("hallo!");
     this.removeButtons();
     var values = this.determineUniqueAtoms();
     for(elem of values){
       for(var j=0; j < buttons.length; j++){
         if(buttons[j].indexOf(elem) > -1){
-          console.log(elem);
           var buttonTest = new button(buttons[j], elem, 30, positionY[j]);
         }
       }

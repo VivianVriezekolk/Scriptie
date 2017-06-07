@@ -7,11 +7,9 @@ function Atom(value, currentAtom, id, game) {
     this.covalence = [];
     this.connected = 0;
 		if(currentAtom){
-      console.log(game.world.centerX + ", " + game.world.centerY);
       var Xrandom = determineXPositionInGrid();
       var Yrandom = determineYPositionInGrid();
-      console.log("X is " + Xrandom + ", Y is " + Yrandom);
-			this.sprite = game.add.sprite(Xrandom, Yrandom, value);
+      this.sprite = game.add.sprite(Xrandom, Yrandom, value);
       this.sprite.scale.setTo(0.65, 0.65);
       this.sprite.inputEnabled = true;
   		this.sprite.input.enableDrag();
@@ -68,11 +66,9 @@ function Atom(value, currentAtom, id, game) {
     }
 
     this.determineCovalence = function(){
-      console.log(evaluateAnswer);
       if(!evaluateAnswer){
         for(var i=0; i < atomValues.length; i++){
           if(this.value == atomValues[i]){
-            console.log("value " + this.value + ", covalence " + covalences[i]);
             return covalences[i];
           }
         }
@@ -81,28 +77,21 @@ function Atom(value, currentAtom, id, game) {
 
 		// this function adds a connection between atoms.
 		this.addConnection = function(snappedAtom){
-    //  console.log(this.connected, snappedAtom.connected);
-			if(!atomsAreSnapped(this, snappedAtom)){
+  		if(!atomsAreSnapped(this, snappedAtom)){
         this.connected += 1;
 				this.neighbour.push(snappedAtom);
-      //  console.log(this.neighbour.connected);
-			}
+  		}
 		}
 
 		// this function removes a connection between atoms.
 		this.removeConnection = function(lostAtom){
 			for(var i=0; i<this.neighbour.length; i++){
 				if(this.neighbour[i].value == lostAtom.value){
-          console.log(this.neighbour[i].connected);
           if(this.connected > 0){
             this.connected -= 1;
           }
-          console.log(this.neighbour[i].connected);
-					console.log(lostAtom.value + " is removed from " + this.value);
-					console.log(lostAtom.id + " is removed from " + this.id);
-					this.neighbour.splice(i, 1);
+        	this.neighbour.splice(i, 1);
           var colour = '0x' + (Math.random().toString(16) + "000000").substring(2,8);
-          console.log(colour);
         }
 			}
 		}
