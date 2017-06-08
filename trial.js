@@ -20,7 +20,6 @@ function Trial(game){
   this.helpText = [];
   this.helpNumber = false;
 
-
   this.finishGame = function(){
     this.currentQuestionText = [];
     this.repeat = 0;

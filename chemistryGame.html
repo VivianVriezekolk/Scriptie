@@ -351,6 +351,7 @@ function pickRandomQuestion(){
 
 function decideAdaptively(){
 	decideOrderQuestions();
+	console.log(priorityQueueQuestions);
 	for(var i=0; i< priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat >= 1){
 			priorityQueueQuestions[i].isAsked = true;
@@ -363,17 +364,19 @@ function decideAdaptively(){
 }
 
 function decideOrderQuestions(){
-// de waardes moeten nog aangepast worden, het moet ook zo zijn dat ze worden herhaald als de vragen weer wat moeilijker worden, nog even naar kijken.
-
 	for(var i=0; i < priorityQueueQuestions.length; i++){
+		console.log(i);
+		console.log(priorityQueueQuestions[i]);
 		if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -1){
 			var position = Math.min(priorityQueueQuestions.length, i+3);
+			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.8 || currentQuestion.score == -0.6){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
+			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
@@ -381,12 +384,14 @@ function decideOrderQuestions(){
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion &&  ((currentQuestion.score == -0.5) || (currentQuestion.score == 0.4) || (currentQuestion.score == -0.2))){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
+			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
+			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
@@ -462,6 +467,7 @@ function getScore(){
 function allQuestionsAreAsked(){
 	for(var i=0; i<priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
+			console.log("repeat: " + priorityQueueQuestions[i].repeat);
 			return false;
 		}
 	}
@@ -560,7 +566,9 @@ function evaluateAnswer3(){
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections();
-
+	//db.put({
+	//  ""	
+	//})
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
