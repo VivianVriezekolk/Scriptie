@@ -198,7 +198,9 @@ function create(){
 		buttonsList[i].visible = false;
 	}
 }
-
+//ref("users/" + uid + "tr" + trial)
+//Date.now();
+// ref('summary/' +vid)
 function writeUserData(userId, name, email, imageUrl) {
   firebase.database().ref('users/' + userId).set({
     username: name,
@@ -543,7 +545,6 @@ function makeTrial(trial, index, textsQuestion){
 					var value = textsQuestion[m];
 					if(value[k] == 1){
 						trial.molecule[k].addConnection(trial.molecule[m-(i+1)]);
-						//trial.copyMolecule[k].addConnection(trial.copyMolecule[m-(i+1)]);
 					}
 				}
 			}
