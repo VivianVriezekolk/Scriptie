@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Test dragging</title>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src="button.js"></script>
 	<script type="text/javascript" src="atom.js"></script>
@@ -73,6 +74,17 @@
 	</div>
 
 <script type="text/javascript">
+  // Initialize Firebase // it is not save!! Maybe make save
+var config = {
+  apiKey: "AIzaSyDFK1lTVkm5Gl_ENEn5o2YXzWvEzLcSYMw",
+  authDomain: "chemistrygame-eca18.firebaseapp.com",
+  databaseURL: "https://chemistrygame-eca18.firebaseio.com",
+  projectId: "chemistrygame-eca18",
+  storageBucket: "chemistrygame-eca18.appspot.com",
+  messagingSenderId: "2394046920"
+};
+firebase.initializeApp(config);
+var database = firebase.database();
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render});
 
@@ -106,7 +118,7 @@ var randomStrategy = false;
 var giveHints = false;
 var evaluateAnswer = false;
 
-
+// https://chemistrygame-eca18.firebaseapp.com/
 var floor;
 var doneButton;
 var deleteButton;
@@ -185,6 +197,14 @@ function create(){
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = false;
 	}
+}
+
+function writeUserData(userId, name, email, imageUrl) {
+  firebase.database().ref('users/' + userId).set({
+    username: name,
+    email: email,
+    profile_picture : imageUrl
+  });
 }
 
 function createDB(dbName) {
@@ -581,6 +601,8 @@ function changeCovalence(question){
 }
 
 function evaluateAnswer3(){
+	var rand = Math.round(Math.random() * 10000000);
+	writeUserData(rand, "George", "bla", "blabla");
 	var currentDate0 = new Date();
 	var currentTime0 = currentDate0.getHours() + ": " + currentDate0.getMinutes() + ": " + currentDate0.getSeconds();
 	currentQuestion.endTime = currentTime0;
