@@ -108,6 +108,7 @@ var priorityQueueQuestions = [];
 var text = [];
 var feedbackText = [];
 var buttonsList = [];
+var index = 0;
 
 var buttons = ['HButton', 'CButton', 'OButton', 'QButton', 'FButton', 'IButton', 'ZButton'];
 var positionY = [75, 125, 175, 225, 275, 325, 375];
@@ -117,6 +118,8 @@ var gameIsFinished = false;
 var randomStrategy = false;
 var giveHints = false;
 var evaluateAnswer = false;
+var rand = Math.round(Math.random() * 10000000);
+
 
 // https://chemistrygame-eca18.firebaseapp.com/
 var floor;
@@ -198,12 +201,15 @@ function create(){
 		buttonsList[i].visible = false;
 	}
 }
+// make form in html for the docs and make new table where you save those findings with the same userId.
 //ref("users/" + uid + "tr" + trial)
 //Date.now();
 // ref('summary/' +vid)
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
+function writeUserData(userId, trial, name, email, imageUrl, score, currentM) {
+  firebase.database().ref('users/' + userId + 'tr' + trial).set({
     username: name,
+		score: score,
+		target: currentM,
     email: email,
     profile_picture : imageUrl
   });
@@ -601,9 +607,52 @@ function changeCovalence(question){
 	}
 }
 
+function makeCopyMolecule(molecule){
+	var copy = []
+	for(var i=0; i < molecule.length; i++){
+		copy.push(molecule[i]);
+	}
+	return copy;
+}
+
+// neighbours veranderen.
+function changeMolecule(molecule){
+	var copyOf = makeCopyMolecule(molecule);
+	var newMol = [];
+	for(var i=0; i< copyOf.length; i++){
+		newMol.push(new Atom(copyOf[i].value, false, copyOf[i].id, game));
+		newMol[i].covalence = copyOf[i].covalence;
+		for(var j=0; j < copyOf[i].neighbour.length; j++){
+			newMol[i].neighbour.push(copyOf[i].neighbour[j].id);
+		}
+	}
+	console.log(newMol);
+	return newMol;
+}
+
+function getFirebaseAtom(atom) {
+	var neighbours = [];
+	for(var i=0; i < atom.neighbour.length; i++){
+		neighbours.push(atom.neighbour[i].id)
+	}
+	return {"type": atom.value, "id": atom.id, "neighbours": neighbours}
+}
+
+function getFirebaseMolecule(molecule){
+	var atoms = [];
+	for(var i=0; i < molecule.length; i++){
+		atoms.push(getFirebaseAtom(molecule[i]))
+	}
+	return atoms;
+}
+
+
 function evaluateAnswer3(){
-	var rand = Math.round(Math.random() * 10000000);
-	writeUserData(rand, "George", "bla", "blabla");
+	console.log("hallo");
+	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
+	var targetM = getFirebaseMolecule(currentQuestion.molecule);
+	writeUserData(rand,  index, "George", "bla", "blabla", currentQuestion.score, currentM);
+	index+=1;
 	var currentDate0 = new Date();
 	var currentTime0 = currentDate0.getHours() + ": " + currentDate0.getMinutes() + ": " + currentDate0.getSeconds();
 	currentQuestion.endTime = currentTime0;
