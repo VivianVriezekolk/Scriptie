@@ -205,14 +205,13 @@ function create(){
 //ref("users/" + uid + "tr" + trial)
 //Date.now();
 // ref('summary/' +vid)
-function writeUserData(userId, trial, name, email, imageUrl, score, currentM) {
-  firebase.database().ref('users/' + userId + 'tr' + trial).set({
-    username: name,
-		score: score,
-		target: currentM,
-    email: email,
-    profile_picture : imageUrl
-  });
+function writeUserData(userId, trial, score, currentM, targetM, time) {
+  firebase.database().ref('users/' + Date.now() + "ID"+ userId + 'tr' + trial).set({
+    score: score,
+		response: currentM,
+		time: time,
+		target: targetM,
+    });
 }
 
 function createDB(dbName) {
@@ -573,9 +572,8 @@ function readQuestion(){
 }
 
 function showNextQuestion(){
-	var currentDate1 = new Date();
-	var currentTime1 = currentDate1.getHours() + ": " + currentDate1.getMinutes() + ": " + currentDate1.getSeconds();
-	console.log(currentTime1);
+	var date = Date.now();
+	console.log(date);
 	evaluateAnswer = false;
 	deleteSprites();
 	nextQuestion.visible = false;
@@ -648,16 +646,14 @@ function getFirebaseMolecule(molecule){
 
 
 function evaluateAnswer3(){
-	console.log("hallo");
+	currentQuestion.endTime = Date.now();
+	var timeNeeded = currentQuestion.determineTime();
+
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
 	var targetM = getFirebaseMolecule(currentQuestion.molecule);
-	writeUserData(rand,  index, "George", "bla", "blabla", currentQuestion.score, currentM);
+
+	writeUserData(rand,  index, currentQuestion.score, currentM, targetM, timeNeeded);
 	index+=1;
-	var currentDate0 = new Date();
-	var currentTime0 = currentDate0.getHours() + ": " + currentDate0.getMinutes() + ": " + currentDate0.getSeconds();
-	currentQuestion.endTime = currentTime0;
-	console.log(currentTime0);
-	currentQuestion.determineTime();
 	currentQuestion.makeUndraggable();
 	evaluateAnswer = true;
 	var tooMany = false;
