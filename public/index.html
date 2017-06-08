@@ -83,10 +83,6 @@ var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
 var bar = document.getElementById("myBar");
 
-var currentDate = new Date();
-var currentTime = currentDate.getHours() + ": " + currentDate.getMinutes() + ": " + currentDate.getSeconds();
-
-
 bar.style.height = "85%";
 
 const URL = "http://127.0.0.1:5984";
@@ -109,6 +105,7 @@ var gameIsFinished = false;
 var randomStrategy = false;
 var giveHints = false;
 var evaluateAnswer = false;
+
 
 var floor;
 var doneButton;
@@ -135,7 +132,7 @@ function preload() {
 		game.load.image('F', 'images/FAtomCircle.png');
 		game.load.image('done', 'images/doneButton2.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
-		game.load.image('nextQuestion', 'images/nextQuestion.PNG');
+		game.load.image('nextQuestion', 'images/nextAssignment.png');
 		game.load.image('next', 'images/next.PNG');
 		game.load.image('start', 'images/start.png');
 		game.load.image('finish', 'images/finish.png');
@@ -143,8 +140,6 @@ function preload() {
 }
 
 function create(){
-	createDB('test');
-	updateDB('test', 'document', {"pitcher":"Nolan Ryan"});
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
 	var whiterect = game.add.graphics(0, 0);
@@ -178,9 +173,10 @@ function create(){
 	doneButton = game.add.button(675, 505, 'done', evaluateAnswer3, this);
 	nextQuestion = game.add.button(680, 500, 'nextQuestion', showNextQuestion, this);
 	deleteButton = game.add.image(9, 500, 'delete');
-	next = game.add.button(675, 500, 'next', showTotalScore, this);
+	next = game.add.button(680, 510, 'next', showTotalScore, this);
 
 	deleteButton.scale.setTo(0.4, 0.4);
+	nextQuestion.scale.setTo(0.4, 0.4);
 	doneButton.visible = false;
 	deleteButton.visible = false;
 	nextQuestion.visible = false;
@@ -550,6 +546,9 @@ function readQuestion(){
 }
 
 function showNextQuestion(){
+	var currentDate1 = new Date();
+	var currentTime1 = currentDate1.getHours() + ": " + currentDate1.getMinutes() + ": " + currentDate1.getSeconds();
+	console.log(currentTime1);
 	evaluateAnswer = false;
 	deleteSprites();
 	nextQuestion.visible = false;
@@ -582,6 +581,11 @@ function changeCovalence(question){
 }
 
 function evaluateAnswer3(){
+	var currentDate0 = new Date();
+	var currentTime0 = currentDate0.getHours() + ": " + currentDate0.getMinutes() + ": " + currentDate0.getSeconds();
+	currentQuestion.endTime = currentTime0;
+	console.log(currentTime0);
+	currentQuestion.determineTime();
 	currentQuestion.makeUndraggable();
 	evaluateAnswer = true;
 	var tooMany = false;

@@ -19,6 +19,8 @@ function Trial(game){
   this.uniqueButtons = false;
   this.helpText = [];
   this.helpNumber = false;
+  this.endTime = 0;
+  this.startTime = 0;
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -26,6 +28,10 @@ function Trial(game){
     this.currentMolecule = [];
     this.molecule = [];
     this.text = [];
+  }
+
+  this.determineTime = function(){
+    console.log(this.startTime + " - " + this.endTime);
   }
 
 // checks the amount of atoms
@@ -163,6 +169,9 @@ function Trial(game){
 
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
   this.showQuestion = function(){
+    var currentDate2 = new Date();
+    var currentTime2 = currentDate2.getHours() + ": " + currentDate2.getMinutes() + ": " + currentDate2.getSeconds();
+  	this.startTime = currentTime2;
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = "";
     if(this.repeat != -1){
