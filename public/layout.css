@@ -173,6 +173,17 @@
   border-top-right-radius: 5px;
 }
 
+.resultSaved{
+  display: none;
+  width: 530px;
+  height: 435px;
+  top:15px;
+  left: 120px;
+  position: fixed;
+  text-align: center;
+  border-radius: 20px;
+}
+
 
 .firstpopup{
   display: 'block';

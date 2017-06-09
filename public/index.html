@@ -24,7 +24,7 @@
 			<table style="width:100%"  class="main">
 				<tr width = "55%">
 				<td>
-					Thank you for participating! I would like you to answer the following questions: <br> <br>
+					<b>Thank you for participating! I would like you to answer the following questions: </b><br> <br>
 				</td>
 				<td>
 				</td>
@@ -138,6 +138,10 @@
 			</form>
 		</div>
 	</div>
+	<div id = "result" class = "resultSaved">
+		<p style = "font: 20px Calibri"> Your results have been saved! Thank you for participating! :) </p>
+	</div>
+
 	<div id="startG" class= "firstpopup">
 		<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
 		<p id = "startTextofGame" style = "font: 14px Calibri"></p>
@@ -341,6 +345,16 @@ function showForm(){
 }
 
 function submitResults(){
+	questionnaire.style.display = 'none';
+	var bar = document.getElementById("myProgress");
+	var currentSalary = document.getElementById("textprogress");
+	var salary = document.getElementById("salarytext");
+	currentSalary.style.display = 'none';
+	salary.style.display = 'none';
+	bar.style.display = 'none';
+
+	showThanksPop();
+
 	console.log("hallo");
 	var age = document.getElementById("age").value;
 	var study = document.getElementById("study").value;
@@ -362,6 +376,11 @@ function submitResults(){
 
 	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, likeNb, learnNb, easyNb, clearNb, comment)
 
+}
+
+function showThanksPop(){
+	var result = document.getElementById("result");
+	result.style.display = 'block';
 }
 
 function returnChoice(choice){
@@ -563,6 +582,7 @@ function pickRandomQuestion(){
 		}
 	}
 	else{
+		console.log("Nu gaan we stoppen");
 		showLastPopup();
 	}
 }
@@ -689,6 +709,7 @@ function allQuestionsAreAsked(){
 			console.log("repeat: " + priorityQueueQuestions[i].repeat);
 			return false;
 		}
+		console.log("repeat: " + priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
 	}
 	return true;
 }
@@ -845,7 +866,7 @@ function evaluateAnswer(){
 		}
 	}
 	determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany);
-	writeUserData(rand,  index, currentQuestion.score, currentM, targetM, timeNeeded);
+	writeUserData(rand,  index, currentQuestion.score, JSON.stringify(currentM), JSON.stringify(targetM), timeNeeded);
 	index+=1;
 }
 
@@ -941,7 +962,8 @@ function setProgress(feedback, score, colour){
 	updateSalary();
 	currentQuestion.score = score;
 
-	if(allQuestionsAreAsked()){
+	if(allQuestionsAreAsked() && (currentQuestion.score == 1  || currentQuestion.repeat == 0)){
+		console.log("hallo");
 		doneButton.visible = false;
 		nextQuestion.visible = false;
 		popup.style.display = 'none';
@@ -949,6 +971,7 @@ function setProgress(feedback, score, colour){
 		showLastPopup(feedback);
 	}
 	else{
+		console.log("Nu gaan we stoppen");
 		var textAnswer = document.getElementById('textAnswer');
 		textAnswer.style.color = colour;
 		textAnswer.innerText =  feedback;
