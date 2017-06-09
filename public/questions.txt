@@ -36,8 +36,8 @@ Bindings
 01
 10
 
-Question~We want to make some toothpaste. Can you perhaps make one fluor molecule to use for the synthese of toothpaste?
-Name~fluor
+Question~We want to make some toothpaste. Can you perhaps make one fluorine molecule to use for the synthese of toothpaste?
+Name~fluorine
 Molecule~FF
 Familiarity~1
 Bindings
@@ -52,7 +52,7 @@ Bindings
 01
 10
 
-Question~Iodine is together with Bromine, Fluor, Chloride a compound of halogen group. These molecules have  similar properties. Can you make one Iodine molecule?
+Question~Iodine is together with Bromine, Fluorine, Chlorine a compound of halogen group. These molecules have  similar properties. Can you make one Iodine molecule?
 Name~iodine
 Molecule~II
 Familiarity~1

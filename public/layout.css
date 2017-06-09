@@ -1,3 +1,23 @@
+.questionnaire{
+  display : none;
+  position: fixed;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+  overflow: auto;
+}
+
+.formcontent{
+  background-color: #ffffcc;
+  color: black;
+  width: 665px;
+  height: 580px;
+  border: 1px solid #888;
+  border-color: white;
+  text-align: left;
+  text-shadow: 2px white;
+}
+
 .popup{
   display : none;
   position: fixed;
@@ -18,6 +38,17 @@
   border-radius: 20px;
 }
 
+.last-content{
+  background-color: #ffffcc;
+  color: black;
+  width: 400px;
+  height: 200px;
+  border: 1px solid #888;
+  border-color: #DEB887;
+  text-align: center;
+  border-radius: 15px;
+}
+
 .popup-content{
   background-color: #DEB887;
   color: black;
@@ -30,11 +61,16 @@
 }
 
 .lastpopup{
+  text-align: center;
+  border-radius: 15px;
+  width: 400px;
+  height: 200px;
+  background-color: #ffffcc;
   display : none;
   position: fixed;
   z-index: 1;
-  top: 200px;
-  left: 130px;
+  top: 180px;
+  left: 180px;
   overflow: auto;
 }
 
@@ -48,6 +84,12 @@
   border: 5px solid #888;
   border-color: #894E4E;
   text-align: center;
+}
+
+.main {
+	font-family: 	Arial, Verdana, sans-serif;
+	color:		black;
+	font-size:	13px;
 }
 
 

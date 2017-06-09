@@ -19,53 +19,171 @@
     </style>
 </head>
 <body>
-		<div id="startG" class= "firstpopup">
-			<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
-			<p id = "startTextofGame" style = "font: 13px Calibri"></p>
-			<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
+	<div id= "formQuest" class = "questionnaire">
+		<form class = "formcontent">
+			<table style="width:100%"  class="main">
+				<tr width = "55%">
+				<td>
+					Thank you for participating! I would like you to answer the following questions: <br> <br>
+				</td>
+				<td>
+				</td>
+				</tr>
+				<tr>
+					<td width = "50%">
+			  		How old are you?
+					</td>
+					<td width = "50%">
+						<input type="text" id="age" name="fname"><br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td width = "50%">
+					What are you currently studying or what is your highest educational background?
+					</td>
+					<td width = "50%">
+						 <input type="text" id="study" name="fname"><br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					How many years did you take chemistry?
+					</td>
+					<td>
+						 <input type="text" id="exp" name="fname"><br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						The order of the questions was good.
+					</td>
+					<td>
+						<input type="radio" name="choiceGood" value="1"> 1
+						<input type="radio" name="choiceGood" value="2"> 2
+						<input type="radio" name="choiceGood" value="3"> 3
+						<input type="radio" name="choiceGood" value="4"> 4
+						<input type="radio" name="choiceGood" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						The hints that I received were helpful.
+					</td>
+					<td>
+						<input type="radio" name="choiceHint" value="1"> 1
+						<input type="radio" name="choiceHint" value="2"> 2
+						<input type="radio" name="choiceHint" value="3"> 3
+						<input type="radio" name="choiceHint" value="4"> 4
+						<input type="radio" name="choiceHint" value="5"> 5<br> <br>
+				</td>
+				</tr>
+				<tr>
+					<td>
+						I liked the game.
+					</td>
+					<td>
+						<input type="radio" name="choiceLike" value="1"> 1
+						<input type="radio" name="choiceLike" value="2"> 2
+						<input type="radio" name="choiceLike" value="3"> 3
+						<input type="radio" name="choiceLike" value="4"> 4
+						<input type="radio" name="choiceLike" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						I think I have learnt from the game.
+					</td>
+					<td>
+						<input type="radio" name="choiceLearn" value="1"> 1
+						<input type="radio" name="choiceLearn" value="2"> 2
+						<input type="radio" name="choiceLearn" value="3"> 3
+						<input type="radio" name="choiceLearn" value="4"> 4
+						<input type="radio" name="choiceLearn" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						The game was too easy.
+					</td>
+					<td>
+						<input type="radio" name="choiceEasy" value="1"> 1
+						<input type="radio" name="choiceEasy" value="2"> 2
+						<input type="radio" name="choiceEasy" value="3"> 3
+						<input type="radio" name="choiceEasy" value="4"> 4
+						<input type="radio" name="choiceEasy" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						The game was unclear.
+					</td>
+					<td>
+						<input type="radio" name="choiceClear" value="1"> 1
+						<input type="radio" name="choiceClear" value="2"> 2
+						<input type="radio" name="choiceClear" value="3"> 3
+						<input type="radio" name="choiceClear" value="4"> 4
+						<input type="radio" name="choiceClear" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Do you have any comments on the game?
+					</td>
+					<td>
+						<input type="text" id="comment" name="fname"><br> <br>
+					</td>
+				</tr>
+			</table> <br>
+			<!--What are you currently studying or what is your highest educational background? <input type="text" id="study" name="stydyName"><br>-->
+	  	<input type="button" onclick="submitResults();" value="Submit">
+			</form>
 		</div>
-		<div id="wrongAnswer" class = "popup" >
-			<div class = "popup-content">
-				<p id = "textAnswer" style ="font: 12px Verdana" ></p>
-				<!--'<input type= "image" src = "images/nextQuestion" id= "Okbutton" onclick ="showNextQuestion()">-->
-			</div	>
-		</div>
+	</div>
+	<div id="startG" class= "firstpopup">
+		<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
+		<p id = "startTextofGame" style = "font: 15px Calibri"></p>
+		<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
+	</div>
+	<div id="wrongAnswer" class = "popup" >
+		<div class = "popup-content">
+			<p id = "textAnswer" style ="font: 12px Verdana" ></p>
+		</div	>
+	</div>
 
-		<div id= "gamedone" class = "popup">
-			<div class = "popup-content">
-				<p id = "finishText" style="font: 15px arial;"></p>
-			</div>
+	<div id= "gamedone" class = "popup">
+		<div class = "popup-content">
+			<p id = "finishText" style="font: 12px Verdana;"></p>
 		</div>
+	</div>
+	<div id= "totalScore" class= "lastpopup">
+		<div class = "las-content">
+			<p id = "score" style="font: 12px verdana;"></p>
+		</div>
+	</div>
 
-		<div id= "totalScore" class= "lastpopup">
-			<div class = "popup-content">
-				<p id = "score" style="font: 15px arial;"></p>
-			</div>
+	<div class = "progressText">
+		<div class = "textProgresscontent">
+			<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Current Salary</p>
 		</div>
+	</div>
 
-		<div class = "progressText">
-			<div class = "textProgresscontent">
-				<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Current Salary</p>
-			</div>
+	<div class = "atomButtons">
+		<div class = "textProgresscontent">
+			<p id="atomtextprogress" style="font: bold 18px times new roman; color: green;"> Atom creators</p>
 		</div>
+	</div>
 
-		<div class = "atomButtons">
-			<div class = "textProgresscontent">
-				<p id="textprogress" style="font: bold 18px times new roman; color: green;"> Atom creators</p>
-			</div>
+	<div class = "progress">
+		<div id="myProgress">
+	  	<div id="myBar"></div>
 		</div>
+	</div>
 
-		<div class = "progress">
-			<div id="myProgress">
-		  	<div id="myBar"></div>
-			</div>
+	<div class = "amountSalary">
+		<div class = "SalaryContent">
+			<p id="salarytext" style="font: bold 25px times new roman; color: green;"></p>
 		</div>
-
-		<div class = "amountSalary">
-			<div class = "SalaryContent">
-				<p id="salarytext" style="font: bold 25px times new roman; color: green;"></p>
-			</div>
-		</div>
+	</div>
 
 	<div id= "missionTextPopup" class = "missionPopup">
 		<div class = "mission-content">
@@ -93,11 +211,11 @@ var finish = document.getElementById('gamedone');
 var last = document.getElementById('totalScore');
 var firstpopup = document.getElementById('startG');
 var missionpopup = document.getElementById('missionTextPopup');
+var questionnaire = document.getElementById('formQuest');
 var bar = document.getElementById("myBar");
 
 bar.style.height = "85%";
 
-const URL = "http://127.0.0.1:5984";
 
 var currentQuestion = new Trial(game);
 var id = 0;
@@ -148,13 +266,17 @@ function preload() {
 		game.load.image('done', 'images/doneButton2.png');
 		game.load.image('tryAgain', 'images/tryAgain.png');
 		game.load.image('nextQuestion', 'images/nextAssignment.png');
-		game.load.image('next', 'images/next.PNG');
+		game.load.image('next', 'images/next2.PNG');
 		game.load.image('start', 'images/start.png');
 		game.load.image('finish', 'images/finish.png');
 		game.load.text('questions', 'questions.txt');
 }
 
 function create(){
+	var x = document.getElementById("formQuest");
+	console.log(x);
+	determineStrategy();
+
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
 	var whiterect = game.add.graphics(0, 0);
@@ -162,18 +284,13 @@ function create(){
 	graphics1.beginFill(0xffdd99);
 	graphics2.beginFill(0xAAAAAA);
 	whiterect.beginFill(0xe6f2ff);
-
 	graphics1.drawRect(10, 10, 80, 480); //3
-
 	graphics1.drawRect(10, 500, 80, 90); //4
-
 	graphics1.drawRect(100, 500, 575, 90); //5
-
 	graphics1.drawRect(685, 500, 105, 90); //6
-
 	graphics1.drawRect(685, 10, 105, 480); //7
-
 	whiterect.drawRect(100,10, 575, 480); //2
+
 	updateSalary();
 	makeStartPopup();
 	readQuestion();
@@ -184,11 +301,10 @@ function create(){
 		currentQuestion.showQuestion();
 	}
 	game.stage.backgroundColor = "#DBB782";
-	// Make buttons
 	doneButton = game.add.button(675, 505, 'done', evaluateAnswer3, this);
-	nextQuestion = game.add.button(680, 500, 'nextQuestion', showNextQuestion, this);
+	nextQuestion = game.add.button(695, 515, 'nextQuestion', showNextQuestion, this);
 	deleteButton = game.add.image(9, 500, 'delete');
-	next = game.add.button(680, 510, 'next', showTotalScore, this);
+	next = game.add.button(675, 500, 'next', showForm, this);
 
 	deleteButton.scale.setTo(0.4, 0.4);
 	nextQuestion.scale.setTo(0.4, 0.4);
@@ -201,33 +317,89 @@ function create(){
 		buttonsList[i].visible = false;
 	}
 }
+
+function determineStrategy(){
+	var rand = Math.random();
+	if(rand <= 0.5){
+		randomStrategy = false;
+	}
+	else{
+		randomStrategy = true;
+	}
+}
+
+function showForm(){
+	last.style.display = 'none';
+	questionnaire.style.display = 'block';
+	deleteSprites();
+	currentQuestion.removeButtons();
+	missionpopup.style.display = 'none';
+	next.visible = false;
+	deleteButton.visible = false;
+	finish.style.display = 'none';
+	var progress = document.getElementById("atomtextprogress");
+	progress.style.display = 'none';
+}
+
+function submitResults(){
+	console.log("hallo");
+	var age = document.getElementById("age").value;
+	var study = document.getElementById("study").value;
+	var order = document.getElementsByName("choiceGood");
+	var hints = document.getElementsByName("choiceHint");
+	var like = document.getElementsByName("choiceLike");
+	var learn = document.getElementsByName("choiceLearn");
+	var easy = document.getElementsByName("choiceEasy");
+	var clear = document.getElementsByName("choiceClear");
+	var exp = document.getElementById("exp").value;
+	var comment = document.getElementById("comment").value;
+
+	var orderNb = returnChoice(order);
+	var hintsNb = returnChoice(hints);
+	var likeNb = returnChoice(like);
+	var learnNb = returnChoice(learn);
+	var easyNb = returnChoice(easy);
+	var clearNb = returnChoice(clear);
+
+	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, likeNb, learnNb, easyNb, clearNb, comment)
+
+}
+
+function returnChoice(choice){
+	for(var i=0; i < choice.length; i++){
+		if(choice[i].checked){
+			return choice[i].value;
+		}
+	}
+	return 0;
+}
+
 // make form in html for the docs and make new table where you save those findings with the same userId.
-//ref("users/" + uid + "tr" + trial)
-//Date.now();
 // ref('summary/' +vid)
 function writeUserData(userId, trial, score, currentM, targetM, time) {
-  firebase.database().ref('users/' + Date.now() + "ID"+ userId + 'tr' + trial).set({
+  firebase.database().ref('users/' + Date.now() + "_ID_"+ userId + '_tr' + trial).set({
+		randomStrategy: randomStrategy,
     score: score,
 		response: currentM,
 		time: time,
 		target: targetM,
+		moleculeName : currentQuestion.moleculeName,
     });
 }
 
-function createDB(dbName) {
-    var req = new XMLHttpRequest();
-    req.open("PUT", URL + "/" + dbName, true);
-    req.setRequestHeader("Content-type", "application/json");
-
-    req.send();
-}
-
-function updateDB(dbName, docName, data) {
-    var req = new XMLHttpRequest();
-    req.open("PUT", URL + '/' + dbName + '/' + docName, true);
-    req.setRequestHeader("Content-type", "application/json");
-
-    req.send(JSON.stringify(data));
+function saveQuestionnaireData(userId, age, study, exp, order, hint, like, learn, easy, clear, comment){
+	firebase.database().ref('questionnaire/' + Date.now() + "_ID_" + userId).set({
+		age: age,
+		study: study,
+		exp: exp,
+		order: order,
+		hint: hint,
+		like:like,
+		learn: learn,
+		easy: easy,
+		clear: clear,
+		comment: comment,
+	});
 }
 
 function makeButtons(){
@@ -466,10 +638,11 @@ function showTotalScore(){
 	var lastPop = document.getElementById('score');
 	finish.style.display = 'none';
 	var endText = determineText();
-	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " euros. " + endText;
+	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " euros. " + endText + "\n \n You are almost done with my experiment! Click on next to fill in the questionnaire.";
 }
 
 function showLastPopup(text){
+	showTotalScore();
 	var gameDone = document.getElementById('finishText');
 	if(text.indexOf('incorrect') > -1){
 		gameDone.style.color = 'red';
@@ -652,8 +825,6 @@ function evaluateAnswer3(){
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
 	var targetM = getFirebaseMolecule(currentQuestion.molecule);
 
-	writeUserData(rand,  index, currentQuestion.score, currentM, targetM, timeNeeded);
-	index+=1;
 	currentQuestion.makeUndraggable();
 	evaluateAnswer = true;
 	var tooMany = false;
@@ -677,6 +848,8 @@ function evaluateAnswer3(){
 		}
 	}
 	determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany);
+	writeUserData(rand,  index, currentQuestion.score, currentM, targetM, timeNeeded);
+	index+=1;
 }
 
 function determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany){
@@ -735,10 +908,10 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 		}
 		else if(rightUnique){
 			if(tooMany){
-				setProgress('Your answer is incorrect. You do use the right atoms, but you have too many of them.', -0.6, 'red');
+				setProgress('Your answer is incorrect. You do use the right type of atoms, but you have too many of them.', -0.6, 'red');
 			}
 			else{
-				setProgress('Your answer is incorrect. You do use the right atoms, but you are still missing atoms.', -0.6, 'red');
+				setProgress('Your answer is incorrect. You do use the right type of atoms, but you are still missing atoms.', -0.6, 'red');
 			}
 			if(!randomStrategy){
 				currentQuestion.helpNumber = true;
