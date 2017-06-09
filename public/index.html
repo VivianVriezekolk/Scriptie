@@ -241,7 +241,6 @@ var giveHints = false;
 var boolEvaluateAnswer = false;
 var rand = Math.round(Math.random() * 10000000);
 
-
 // https://chemistrygame-eca18.firebaseapp.com/
 var floor;
 var doneButton;
@@ -249,6 +248,7 @@ var deleteButton;
 var nextQuestion;
 var next;
 var totalScore = 15; // van 0 tot 100. 0 is niks 100 is alles.
+var startTimeOfPlayer = Date.now();
 
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonGreen.png');
@@ -279,6 +279,7 @@ function create(){
 	var x = document.getElementById("formQuest");
 	console.log(x);
 	determineStrategy();
+	setStrategyDB(rand);
 
 	var graphics1 = game.add.graphics(0, 0);
 	var graphics2 = game.add.graphics(0, 0);
@@ -392,11 +393,15 @@ function returnChoice(choice){
 	return 0;
 }
 
+function setStrategyDB(userId){
+	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/randomStrategy').set(randomStrategy);
+}
+
+//firebase.database().ref('users/' + Date.now() + "_ID_"+ userId + '_tr' + trial).set(
 // make form in html for the docs and make new table where you save those findings with the same userId.
 // ref('summary/' +vid)
 function writeUserData(userId, trial, score, currentM, targetM, time) {
-  firebase.database().ref('users/' + Date.now() + "_ID_"+ userId + '_tr' + trial).set({
-		randomStrategy: randomStrategy,
+  firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/trials/' + trial).set({
     score: score,
 		response: currentM,
 		time: time,
@@ -406,7 +411,7 @@ function writeUserData(userId, trial, score, currentM, targetM, time) {
 }
 
 function saveQuestionnaireData(userId, age, study, exp, order, hint, like, learn, easy, clear, comment){
-	firebase.database().ref('questionnaire/' + Date.now() + "_ID_" + userId).set({
+	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/questionnaire/').set({
 		age: age,
 		study: study,
 		exp: exp,
@@ -450,11 +455,11 @@ function makeStartPopup(){
 	if(!randomStrategy){
 	startTextofGame.innerText =
 		"When you click on Start you are asked to complete some important assignments! \n" +
-		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
+		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right indicates how much money you are currently earning. " +
 		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
 		"You will be able to drag these atoms around and connect them together. They will become grey when connected. \n" +
-		"If you are in need, your assistent will show up and help you! \n \n"  +
-		"Your assistent can help you in various ways. When atoms suddenly become dark green or red, it means that your assistent is helping you with the connections. " +
+		"If you are in need, your assistant will show up and help you! \n \n"  +
+		"Your assistant can help you in various ways. When atoms suddenly become dark green or red, it means that your assistant is helping you with the connections. " +
 		"Red means that the atom should be connected with less other atoms, dark green means that the atom is connected with the correct amount of atoms and light green means that an atom is connected and could be connected to more atoms. " +
 		"Other types of help will become clear in the game itself! \n \n" +
 		"We need you! Do not disappoint us! Good luck."
@@ -462,7 +467,7 @@ function makeStartPopup(){
 	else{
 		startTextofGame.innerText =
 		"When you click on Start you are asked to complete some important assignments! \n" +
-		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right gives you an indication of how much money you are currently earning. " +
+		"Try to complete as many assignments as you can and become rich (and save the world)!\n \n The bar on the right indicates how much money you are currently earning. " +
 		"The panel on the left will show some elements that you could use to make molecules. If you click on one of these elements, one atom will appear on the screen. " +
 		"You will be able to drag these atoms around and connect them together. They will become grey when connected. \n \n " +
 		"We need you! Do not disappoint us! Good luck."
@@ -866,7 +871,7 @@ function evaluateAnswer(){
 		}
 	}
 	determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany);
-	writeUserData(rand,  index, currentQuestion.score, JSON.stringify(currentM), JSON.stringify(targetM), timeNeeded);
+	writeUserData(rand,  index, currentQuestion.score, currentM, targetM, timeNeeded);
 	index+=1;
 }
 
@@ -881,7 +886,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Almost correct! You do not have the right connections between atoms.', 0, 'red');
 			if(!randomStrategy){
 				currentQuestion.hintConnections = true;
-				currentQuestion.helpText = "Your assistent is going to help you with the connections."
+				currentQuestion.helpText = "Your assistant is going to help you with the connections."
 			}
 		}
 		else if(!rightAmount && rightConnections){
@@ -918,7 +923,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
 				currentQuestion.helpNumber = true;
-				currentQuestion.helpText = "Your assistent thinks you need to use these elements. You are also not able to make more elements than necessary.";
+				currentQuestion.helpText = "Your assistant thinks you need to use these elements. You are also not able to make more elements than necessary.";
 			}
 		}
 		else if(rightUnique && rightAmount){
@@ -933,7 +938,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 			if(!randomStrategy){
 				currentQuestion.helpNumber = true;
-				currentQuestion.helpText = "Your assistent is going to help you. You are not able to make more elements than necessary."
+				currentQuestion.helpText = "Your assistant is going to help you. You are not able to make more elements than necessary."
 			}
 		}
 		else if(rightAmount){
@@ -945,7 +950,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 			if(!randomStrategy){
 				currentQuestion.uniqueButtons = true;
-				currentQuestion.helpText = "Your assistent thinks you need to use these elements.";
+				currentQuestion.helpText = "Your assistant thinks you need to use these elements.";
 			}
 		}
 		if(currentQuestion.repeat == -1){
