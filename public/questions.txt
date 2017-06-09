@@ -110,7 +110,7 @@ Bindings
 10000
 10000
 
-Questions~You need to make one fluormethanol molecule.
+Questions~You need to make one fluormethanol molecule for the sake of science.
 Name~fluormethanol
 Molecule~CFHHOH
 Familiarity~0

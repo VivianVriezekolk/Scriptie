@@ -42,23 +42,23 @@ function Atom(value, currentAtom, id, game) {
     }
 
     this.determineTint = function(){
-      if(this.connected == 0 && !evaluateAnswer){
+      if(this.connected == 0 && !boolEvaluateAnswer){
         this.sprite.tint = 0xFFFFFF;
       }
       else{
         if(currentQuestion.giveHints){
-          if(this.connected == this.covalence && !evaluateAnswer){
+          if(this.connected == this.covalence && !boolEvaluateAnswer){
             this.sprite.tint = 0x009933;
           }
-          else if(this.connected < this.covalence && !evaluateAnswer){
+          else if(this.connected < this.covalence && !boolEvaluateAnswer){
             this.sprite.tint = 0xccff99;
           }
-          else if(this.connected > this.covalence && !evaluateAnswer){
+          else if(this.connected > this.covalence && !boolEvaluateAnswer){
             this.sprite.tint = 0xff0000;
           }
         }
         else{
-          if(!evaluateAnswer){
+          if(!boolEvaluateAnswer){
             this.sprite.tint = 0xAAAAAA;
           }
         }
@@ -66,7 +66,7 @@ function Atom(value, currentAtom, id, game) {
     }
 
     this.determineCovalence = function(){
-      if(!evaluateAnswer){
+      if(!boolEvaluateAnswer){
         for(var i=0; i < atomValues.length; i++){
           if(this.value == atomValues[i]){
             return covalences[i];

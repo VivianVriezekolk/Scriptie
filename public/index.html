@@ -234,7 +234,7 @@ var covalences = [1,4,2,1,1,1,1,1];
 var gameIsFinished = false;
 var randomStrategy = false;
 var giveHints = false;
-var evaluateAnswer = false;
+var boolEvaluateAnswer = false;
 var rand = Math.round(Math.random() * 10000000);
 
 
@@ -300,7 +300,7 @@ function create(){
 		currentQuestion.showQuestion();
 	}
 	game.stage.backgroundColor = "#DBB782";
-	doneButton = game.add.button(675, 505, 'done', evaluateAnswer3, this);
+	doneButton = game.add.button(675, 505, 'done', evaluateAnswer, this);
 	nextQuestion = game.add.button(695, 515, 'nextQuestion', showNextQuestion, this);
 	deleteButton = game.add.image(9, 500, 'delete');
 	next = game.add.button(675, 500, 'next', showForm, this);
@@ -746,7 +746,7 @@ function readQuestion(){
 function showNextQuestion(){
 	var date = Date.now();
 	console.log(date);
-	evaluateAnswer = false;
+	boolEvaluateAnswer = false;
 	deleteSprites();
 	nextQuestion.visible = false;
 	doneButton.visible = true;
@@ -817,7 +817,7 @@ function getFirebaseMolecule(molecule){
 }
 
 
-function evaluateAnswer3(){
+function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
 	var timeNeeded = currentQuestion.determineTime();
 
@@ -825,16 +825,14 @@ function evaluateAnswer3(){
 	var targetM = getFirebaseMolecule(currentQuestion.molecule);
 
 	currentQuestion.makeUndraggable();
-	evaluateAnswer = true;
+	boolEvaluateAnswer = true;
 	var tooMany = false;
 	var rightAmount = currentQuestion.checkAmountOfAtoms();
 	var rightUnique = currentQuestion.checkUniqueAtoms();
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections();
-	//db.put({
-	//  ""
-	//})
+
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
@@ -903,14 +901,14 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 		}
 		else if(rightUnique && rightAmount){
-			setProgress('Your answer is incorrect. You do use the right type of atoms. You, however, do not have the right amount of each element.', -0.5, 'red');
+			setProgress('Your answer is incorrect. You do use the right types of atoms. You, however, do not have the right amount of each element.', -0.5, 'red');
 		}
 		else if(rightUnique){
 			if(tooMany){
-				setProgress('Your answer is incorrect. You do use the right type of atoms, but you have too many of them.', -0.6, 'red');
+				setProgress('Your answer is incorrect. You do use the right types of atoms, but you have too many of them.', -0.6, 'red');
 			}
 			else{
-				setProgress('Your answer is incorrect. You do use the right type of atoms, but you are still missing atoms.', -0.6, 'red');
+				setProgress('Your answer is incorrect. You do use the right types of atoms, but you are still missing atoms.', -0.6, 'red');
 			}
 			if(!randomStrategy){
 				currentQuestion.helpNumber = true;
@@ -990,7 +988,7 @@ function button(buttonName, element, X, Y){
 
   this.actionOnClick = function(){
     if(currentQuestion.helpNumber){
-			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished){
+			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished && !boolEvaluateAnswer){
 	  		var atomNew = new Atom(element, true, id, game);
 				atomNew.covalence = atomNew.determineCovalence();
 	  		currentQuestion.currentMolecule.push(atomNew);
