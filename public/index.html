@@ -79,6 +79,18 @@
 				</tr>
 				<tr>
 					<td>
+						The game was adaptive to my level of knowledge.
+					</td>
+					<td>
+						<input type="radio" name="choiceAdap" value="1"> 1
+						<input type="radio" name="choiceAdap" value="2"> 2
+						<input type="radio" name="choiceAdap" value="3"> 3
+						<input type="radio" name="choiceAdap" value="4"> 4
+						<input type="radio" name="choiceAdap" value="5"> 5<br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						I liked the game.
 					</td>
 					<td>
@@ -361,6 +373,7 @@ function submitResults(){
 	var study = document.getElementById("study").value;
 	var order = document.getElementsByName("choiceGood");
 	var hints = document.getElementsByName("choiceHint");
+	var adapt = document.getElementsByName("choiceAdap")
 	var like = document.getElementsByName("choiceLike");
 	var learn = document.getElementsByName("choiceLearn");
 	var easy = document.getElementsByName("choiceEasy");
@@ -370,12 +383,13 @@ function submitResults(){
 
 	var orderNb = returnChoice(order);
 	var hintsNb = returnChoice(hints);
+	var adaptNb = returnChoice(adapt);
 	var likeNb = returnChoice(like);
 	var learnNb = returnChoice(learn);
 	var easyNb = returnChoice(easy);
 	var clearNb = returnChoice(clear);
 
-	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, likeNb, learnNb, easyNb, clearNb, comment)
+	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, adaptNb, likeNb, learnNb, easyNb, clearNb, comment)
 }
 
 function showThanksPop(){
@@ -407,13 +421,14 @@ function writeUserData(userId, trial, score, currentM, targetM, time) {
     });
 }
 
-function saveQuestionnaireData(userId, age, study, exp, order, hint, like, learn, easy, clear, comment){
+function saveQuestionnaireData(userId, age, study, exp, order, hint, adapt, like, learn, easy, clear, comment){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/questionnaire/').set({
 		age: age,
 		study: study,
 		exp: exp,
 		order: order,
 		hint: hint,
+		adapt: adapt,
 		like:like,
 		learn: learn,
 		easy: easy,
@@ -1055,7 +1070,6 @@ function button(buttonName, element, X, Y){
 	  button.scale.setTo(0.3, 0.3);
 	}
 }
-
 
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){

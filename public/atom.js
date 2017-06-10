@@ -6,9 +6,22 @@ function Atom(value, currentAtom, id, game) {
     this.sprite = [];
     this.covalence = [];
     this.connected = 0;
-		if(currentAtom){
+
+    function getXY() {
       var Xrandom = determineXPositionInGrid();
       var Yrandom = determineYPositionInGrid();
+      for (var i=0; i<currentQuestion.currentMolecule.length; i++) {
+        var atom = currentQuestion.currentMolecule[i];
+        if (atom.sprite.x == Xrandom && atom.sprite.y == Yrandom)
+          return getXY();
+      }
+      return [Xrandom,Yrandom];
+    }
+
+		if(currentAtom){
+      var xy = getXY();
+      var Xrandom = xy[0];
+      var Yrandom = xy[1];
       this.sprite = game.add.sprite(Xrandom, Yrandom, value);
       this.sprite.scale.setTo(0.65, 0.65);
       this.sprite.inputEnabled = true;
