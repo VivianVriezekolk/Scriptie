@@ -345,6 +345,7 @@ function determineStrategy(){
 }
 
 function showForm(){
+	setTotalScore(rand);
 	last.style.display = 'none';
 	questionnaire.style.display = 'block';
 	deleteSprites();
@@ -408,6 +409,10 @@ function returnChoice(choice){
 
 function setStrategyDB(userId){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/randomStrategy').set(randomStrategy);
+}
+
+function setTotalScore(userId){
+	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/totalScore').set(Math.round(totalScore*60));
 }
 
 function writeUserData(userId, trial, score, currentM, targetM, time) {

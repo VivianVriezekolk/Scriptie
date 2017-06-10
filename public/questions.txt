@@ -85,7 +85,7 @@ Bindings
 01
 10
 
-Question~Methanol is one of the products of fermentation. However, we need this molecule now! Could you make one methanol molecule?
+Question~Methanol is one of the product of fermentation. However, we need this molecule now! Could you make one methanol molecule?
 Name~methanol
 Molecule~CHHHOH
 Correct~CH3OH
@@ -101,7 +101,7 @@ Bindings
 Questions~A degreasing agent (ontvettingsmiddel) contains dichloromethane (dichloormethaan). Could you make one dichloromethane for the synthese of a degreasing agent?
 Name~dichloormethane
 Molecule~CZZHH
-Correct~Cl2CH2
+Correct~CCl2H2
 Familiarity~0
 Bindings
 01111
@@ -113,7 +113,7 @@ Bindings
 Questions~An organ donor's heart must be kept cool, make a chlorofluoromethane (chloorfluormethaan) molecule.
 Name~chloorfluormethane
 Molecule~CZFHH
-Correct~ClFCH2
+Correct~CClFH2
 Familiarity~0
 Bindings
 01111
@@ -125,7 +125,7 @@ Bindings
 Questions~You need to make one fluoromethanol (fluormethanol) molecule for the sake of science.
 Name~fluoromethanol
 Molecule~CFHHOH
-Correct~CF2H2OH
+Correct~CFH2OH
 Familiarity~0
 Bindings
 011110
