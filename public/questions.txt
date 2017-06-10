@@ -85,7 +85,7 @@ Bindings
 01
 10
 
-Question~Methanol is one of the product of fermentation. However, we need this molecule now! Could you make one methanol molecule?
+Question~Methanol is one of the products of fermentation. However, we need this molecule now! Could you make one methanol molecule?
 Name~methanol
 Molecule~CHHHOH
 Correct~CH3OH
