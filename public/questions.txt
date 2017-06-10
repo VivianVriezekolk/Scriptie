@@ -2,6 +2,7 @@
 Question~Oh no! We ran out of water! As you know water is very important for us to stay alife. You need to make one water molecule!
 Name~water
 Molecule~HOH
+Correct~H2O
 Familiarity~2
 Bindings
 010
@@ -11,6 +12,7 @@ Bindings
 Question~Methane contributes 25 times more to global warming than carbon dioxide. Can you make us one methane molecule?
 Name~methane
 Molecule~CHHHH
+Correct~CH4
 Familiarity~0
 Bindings
 01111
@@ -19,18 +21,20 @@ Bindings
 10000
 10000
 
-Question~We need to examine the structure of a carbon dioxide molecule to counteract global warming. You need to make one carbon dioxide molecule.
+Question~We need to examine the structure of a carbon dioxide (koolstofdioxide) molecule to counteract global warming. You need to make one carbon dioxide molecule.
 Name~carbondioxide
 Molecule~COO
+Correct~CO2
 Familiarity~2
 Bindings
 011
 100
 100
 
-Question~We have got a problem! Our atmosphere ran out of oxygen! Can you perhaps make an oxygen molecule?
+Question~We have got a problem! Our atmosphere ran out of oxygen (zuurstof)! Can you perhaps make an oxygen molecule?
 Name~oxygen
 Molecule~OO
+Correct~O2
 Familiarity~2
 Bindings
 01
@@ -39,6 +43,7 @@ Bindings
 Question~We want to make some toothpaste. Can you perhaps make one fluorine molecule to use for the synthese of toothpaste?
 Name~fluorine
 Molecule~FF
+Correct~F2
 Familiarity~1
 Bindings
 01
@@ -47,22 +52,25 @@ Bindings
 Question~We want to make fuel for cars. Could you make one hydrogen molecule please?
 Name~hydrogen
 Molecule~HH
+Correct~H2
 Familiarity~2
 Bindings
 01
 10
 
-Question~Iodine is together with Bromine, Fluorine, Chlorine a compound of halogen group. These molecules have  similar properties. Can you make one Iodine molecule?
+Question~Iodine is together with Bromine, Fluorine, Chlorine a compound of halogen group. These molecules have  similar properties. Can you make one iodine (jood) molecule?
 Name~iodine
 Molecule~II
+Correct~I2
 Familiarity~1
 Bindings
 01
 10
 
-Question~Bromine water could be used to test the presents of certain substances. Bromine water itself is yellow. When the substance turns to a colourless solution it means that Bromine has reacted. Could you please make one Bromine molecule?
+Question~Bromine water could be used to test the presents of certain substances. Bromine water itself is yellow. When the substance turns to a colourless solution it means that bromine has reacted. Could you please make one Bromine molecule?
 Name~bromine
 Molecule~QQ
+Correct~Br2
 Familiarity~1
 Bindings
 01
@@ -71,6 +79,7 @@ Bindings
 Questions~Chlorine is one of the important minerals that we need to survive. Could you make one chlorine molecule?
 Name~chlorine
 Molecule~ZZ
+Correct~Cl2
 Familiarity~1
 Bindings
 01
@@ -79,6 +88,7 @@ Bindings
 Question~We could synthesize methanol through fermentation. However, we need this molecule now! Could you make one methanol molecule?
 Name~methanol
 Molecule~CHHHOH
+Correct~CH3OH
 Familiarity~0
 Bindings
 011110
@@ -88,9 +98,10 @@ Bindings
 100001
 000010
 
-Questions~A degreasing agent (ontvettingsmiddel) contains dichloormethane. Could you make one dichloormethane for the synthese of a degreasing agent?
+Questions~A degreasing agent (ontvettingsmiddel) contains dichloromethane (dichloormethaan). Could you make one dichloromethane for the synthese of a degreasing agent?
 Name~dichloormethane
 Molecule~CZZHH
+Correct~Cl2CH2
 Familiarity~0
 Bindings
 01111
@@ -102,6 +113,7 @@ Bindings
 Questions~An organ donor's heart must be kept cool, make a chlorofluoromethane (chloorfluormethaan) molecule.
 Name~chloorfluormethane
 Molecule~CZFHH
+Correct~ClFCH2
 Familiarity~0
 Bindings
 01111
@@ -110,9 +122,10 @@ Bindings
 10000
 10000
 
-Questions~You need to make one fluormethanol molecule for the sake of science.
-Name~fluormethanol
+Questions~You need to make one fluoromethanol (fluormethanol) molecule for the sake of science.
+Name~fluoromethanol
 Molecule~CFHHOH
+Correct~CF2H2OH
 Familiarity~0
 Bindings
 011110
@@ -122,9 +135,10 @@ Bindings
 100001
 000010
 
-Questions~There has been a fire, we need you to quickly make some dibromochloromethane(dibroomchloormethaan) molecule to use as a fire retardant!
+Questions~There has been a fire, we need you to quickly make some dibromochloromethane (dibroomchloormethaan) molecule to use as a fire retardant!
 Name~dibroomchloormethane
 Molecule~CQQZH
+Correct~CBrClH2
 Familiarity~0
 Bindings
 01111
@@ -133,9 +147,10 @@ Bindings
 10000
 10000
 
-Questions~Oh no! We forgot how yo make tetraiodomethane (tetrajoodmethaan). Do you know how to make one molecule?
+Questions~Oh no! We forgot how to make tetraiodomethane (tetrajoodmethaan). Do you know how to make one molecule?
 Name~tetraiodomethane
 Molecule~CIIII
+Correct~CI4
 Familiarity~0
 Bindings
 01111

@@ -145,7 +145,7 @@
 	<div id="startG" class= "firstpopup">
 		<p style= "font: bold 20px Calibri"> Welcome to the laboratory! </p>
 		<p id = "startTextofGame" style = "font: 14px Calibri"></p>
-		<input type= "image" src = "images/start.png" id= "startButton" onclick ="startG()">
+		<input type= "image" src = "images/start.png" id= "startButton" onclick ="startGame()">
 	</div>
 	<div id="wrongAnswer" class = "popup" >
 		<div class = "popup-content">
@@ -247,7 +247,7 @@ var doneButton;
 var deleteButton;
 var nextQuestion;
 var next;
-var totalScore = 15; // van 0 tot 100. 0 is niks 100 is alles.
+var totalScore = 15;
 var startTimeOfPlayer = Date.now();
 
 function preload() {
@@ -376,7 +376,6 @@ function submitResults(){
 	var clearNb = returnChoice(clear);
 
 	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, likeNb, learnNb, easyNb, clearNb, comment)
-
 }
 
 function showThanksPop(){
@@ -397,9 +396,6 @@ function setStrategyDB(userId){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/randomStrategy').set(randomStrategy);
 }
 
-//firebase.database().ref('users/' + Date.now() + "_ID_"+ userId + '_tr' + trial).set(
-// make form in html for the docs and make new table where you save those findings with the same userId.
-// ref('summary/' +vid)
 function writeUserData(userId, trial, score, currentM, targetM, time) {
   firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/trials/' + trial).set({
     score: score,
@@ -407,6 +403,7 @@ function writeUserData(userId, trial, score, currentM, targetM, time) {
 		time: time,
 		target: targetM,
 		moleculeName : currentQuestion.moleculeName,
+		helpText : currentQuestion.helpText,
     });
 }
 
@@ -474,7 +471,9 @@ function makeStartPopup(){
 	}
 }
 
-function startG(){
+function startGame(){
+	currentQuestion.startTime = Date.now();
+	console.log(currentQuestion.startTime);
 	firstpopup.style.display = 'none';
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = true;
@@ -587,7 +586,7 @@ function pickRandomQuestion(){
 		}
 	}
 	else{
-		console.log("Nu gaan we stoppen");
+		console.log("Ik kom hier in!!");
 		showLastPopup();
 	}
 }
@@ -662,7 +661,7 @@ function showTotalScore(){
 	var lastPop = document.getElementById('score');
 	finish.style.display = 'none';
 	var endText = determineText();
-	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " euros. " + endText + "\n \n You are almost done with my experiment! Click on next to fill in the questionnaire.";
+	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " euros. " + endText + "\n \n You are almost done with the experiment! Click on \"Next\" to fill in the questionnaire.";
 }
 
 function showLastPopup(text){
@@ -738,6 +737,10 @@ function makeTrial(trial, index, textsQuestion){
 				//trial.copyMolecule.push(atom);
 			}
 		}
+		else if(textsQuestion[i].indexOf('Correct') > -1){
+			var answer = textsQuestion[i].split(/~/);
+			trial.answer = answer[1];
+		}
 		else if(textsQuestion[i].indexOf('Familiarity') > -1){
 			var familiarity = textsQuestion[i].split(/~/);
 			trial.familiarity = familiarity[1];
@@ -770,8 +773,6 @@ function readQuestion(){
 }
 
 function showNextQuestion(){
-	var date = Date.now();
-	console.log(date);
 	boolEvaluateAnswer = false;
 	deleteSprites();
 	nextQuestion.visible = false;
@@ -785,6 +786,8 @@ function showNextQuestion(){
 		changeCovalence(currentQuestion);
 		currentQuestion.determineCovalence();
 		currentQuestion.showQuestion();
+		currentQuestion.startTime = Date.now();
+		console.log(currentQuestion.startTime);
 	}
 	else{
 		return;
@@ -845,6 +848,7 @@ function getFirebaseMolecule(molecule){
 
 function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
+	console.log(currentQuestion.endTime);
 	var timeNeeded = currentQuestion.determineTime();
 
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
@@ -858,6 +862,7 @@ function evaluateAnswer(){
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections();
+	console.log(rightConnections);
 
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
@@ -879,6 +884,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
 			currentQuestion.repeat = 0;
+			currentQuestion.helpText = [];
 			setProgress('Great Job!', 1, 'black');
 			return;
 		}
@@ -899,6 +905,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			if(!rightUnique && !randomStrategy){
 				currentQuestion.uniqueButtons = true;
 			}
+			else if(!randomStrategy){
+				currentQuestion.helpNumber = true;
+			}
 		}
 		else if(!rightType && rightConnections && rightUnique){
 			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', -0.4, 'red');
@@ -907,14 +916,19 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			if(currentQuestion.currentMolecule.length != 0){
 				if(someRightUnique){
 					if(tooMany){
-						setProgress('Your answer is incorrect. You have too many atoms, however some of these element have the correct type.', -1, 'red');
+						setProgress('Your answer is incorrect. The amount of atoms you use is too high, however at least some of these elements have the correct type.', -1, 'red');
 					}
 					else{
-						setProgress('Your answer is incorrect. You have too few atoms, however some of these element have the correct type.', -1, 'red');
+						setProgress('Your answer is incorrect. The amount of atoms you use is too low, however at least some of these elements have the correct type.', -1, 'red');
 					}
 				}
 				else{
-					setProgress('Your answer is incorrect. You do not have the right amount of atoms. You should also consider different elements.', -1, 'red');
+					if(tooMany){
+						setProgress('Your answer is incorrect. The amount of atoms you use is too high. You should also consider different elements.', -1, 'red');
+					}
+					else{
+						setProgress('Your answer is incorrect. The amount of atoms you use is too low. You should also consider different elements.', -1, 'red');
+					}
 				}
 			}
 			else{
@@ -968,7 +982,7 @@ function setProgress(feedback, score, colour){
 	currentQuestion.score = score;
 
 	if(allQuestionsAreAsked() && (currentQuestion.score == 1  || currentQuestion.repeat == 0)){
-		console.log("hallo");
+		console.log("Nu gaan we stoppen.");
 		doneButton.visible = false;
 		nextQuestion.visible = false;
 		popup.style.display = 'none';
@@ -976,7 +990,9 @@ function setProgress(feedback, score, colour){
 		showLastPopup(feedback);
 	}
 	else{
-		console.log("Nu gaan we stoppen");
+		if(currentQuestion.repeat == 0 && currentQuestion.score < 1){
+			feedback = feedback + " The answer was " + currentQuestion.answer + ".";
+		}
 		var textAnswer = document.getElementById('textAnswer');
 		textAnswer.style.color = colour;
 		textAnswer.innerText =  feedback;
@@ -1024,17 +1040,22 @@ function button(buttonName, element, X, Y){
 	  	}
 		}
 		else{
-			var atomNew = new Atom(element, true, id, game);
-			atomNew.covalence = atomNew.determineCovalence();
-			currentQuestion.currentMolecule.push(atomNew);
-			id = id+1;
+			if(!boolEvaluateAnswer){
+				var atomNew = new Atom(element, true, id, game);
+				atomNew.covalence = atomNew.determineCovalence();
+				currentQuestion.currentMolecule.push(atomNew);
+				id = id+1;
+			}
 		}
   }
-  var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
-	game.world.bringToTop(button);
-	buttonsList.push(button);
-  button.scale.setTo(0.3, 0.3);
+	if(!boolEvaluateAnswer){
+	  var button = game.add.button(X, Y, buttonName, this.actionOnClick, this);
+		game.world.bringToTop(button);
+		buttonsList.push(button);
+	  button.scale.setTo(0.3, 0.3);
+	}
 }
+
 
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){

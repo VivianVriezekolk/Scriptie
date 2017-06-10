@@ -21,6 +21,7 @@ function Trial(game){
   this.helpNumber = false;
   this.endTime = 0;
   this.startTime = 0;
+  this.answer = [];
 
   this.finishGame = function(){
     this.currentQuestionText = [];
@@ -169,7 +170,6 @@ function Trial(game){
 
   // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
   this.showQuestion = function(){
-    this.startTime = Date.now();
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = "";
     if(this.repeat != -1){
