@@ -289,7 +289,6 @@ function preload() {
 
 function create(){
 	var x = document.getElementById("formQuest");
-	console.log(x);
 	determineStrategy();
 	setStrategyDB(rand);
 
@@ -369,7 +368,6 @@ function submitResults(){
 
 	showThanksPop();
 
-	console.log("hallo");
 	var age = document.getElementById("age").value;
 	var study = document.getElementById("study").value;
 	var order = document.getElementsByName("choiceGood");
@@ -493,7 +491,6 @@ function makeStartPopup(){
 
 function startGame(){
 	currentQuestion.startTime = Date.now();
-	console.log(currentQuestion.startTime);
 	firstpopup.style.display = 'none';
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = true;
@@ -606,14 +603,13 @@ function pickRandomQuestion(){
 		}
 	}
 	else{
-		console.log("Ik kom hier in!!");
 		showLastPopup();
 	}
 }
 
 function decideAdaptively(){
 	decideOrderQuestions();
-	console.log(priorityQueueQuestions);
+	printPriorityQueueQuestions();
 	for(var i=0; i< priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat >= 1){
 			priorityQueueQuestions[i].isAsked = true;
@@ -625,35 +621,35 @@ function decideAdaptively(){
 	}
 }
 
+function printPriorityQueueQuestions(){
+	for(var i=0; i < priorityQueueQuestions.length; i++){
+		console.log(priorityQueueQuestions[i].moleculeName);
+	}
+}
+
 function decideOrderQuestions(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
-		console.log(i);
-		console.log(priorityQueueQuestions[i]);
 		if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -1){
 			var position = Math.min(priorityQueueQuestions.length, i+3);
-			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -0.8 || currentQuestion.score == -0.6){
+		else if(priorityQueueQuestions[i] == currentQuestion && (currentQuestion.score == -0.8 || currentQuestion.score == -0.6)){
 			var position = Math.min(priorityQueueQuestions.length, i+4);
-			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
 
 		}
-		else if(priorityQueueQuestions[i] == currentQuestion &&  ((currentQuestion.score == -0.5) || (currentQuestion.score == 0.4) || (currentQuestion.score == -0.2))){
+		else if(priorityQueueQuestions[i] == currentQuestion && ((currentQuestion.score == -0.4) || (currentQuestion.score == -0.2))){
 			var position = Math.min(priorityQueueQuestions.length, i+5);
-			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
 		}
 		else if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == 0){
 			var position = Math.min(priorityQueueQuestions.length, i+6);
-			console.log(position);
 			priorityQueueQuestions.splice(position, 0, priorityQueueQuestions[i]);
 			priorityQueueQuestions.splice(i, 1);
 			return;
@@ -730,10 +726,8 @@ function getScore(){
 function allQuestionsAreAsked(){
 	for(var i=0; i<priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
-			console.log("repeat: " + priorityQueueQuestions[i].repeat);
 			return false;
 		}
-		console.log("repeat: " + priorityQueueQuestions[i].moleculeName, priorityQueueQuestions[i].repeat);
 	}
 	return true;
 }
@@ -807,7 +801,6 @@ function showNextQuestion(){
 		currentQuestion.determineCovalence();
 		currentQuestion.showQuestion();
 		currentQuestion.startTime = Date.now();
-		console.log(currentQuestion.startTime);
 	}
 	else{
 		return;
@@ -845,7 +838,6 @@ function changeMolecule(molecule){
 			newMol[i].neighbour.push(copyOf[i].neighbour[j].id);
 		}
 	}
-	console.log(newMol);
 	return newMol;
 }
 
@@ -865,10 +857,8 @@ function getFirebaseMolecule(molecule){
 	return atoms;
 }
 
-
 function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
-	console.log(currentQuestion.endTime);
 	var timeNeeded = currentQuestion.determineTime();
 
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
@@ -882,7 +872,8 @@ function evaluateAnswer(){
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections();
-	console.log(rightConnections);
+
+	console.log("rA " + rightAmount, "rU" + rightUnique,"sRU " + someRightUnique, "rT " +rightType, "rC " + rightConnections);
 
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
@@ -912,7 +903,7 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			setProgress('Almost correct! You do not have the right connections between atoms.', 0, 'red');
 			if(!randomStrategy){
 				currentQuestion.hintConnections = true;
-				currentQuestion.helpText = "Your assistant is going to help you with the connections."
+				currentQuestion.helpText = "Your assistant is going to help you with the connections. Red: too many connections, dark green: right amount of connections, light green: more connections possible."
 			}
 		}
 		else if(!rightAmount && rightConnections){
@@ -924,13 +915,12 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 			if(!rightUnique && !randomStrategy){
 				currentQuestion.uniqueButtons = true;
+				currentQuestion.helpText = "Your assistant thinks you need to use these elements.";
 			}
 			else if(!randomStrategy){
 				currentQuestion.helpNumber = true;
+				currentQuestion.helpText = "Your assistant is going to help you. You are not able to make more elements than necessary."
 			}
-		}
-		else if(!rightType && rightConnections && rightUnique){
-			setProgress('Your answer is incorrect. You have the right connections but you are still missing some atoms.', -0.4, 'red');
 		}
 		else if(!rightAmount && !rightUnique){
 			if(currentQuestion.currentMolecule.length != 0){
@@ -961,7 +951,11 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 			}
 		}
 		else if(rightUnique && rightAmount){
-			setProgress('Your answer is incorrect. You do use the right types of atoms. You, however, do not have the right amount of each element.', -0.5, 'red');
+			setProgress('Your answer is incorrect. You do use the right types of atoms. You, however, do not have the right amount of each element. The total amount of elements is correct.', -0.4, 'red');
+			if(!randomStrategy){
+				currentQuestion.helpNumber = true;
+				currentQuestion.helpText = "Your assistant is going to help you. You are not able to make more elements than necessary."
+			}
 		}
 		else if(rightUnique){
 			if(tooMany){
@@ -1002,7 +996,6 @@ function setProgress(feedback, score, colour){
 	currentQuestion.score = score;
 
 	if(allQuestionsAreAsked() && (currentQuestion.score == 1  || currentQuestion.repeat == 0)){
-		console.log("Nu gaan we stoppen.");
 		doneButton.visible = false;
 		nextQuestion.visible = false;
 		popup.style.display = 'none';
