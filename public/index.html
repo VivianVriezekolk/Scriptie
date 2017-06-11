@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Test dragging</title>
+	<title>Chemistry Game</title>
 	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
 	<script type="text/javascript" src="button.js"></script>
@@ -491,6 +491,7 @@ function makeStartPopup(){
 
 function startGame(){
 	currentQuestion.startTime = Date.now();
+	console.log(currentQuestion.startTime);
 	firstpopup.style.display = 'none';
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = true;
@@ -677,7 +678,7 @@ function showTotalScore(){
 	var lastPop = document.getElementById('score');
 	finish.style.display = 'none';
 	var endText = determineText();
-	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " euros. " + endText + "\n \n You are almost done with the experiment! Click on \"Next\" to fill in the questionnaire.";
+	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " dollars. " + endText + "\n \n You are almost done with the experiment! Click on \"Next\" to fill in the questionnaire.";
 }
 
 function showLastPopup(text){
@@ -801,6 +802,7 @@ function showNextQuestion(){
 		currentQuestion.determineCovalence();
 		currentQuestion.showQuestion();
 		currentQuestion.startTime = Date.now();
+		console.log(currentQuestion.startTime);
 	}
 	else{
 		return;
@@ -859,6 +861,7 @@ function getFirebaseMolecule(molecule){
 
 function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
+	console.log(currentQuestion.endTime);
 	var timeNeeded = currentQuestion.determineTime();
 
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);

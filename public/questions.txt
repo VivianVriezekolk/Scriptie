@@ -1,5 +1,5 @@
 
-Question~Oh no! We ran out of water! As you know water is very important for us to stay alife. You need to make one water molecule!
+Question~Oh no! We ran out of water! As you know water is very important for us to stay alive. You need to make one water molecule!
 Name~water
 Molecule~HOH
 Correct~H2O
