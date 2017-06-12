@@ -122,8 +122,8 @@
   display: 'block';
   background-color: inherit;
   color: green;
-  width: 75px;
-  height: 50px;
+  width: 80px;
+  height: 55px;
   border-radius: 10px;
   border-color: white;
   text-align: center;
@@ -202,7 +202,7 @@
     top: 80px;
     left:725px;
     position: fixed;
-    height: 45%;
+    height: 40%;
     width: 30px;
     background-color: red;
 }
