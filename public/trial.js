@@ -23,14 +23,6 @@ function Trial(game){
   this.startTime = 0;
   this.answer = [];
 
-  this.finishGame = function(){
-    this.currentQuestionText = [];
-    this.repeat = 0;
-    this.currentMolecule = [];
-    this.molecule = [];
-    this.text = [];
-  }
-
   this.determineTime = function(){
     return this.endTime - this.startTime;
   }
@@ -50,7 +42,6 @@ function Trial(game){
     for(var i=0; i < this.currentMolecule.length; i++){
       set2.add(this.currentMolecule[i].value);
     }
-
     if (values.size !== set2.size) {
       return false;
     }
@@ -60,7 +51,6 @@ function Trial(game){
       }
     }
     return true;
-
   };
 
   this.checkSomeUnique = function(){

@@ -614,7 +614,6 @@ function pickRandomQuestion(){
 
 function decideAdaptively(){
 	decideOrderQuestions();
-	printPriorityQueueQuestions();
 	for(var i=0; i< priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat >= 1){
 			priorityQueueQuestions[i].isAsked = true;
@@ -690,30 +689,6 @@ function showLastPopup(text){
 	next.visible = true;
 }
 
-function restartGame(){
-	for(var i=0; i < priorityQueueQuestions.length; i++){
-		priorityQueueQuestions[i].isAsked = false;
-		priorityQueueQuestions[i].repeat = -1;
-		priorityQueueQuestions[i].score = 0;
-	}
-	if(!randomStrategy){
-		currentQuestion.finishGame();
-	}
-	totalScore = 10;
-	updateBar();
-	updateSalary();
-	showNextQuestion();
-}
-
-function finishGame(){
-	deleteSprites();
-	if(text != undefined){
-		game.world.remove(text);
-		currentQuestion.finishGame();
-	}
-	gameIsFinished = true;
-}
-
 function getScore(){
 	var sum = 0;
 	for(var i=0; i < priorityQueueQuestions.length; i++){
@@ -747,7 +722,6 @@ function makeTrial(trial, index, textsQuestion){
 			for(var j=0; j < atomsOfMolecule.length; j++){
 				var atom = new Atom(atomsOfMolecule[j], false, id+j, game);
 				trial.molecule.push(atom);
-				//trial.copyMolecule.push(atom);
 			}
 		}
 		else if(textsQuestion[i].indexOf('Correct') > -1){
@@ -991,7 +965,6 @@ function setProgress(feedback, score, colour){
 	updateBarColor();
 	updateSalary();
 	currentQuestion.score = score;
-
 	if(allQuestionsAreAsked() && (currentQuestion.score == 1  || currentQuestion.repeat == 0)){
 		doneButton.visible = false;
 		nextQuestion.visible = false;
@@ -1035,6 +1008,7 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	}
 	return count;
 }
+
 //Object button
 function button(buttonName, element, X, Y){
   this.element = element;
