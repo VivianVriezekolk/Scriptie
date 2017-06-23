@@ -496,7 +496,6 @@ function makeStartPopup(){
 
 function startGame(){
 	currentQuestion.startTime = Date.now();
-	console.log(currentQuestion.startTime);
 	firstpopup.style.display = 'none';
 	for(var i=0; i<buttonsList.length; i++){
 		buttonsList[i].visible = true;
@@ -624,12 +623,6 @@ function decideAdaptively(){
 			}
 			return priorityQueueQuestions[i];
 		}
-	}
-}
-
-function printPriorityQueueQuestions(){
-	for(var i=0; i < priorityQueueQuestions.length; i++){
-		console.log(priorityQueueQuestions[i].moleculeName);
 	}
 }
 
@@ -807,7 +800,6 @@ function showNextQuestion(){
 		currentQuestion.determineCovalence();
 		currentQuestion.showQuestion();
 		currentQuestion.startTime = Date.now();
-		console.log(currentQuestion.startTime);
 	}
 	else{
 		return;
@@ -866,7 +858,6 @@ function getFirebaseMolecule(molecule){
 
 function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
-	console.log(currentQuestion.endTime);
 	var timeNeeded = currentQuestion.determineTime();
 
 	var currentM = getFirebaseMolecule(currentQuestion.currentMolecule);
@@ -880,8 +871,6 @@ function evaluateAnswer(){
 	var someRightUnique = currentQuestion.checkSomeUnique();
 	var rightType = currentQuestion.checkAmountOfTypeOfAtoms();
 	var rightConnections = currentQuestion.checkConnections();
-
-	console.log("rA " + rightAmount, "rU" + rightUnique,"sRU " + someRightUnique, "rT " +rightType, "rC " + rightConnections);
 
 	if(!rightAmount){
 		var amountMolecule = currentQuestion.molecule.length;
