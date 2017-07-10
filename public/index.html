@@ -212,6 +212,7 @@
 	</div>
 
 <script type="text/javascript">
+
   // Initialize Firebase // it is not save!! Maybe make save
 var config = {
   apiKey: "AIzaSyDFK1lTVkm5Gl_ENEn5o2YXzWvEzLcSYMw",
@@ -236,7 +237,6 @@ var bar = document.getElementById("myBar");
 
 bar.style.height = "85%";
 
-
 var currentQuestion = new Trial(game);
 var id = 0;
 var height = 90;
@@ -258,7 +258,6 @@ var giveHints = false;
 var boolEvaluateAnswer = false;
 var rand = Math.round(Math.random() * 10000000);
 
-// https://chemistrygame-eca18.firebaseapp.com/
 var floor;
 var doneButton;
 var deleteButton;
@@ -706,6 +705,7 @@ function allQuestionsAreAsked(){
 	return true;
 }
 
+//
 function makeTrial(trial, index, textsQuestion){
 	for(var i= index; i< textsQuestion.length; i++){
 		if(textsQuestion[i].indexOf('Question') > -1){
