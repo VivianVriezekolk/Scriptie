@@ -23,11 +23,12 @@ function Trial(game){
   this.startTime = 0;
   this.answer = [];
 
+  // This function determines the time needed for the player for this assignment to complete.
   this.determineTime = function(){
     return this.endTime - this.startTime;
   }
 
-// checks the amount of atoms
+  // This function checks whether the current molecule has the right amount of atoms.
   this.checkAmountOfAtoms = function(){
     if(this.currentMolecule.length != this.molecule.length){
       return false;
@@ -35,7 +36,7 @@ function Trial(game){
     return true;
   }
 
-// checks if all unique atoms are there
+  // This function checks whether current molecule has all the right unique atoms.
   this.checkUniqueAtoms = function(){
     var values = this.determineUniqueAtoms();
     let set2 = new Set();
@@ -53,6 +54,7 @@ function Trial(game){
     return true;
   };
 
+  // This function checks whether the current molecule has some right unique atoms.
   this.checkSomeUnique = function(){
     if(!this.checkUniqueAtoms()){
       for(var i=0; i< this.currentMolecule.length; i++){
@@ -67,7 +69,7 @@ function Trial(game){
     return false;
   }
 
-// checks if the amount of unique atoms is right
+// This function checks whether the amount of unique atoms of current molecule is right.
   this.checkAmountOfTypeOfAtoms = function(){
     for(var j=0; j< currentQuestion.molecule.length; j++){
   		if(countNumberOfAtoms(currentQuestion.molecule, currentQuestion.molecule[j].value) != countNumberOfAtoms(currentQuestion.currentMolecule, currentQuestion.molecule[j].value)){
@@ -77,8 +79,7 @@ function Trial(game){
     return true;
   }
 
-// de rest moet true zijn anders gaat dit fout
-// nog beter naar deze functie kijken, hoe werkt hij nu precies?
+  // This function checks whether the connections of the current molecule are correct.
   this.checkConnections = function(){
     var copyMolecule = [];
     for(var i=0; i< this.currentMolecule.length; i++){
@@ -109,6 +110,7 @@ function Trial(game){
     return boolean;
   };
 
+  // This function deletes an element from list.
   this.deleteList = function(list){
     while(list.length > 0){
       list.pop();
@@ -116,6 +118,7 @@ function Trial(game){
     return list;
   }
 
+  // This function tries to find an atom of currentMolecule that matches the parameter and checks whether they have the same neighbours.
   this.findCorrectMatch = function(atom){
     atom.neighbour.sort(function(a, b){
         return a.value < b.value;
@@ -134,6 +137,7 @@ function Trial(game){
     return false;
   }
 
+  // This function checks whether subset is a subset of superset.
   this.arrayContainsArray = function(superset, subset) {
     if (0 === subset.length) {
       return false;
@@ -143,6 +147,7 @@ function Trial(game){
     });
   }
 
+  // This function makes a list of all values in molecuul.
   this.makeListOfValues = function(molecuul){
     var values = [];
     for(var i=0; i < molecuul.length; i++){
@@ -151,6 +156,7 @@ function Trial(game){
     return values;
   }
 
+  // This function checks whether the two parameters have the same values.
   this.checkRightNeighbours = function(atom, currentNeighbours){
     var valuesAtom = this.makeListOfValues(atom);
     var valuesCurrent = this.makeListOfValues(currentNeighbours);
@@ -158,7 +164,7 @@ function Trial(game){
     return boolean;
   }
 
-  // Na deze drie functies te hebben aangeroepen kun je aan de hand van de true en false waardes uitrekenen hoe vaak een vraag wellicht gesteld moet worden en wanneer.
+  // This function shows this particular question on screen.
   this.showQuestion = function(){
     var style = { font: '14px Arial', fill: "#000000", align: "center" };
     var content = "";
@@ -177,6 +183,7 @@ function Trial(game){
     this.setPropertiesQuestion();
   };
 
+  // This function determines if an assignment should provide an assistant and which help is offered for this specific assignment.
   this.setPropertiesQuestion = function(){
     if(this.repeat != -1 && this.uniqueButtons && !randomStrategy){
       this.makeButtons();
@@ -197,12 +204,15 @@ function Trial(game){
     }
   }
 
+  // This function determines the covalences of each atom of this specific molecule.
   this.determineCovalence = function(){
     for(var i=0; i < this.molecule.length; i++){
       this.molecule[i].determineCovalence();
     }
   }
 
+  // This function calls a function a function makeUndraggable for each atom and therefore
+  // makes the molecule undraggable.
   this.makeUndraggable = function(){
     for(var i=0; i < this.currentMolecule.length; i++){
       this.currentMolecule[i].makeUndraggable();
@@ -210,6 +220,7 @@ function Trial(game){
     return;
   }
 
+  // This function determines the unique atoms of the correct answer molecule.
   this.determineUniqueAtoms = function(){
     let set = new Set();
     for(var i=0; i< this.molecule.length; i++){
@@ -218,6 +229,7 @@ function Trial(game){
     return set;
   };
 
+  // This function determines the unique atoms of the currentMolecule.
   this.determineCurrentUnique = function(){
     let set = new Set();
     for(var i=0; i< this.currentMolecule.length; i++){
@@ -226,6 +238,7 @@ function Trial(game){
     return set;
   };
 
+  // This function determines the difficulty of this trial.
   this.determineDifficulty = function(){
     var numberOfAtoms = 0;
     for(var i=0; i< this.molecule.length; i++){
@@ -235,12 +248,14 @@ function Trial(game){
     this.difficulty = +numberOfAtoms - +this.familiarity + +numberOfUniqueAtoms;
     };
 
+  // This function removes all buttons from screen.
   this.removeButtons = function(){
     for(var i=0; i < buttonsList.length; i++){
   	   buttonsList[i].destroy();
     }
   }
 
+  // This function calls a function that removes all buttons from screen and this function will puts the right ones on screen again.
   this.makeButtons = function(){
     this.removeButtons();
     var values = this.determineUniqueAtoms();

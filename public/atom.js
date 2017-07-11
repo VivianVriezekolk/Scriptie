@@ -1,4 +1,4 @@
-function Atom(value, currentAtom, id, game) {
+function Atom(value, inGrid, id, game) {
     this.value = value
 		this.neighbour = [];
 		this.id = id;
@@ -7,6 +7,7 @@ function Atom(value, currentAtom, id, game) {
     this.covalence = [];
     this.connected = 0;
 
+    // this function returns the X and Y position of an atom that is made by the player.
     function getXY() {
       var Xrandom = determineXPositionInGrid();
       var Yrandom = determineYPositionInGrid();
@@ -18,7 +19,8 @@ function Atom(value, currentAtom, id, game) {
       return [Xrandom,Yrandom];
     }
 
-		if(currentAtom){
+    // this if statement checks whether the atom needs to be in the grid and makes it draggable and gives it a tint.
+		if(inGrid){
       var xy = getXY();
       var Xrandom = xy[0];
       var Yrandom = xy[1];
@@ -32,6 +34,7 @@ function Atom(value, currentAtom, id, game) {
       this.sprite.tint = 0xFFFFFF;
 		}
 
+    // this function determines the X position of a new atom in the grid.
     function determineXPositionInGrid(){
       var Xrandom = Math.floor((Math.random() * (640-110)) + 110);
       while(Xrandom % 32 != 0){
@@ -40,12 +43,14 @@ function Atom(value, currentAtom, id, game) {
       return Xrandom;
     }
 
+    // this function makes this sprite undraggable.
     this.makeUndraggable = function(){
       this.sprite.inputEnabled = false;
       this.sprite.input.draggable = false;
       this.sprite.input.enableDrag(false);
     }
 
+    // this function determines the Y position of an new atom in the grid.
     function determineYPositionInGrid(){
       var Yrandom = Math.floor((Math.random() * (455-5)) + 5);
       while(Yrandom % 32 != 0){
@@ -54,6 +59,7 @@ function Atom(value, currentAtom, id, game) {
       return Yrandom;
     }
 
+    // this function determines which tint a this atom needs to have.
     this.determineTint = function(){
       if(this.connected == 0 && !boolEvaluateAnswer){
         this.sprite.tint = 0xFFFFFF;
@@ -78,6 +84,7 @@ function Atom(value, currentAtom, id, game) {
       }
     }
 
+    // this function puts all the covalences of all the atoms that exist in this game in an array covalences.
     this.determineCovalence = function(){
       if(!boolEvaluateAnswer){
         for(var i=0; i < atomValues.length; i++){

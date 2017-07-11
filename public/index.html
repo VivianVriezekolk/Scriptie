@@ -213,7 +213,7 @@
 
 <script type="text/javascript">
 
-  // Initialize Firebase // it is not save!! Maybe make save
+// initialize firebase
 var config = {
   apiKey: "AIzaSyDFK1lTVkm5Gl_ENEn5o2YXzWvEzLcSYMw",
   authDomain: "chemistrygame-eca18.firebaseapp.com",
@@ -266,6 +266,7 @@ var next;
 var totalScore = 15;
 var startTimeOfPlayer = Date.now();
 
+// this function loads all images that are used in the game.
 function preload() {
 		game.load.image('CButton', 'images/CAtoomButtonGreen.png');
 		game.load.image('OButton', 'images/OAtoomButtonGreen.png');
@@ -287,10 +288,11 @@ function preload() {
 		game.load.image('nextQuestion', 'images/nextAssignment.png');
 		game.load.image('next', 'images/next2.png');
 		game.load.image('start', 'images/start.png');
-		game.load.image('finish', 'images/finish.png');
+		//game.load.image('finish', 'images/finish.png');
 		game.load.text('questions', 'questions.txt');
 }
 
+// this function creates the buttons and the layout of the game and calls the starting functions.
 function create(){
 	var x = document.getElementById("formQuest");
 	determineStrategy();
@@ -337,6 +339,7 @@ function create(){
 	}
 }
 
+// This function decides whether the game plays the random or the adaptive strategy.
 function determineStrategy(){
 	var rand = Math.random();
 	if(rand <= 0.5){
@@ -347,6 +350,7 @@ function determineStrategy(){
 	}
 }
 
+// This function shows the questionnaire to the player and beforehand a last popup of the total score of the player.
 function showForm(){
 	setTotalScore(rand);
 	last.style.display = 'none';
@@ -361,6 +365,7 @@ function showForm(){
 	progress.style.display = 'none';
 }
 
+// This function submits the results of the questionnaire to the database ands calls a function that shows the final popup.
 function submitResults(){
 	questionnaire.style.display = 'none';
 	var bar = document.getElementById("myProgress");
@@ -395,11 +400,13 @@ function submitResults(){
 	saveQuestionnaireData(rand, age, study, exp, orderNb, hintsNb, adaptNb, likeNb, learnNb, easyNb, clearNb, comment)
 }
 
+// This functions shows the final popup.
 function showThanksPop(){
 	var result = document.getElementById("result");
 	result.style.display = 'block';
 }
 
+// This function returns the rating for a specific question of the questionnaire.
 function returnChoice(choice){
 	for(var i=0; i < choice.length; i++){
 		if(choice[i].checked){
@@ -409,14 +416,17 @@ function returnChoice(choice){
 	return 0;
 }
 
+// this function makes a reference of randomstrategy in the firebase database and saves the value of randomstrategy here.
 function setStrategyDB(userId){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/randomStrategy').set(randomStrategy);
 }
 
+// this function makes a reference of totalscore in the firebase database and saves the totalscore of the player here.
 function setTotalScore(userId){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/totalScore').set(Math.round(totalScore*60));
 }
 
+// this function makes a reference of trials and puts information of one trial here.
 function writeUserData(userId, trial, score, currentM, targetM, time) {
   firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/trials/' + trial).set({
     score: score,
@@ -428,6 +438,7 @@ function writeUserData(userId, trial, score, currentM, targetM, time) {
     });
 }
 
+// this function makes a reference of questionnaire in firebase database and saves all the ratings of the questionnaire here.
 function saveQuestionnaireData(userId, age, study, exp, order, hint, adapt, like, learn, easy, clear, comment){
 	firebase.database().ref('users/' + startTimeOfPlayer + "_ID_" + userId + '/questionnaire/').set({
 		age: age,
@@ -444,12 +455,14 @@ function saveQuestionnaireData(userId, age, study, exp, order, hint, adapt, like
 	});
 }
 
+// This function makes all the buttons in the left panel of the game.
 function makeButtons(){
 	for(var i=0; i< buttons.length; i++){
 		var buttonTest = new button(buttons[i], atomValues[i], 30, positionY[i]);
 	}
 }
 
+// This function decides which question should be asked next.
 function decideQuestion(){
 	if(randomStrategy){
 		return pickRandomQuestion();
@@ -465,10 +478,12 @@ function decideQuestion(){
 	}
 }
 
+// This function makes the floor a certain color.
 function render () {
     game.debug.geom(floor,'#ffffff');
 }
 
+// This function makes the first popup in the game with explanation about the game.
 function makeStartPopup(){
 	var startTextofGame = document.getElementById('startTextofGame');
 	if(!randomStrategy){
@@ -493,6 +508,7 @@ function makeStartPopup(){
 	}
 }
 
+// This function starts the game and therefore makes all buttons visible and the first popup invisible. Also it starts the timer.
 function startGame(){
 	currentQuestion.startTime = Date.now();
 	firstpopup.style.display = 'none';
@@ -503,6 +519,7 @@ function startGame(){
 	doneButton.visible = true;
 }
 
+// This function returns the sums all the difficulty measures of the assignments.
 function determineOveralDifficulty(){
 	var sum = 0;
 	for(var i=0; i < listOfQuestions.length; i++){
@@ -511,6 +528,7 @@ function determineOveralDifficulty(){
 	return sum;
 }
 
+// This function updates the height of the salary bar.
 function updateBar() {
 	var SPEED = 1;
 	var MINIMUM_EPSILON = 1;
@@ -529,6 +547,7 @@ function updateBar() {
 	}
 }
 
+// This function updates the colour of the salary bar.
 function updateBarColor(){
 	var elem = document.getElementById("myProgress");
 	if(totalScore <= 15){
@@ -548,6 +567,7 @@ function updateBarColor(){
 	}
 }
 
+// This function updates the salary amount.
 function updateSalary(){
 	var salarytext = document.getElementById('salarytext');
 	var roundScore =  Math.round(60 *totalScore);
@@ -559,6 +579,7 @@ function updateSalary(){
 	}
 }
 
+// This function deletes sprites that are within a certain range.
 function deleteAtom(){
 	if(this.sprite.x < 90 && this.sprite.x > 10 && this.sprite.y > 500 && this.sprite.y < 590){
 		this.sprite.destroy();
@@ -566,6 +587,7 @@ function deleteAtom(){
 	}
 }
 
+// This function deletes an atom from currentMolecule.
 function removeAtom(atom){
 	for(var i=0; i < currentQuestion.currentMolecule.length; i++){
 		if(currentQuestion.currentMolecule[i].id == atom.id){
@@ -574,6 +596,7 @@ function removeAtom(atom){
 	}
 }
 
+// This function makes a priorityqueue based on difficulty of assignments.
 function makePriorityQueue(){
 	var priority = [];
 	for(var i=0; i<listOfQuestions.length; i++){
@@ -591,6 +614,7 @@ function makePriorityQueue(){
 	}
 }
 
+// This function picks a question that is not already asked randomly.
 function pickRandomQuestion(){
 	if(!allQuestionsAreAsked()){
 		if(currentQuestion.repeat > 0 && currentQuestion.molecule.length != 0){
@@ -606,11 +630,13 @@ function pickRandomQuestion(){
 			return priorityQueueQuestions[x];
 		}
 	}
+	// This else if I think otiose.
 	else{
 		showLastPopup();
 	}
 }
 
+// This function calls a function that decide the new order of the assignment list and picks the next one if it not already is asked.
 function decideAdaptively(){
 	decideOrderQuestions();
 	for(var i=0; i< priorityQueueQuestions.length; i++){
@@ -624,6 +650,7 @@ function decideAdaptively(){
 	}
 }
 
+// This function shuffles the order based on the answers of the player.
 function decideOrderQuestions(){
 	for(var i=0; i < priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i] == currentQuestion && currentQuestion.score == -1){
@@ -654,6 +681,7 @@ function decideOrderQuestions(){
 	 }
 }
 
+// This function returns the final text to the player based on the totalscore.
 function determineText(){
 	if(totalScore < 55){
 		return 'Your salary is not that high, perhaps you should take a second job.';
@@ -666,7 +694,7 @@ function determineText(){
 	}
 }
 
-// hier nog even naar kijken!
+// This function shows the totalscore of the player on the screen.
 function showTotalScore(){
 	deleteSprites();
 	next.visible = false;
@@ -677,6 +705,7 @@ function showTotalScore(){
 	lastPop.innerText = "Your final salary is " + Math.floor(60* totalScore) + " dollars. " + endText + "\n \n You are almost done with the experiment! Click on \"Next\" to fill in the questionnaire.";
 }
 
+// This function shows the last pop up of the game.
 function showLastPopup(text){
 	showTotalScore();
 	var gameDone = document.getElementById('finishText');
@@ -688,6 +717,7 @@ function showLastPopup(text){
 	next.visible = true;
 }
 
+// This function is otiose.
 function getScore(){
 	var sum = 0;
 	for(var i=0; i < priorityQueueQuestions.length; i++){
@@ -696,6 +726,7 @@ function getScore(){
 	return sum/priorityQueueQuestions.length * 10;
 }
 
+// This function checks whether all assignments are asked.
 function allQuestionsAreAsked(){
 	for(var i=0; i<priorityQueueQuestions.length; i++){
 		if(priorityQueueQuestions[i].isAsked == false || priorityQueueQuestions[i].repeat > 0){
@@ -705,7 +736,7 @@ function allQuestionsAreAsked(){
 	return true;
 }
 
-//
+// This function reads in the question.txt file and makes trials.
 function makeTrial(trial, index, textsQuestion){
 	for(var i= index; i< textsQuestion.length; i++){
 		if(textsQuestion[i].indexOf('Question') > -1){
@@ -749,6 +780,7 @@ function makeTrial(trial, index, textsQuestion){
 	return;
 }
 
+// This function reads in untill the start of an assignment and calls a function that makes a trial of that assignment.
 function readQuestion(){
   var textQuestion = game.cache.getText('questions');
   textsQuestion = textQuestion.split('\n');
@@ -759,6 +791,7 @@ function readQuestion(){
 	}
 }
 
+// This function shows the next assignment on the screen and starts the timer.
 function showNextQuestion(){
 	boolEvaluateAnswer = false;
 	deleteSprites();
@@ -780,6 +813,7 @@ function showNextQuestion(){
 	}
 }
 
+// This function changes for specific assignments the covalence because these molecules have multiple bindings.
 function changeCovalence(question){
 	if(question.moleculeName == 'carbondioxide'){
 		covalences = [1,2,1,1,1,1,1,1];;
@@ -792,6 +826,7 @@ function changeCovalence(question){
 	}
 }
 
+// This function makes a copy of a molecule.
 function makeCopyMolecule(molecule){
 	var copy = []
 	for(var i=0; i < molecule.length; i++){
@@ -800,7 +835,7 @@ function makeCopyMolecule(molecule){
 	return copy;
 }
 
-// neighbours veranderen.
+// This function is I think otiose.
 function changeMolecule(molecule){
 	var copyOf = makeCopyMolecule(molecule);
 	var newMol = [];
@@ -814,6 +849,7 @@ function changeMolecule(molecule){
 	return newMol;
 }
 
+// This function converts an atom in a dictionary.
 function getFirebaseAtom(atom) {
 	var neighbours = [];
 	for(var i=0; i < atom.neighbour.length; i++){
@@ -822,6 +858,7 @@ function getFirebaseAtom(atom) {
 	return {"type": atom.value, "id": atom.id, "neighbours": neighbours}
 }
 
+// This function calls for every atom in molecule getFirebaseAtom which converts it to a dictionary.
 function getFirebaseMolecule(molecule){
 	var atoms = [];
 	for(var i=0; i < molecule.length; i++){
@@ -830,6 +867,7 @@ function getFirebaseMolecule(molecule){
 	return atoms;
 }
 
+// This function evaluates an answer of an assignment.
 function evaluateAnswer(){
 	currentQuestion.endTime = Date.now();
 	var timeNeeded = currentQuestion.determineTime();
@@ -850,6 +888,7 @@ function evaluateAnswer(){
 		var amountMolecule = currentQuestion.molecule.length;
 		var amountCurrent = currentQuestion.currentMolecule.length;
 		var getal = amountMolecule - amountCurrent;
+
 		if(getal < 0){
 			tooMany = true;
 		}
@@ -862,6 +901,8 @@ function evaluateAnswer(){
 	index+=1;
 }
 
+// This function determines the score of an answer based on certain aspects that are right or wrong of a molecule
+// and the feedback that should be given ans passes this through to the function setProgress().
 function determineScore(rightType, rightConnections, rightAmount, rightUnique, someRightUnique, tooMany){
 	if(!gameIsFinished){
 		if(rightType && rightConnections && rightAmount && rightUnique){
@@ -958,6 +999,9 @@ function determineScore(rightType, rightConnections, rightAmount, rightUnique, s
 	}
 }
 
+// This function takes care of updating the salary bar and showing the correct amount of salary,
+// this function also makes the done button invisible and shows the next question button in order
+// to make the player able to go to the next assignment.
 function setProgress(feedback, score, colour){
 	totalScore += convertScoreChange(score);
 	totalScore = Math.max(0,totalScore);
@@ -965,6 +1009,7 @@ function setProgress(feedback, score, colour){
 	updateBarColor();
 	updateSalary();
 	currentQuestion.score = score;
+
 	if(allQuestionsAreAsked() && (currentQuestion.score == 1  || currentQuestion.repeat == 0)){
 		doneButton.visible = false;
 		nextQuestion.visible = false;
@@ -986,6 +1031,7 @@ function setProgress(feedback, score, colour){
 	}
 }
 
+// This function deletes all the visible sprites on the screen.
 function deleteSprites(){
 	for(var i=0; i<currentQuestion.currentMolecule.length; i++){
 		currentQuestion.currentMolecule[i].sprite.destroy();
@@ -993,12 +1039,13 @@ function deleteSprites(){
 	currentQuestion.currentMolecule = [];
 }
 
+// This function converts an answerScore of -1 up to 1 to a degree in change of the salary bar.
 function convertScoreChange(answerScore) {
 	var totalDifficulty = determineOveralDifficulty();
 	return answerScore * 85 * currentQuestion.difficulty / totalDifficulty;
 }
 
-// This function counts the number of atoms with a specific value in a molecule
+// This function counts the number of atoms with a specific value in a molecule.
 function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	var count = 0;
 	for(var i=0; i< SpecMolecule.length; i++){
@@ -1009,11 +1056,13 @@ function countNumberOfAtoms(SpecMolecule, valueOfSpecificAtom){
 	return count;
 }
 
-//Object button
+
+//This is an object of button.
 function button(buttonName, element, X, Y){
   this.element = element;
   this.buttonName = buttonName;
 
+	// this function is called when a specific button is pressed and adds an atom to the current molecule.
   this.actionOnClick = function(){
     if(currentQuestion.helpNumber){
 			if(countNumberOfAtoms(currentQuestion.currentMolecule, element) != countNumberOfAtoms(currentQuestion.molecule, element) && !gameIsFinished && !boolEvaluateAnswer){
@@ -1040,6 +1089,7 @@ function button(buttonName, element, X, Y){
 	}
 }
 
+// This function checks whether two atoms could be snapped.
 function atomsAreSnapped(atomA, atomB){
 	for(var i=0; i< atomA.neighbour.length; i++){
 		if(atomA.neighbour[i].id == atomB.id){
@@ -1049,7 +1099,7 @@ function atomsAreSnapped(atomA, atomB){
 	return false;
 }
 
-// this functions adds atoms that are close together
+// this functions adds atoms that are close together.
 function snap(currentMolecule){
 	for(var i=0; i< currentMolecule.length; i++){
 		for(var j=0; j< currentMolecule.length; j++){

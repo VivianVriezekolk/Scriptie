@@ -13,7 +13,6 @@ function DelayText(game){
     }
     //  Split the current line on spaces, so one word per array element
     this.line = this.content[this.lineIndex].split(' ');
-    console.log(this.line);
     //  Reset the word index to zero (the first word in the line)
     this.wordIndex = 0;
     //  Call the 'nextWord' function once for each word in the line (line.length)
