@@ -19,7 +19,6 @@ function DelayText(game){
     game.time.events.repeat(this.wordDelay, this.line.length, this.nextWord, this);
     //  Advance to the next line
     this.lineIndex++;
-    console.log("haalloooo");
 }
 
 this.nextWord = function() {
