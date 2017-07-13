@@ -629,7 +629,6 @@ function pickRandomQuestion(){
 			return priorityQueueQuestions[x];
 		}
 	}
-	// This else if I think otiose.
 	else{
 		showLastPopup();
 	}
@@ -714,15 +713,6 @@ function showLastPopup(text){
 	gameDone.innerText = text;
 	finish.style.display = 'block';
 	next.visible = true;
-}
-
-// This function is otiose.
-function getScore(){
-	var sum = 0;
-	for(var i=0; i < priorityQueueQuestions.length; i++){
-			sum += priorityQueueQuestions[i].score;
-	}
-	return sum/priorityQueueQuestions.length * 10;
 }
 
 // This function checks whether all assignments are asked.

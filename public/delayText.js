@@ -1,3 +1,4 @@
+// This code was written by a commenter on stackoverflow.
 function DelayText(game){
   this.game = game;
   this.content = '';
