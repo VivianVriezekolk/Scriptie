@@ -54,6 +54,7 @@ def ttest(var):
 # This code calls the function ttest and print the result, different values could be passed to the function (f.e. adapt).
 result = ttest('easy')
 print("result of ttest was: ")
+# p values should be divided by 2 to have the result of an one sided t test.
 print(result)
 
 # linear regression code
