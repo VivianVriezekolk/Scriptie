@@ -52,7 +52,7 @@ def ttest(var):
     return TTestResult(p, t, rand.mean(), adap.mean(), rand.std(), adap.std())
 
 # This code calls the function ttest and print the result, different values could be passed to the function (f.e. adapt).
-result = ttest('easy')
+result = ttest('adapt')
 print("result of ttest was: ")
 # p values should be divided by 2 to have the result of an one sided t test.
 print(result)
